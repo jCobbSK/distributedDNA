@@ -1,6 +1,11 @@
-Zadanie: Diagnostika genetickych ochoreni analyzou DNA sekvencie.
+Zadanie: Diagnostika genetickych ochoreni analyzou DNA sekvencie pomocou regularnych vyrazov.
 Ulohy:  Nastudujte problematiku genetickych ochoreni.
 	Nastudujte pokrocile algoritmy na spracovanie regularnych vyrazov a ich vyuzitie pri analyze DNA sekvencie.
-	Analyzujte 
+	Analyzujte moznosti pouzitia distribucneho systemu na zefektivnenie spracovania regularnych vyrazov.
 	Implementujte vzorovy system na diagnostikovanie genetickych chorob. 
 Literatura:
+	Genetics: Analysis and Principles - Robert J. Brooker (2014)
+	Genetics For Dummies - Tara Rodden Robinson (2010)
+	Mastering Regular Expressions - Jeffrey E. F. Friedl (2006)
+	Distribution System Modeling and Analysis - William H. Kersting (2012)
+	
