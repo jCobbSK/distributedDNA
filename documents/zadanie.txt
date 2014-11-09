@@ -1,0 +1,6 @@
+Zadanie: Diagnostika genetickych ochoreni analyzou DNA sekvencie.
+Ulohy:  Nastudujte problematiku genetickych ochoreni.
+	Nastudujte pokrocile algoritmy na spracovanie regularnych vyrazov a ich vyuzitie pri analyze DNA sekvencie.
+	Analyzujte 
+	Implementujte vzorovy system na diagnostikovanie genetickych chorob. 
+Literatura:
