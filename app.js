@@ -10,6 +10,9 @@ var users = require('./routes/user');
 
 var app = express();
 
+//set models
+app.set('models', require('./models'));
+
 // view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
