@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "roh4dZi3",
+    "database": "diplomka",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "roh4dZi3",
+    "database": "diplomka",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "roh4dZi3",
+    "database": "diplomka",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
