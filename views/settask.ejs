@@ -1,0 +1,38 @@
+<% include header %>
+
+<div class="row">
+  <div class="input-field col s4 offset-s4">
+    <input id="patient-id" type="text" class="validate">
+    <label for="patient-id">Patient ID</label>
+  </div>
+</div>
+<div class="row">
+  <div class="input-field col s4 offset-s4">
+    <textarea id="additional-info" class="materialize-textarea"></textarea>
+    <label for="additional-info">Additional info</label>
+  </div>
+</div>
+<div class="row">
+  <form action="#">
+    <div class=" col s4 offset-s4">
+      <div class="waves-effect waves-light btn">
+        <span>Sample</span>
+        <input type="file" style="display: none;"/>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row">
+  <div class=" col s4 offset-s4">
+    <div class="progress">
+      <div class="determinate" style="width: 70%"></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class=" col s4 offset-s4">
+    <a href="#" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-navigation-check"></i></a>
+    <a href="results" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-content-backspace"></i></a>
+  </div>
+</div>
+<% include footer %>

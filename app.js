@@ -8,10 +8,12 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/user');
 
-var app = express();
+var results = require('./routes/results');
+var settask = require('./routes/settask');
+var computeStart = require('./routes/computestart');
+var computing = require('./routes/computing');
 
-//set models
-app.set('models', require('./models'));
+var app = express();
 
 // view engine setup
 
@@ -29,6 +31,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/results', results);
+app.use('/settask', settask);
+app.use('/computestart', computeStart);
+app.use('/computing', computing);
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

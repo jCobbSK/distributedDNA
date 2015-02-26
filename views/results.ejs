@@ -1,0 +1,59 @@
+<% include header %>
+
+<!-- top navbar with samples-->
+<div class="row">
+  <div class="col s12">
+    <ul class="tabs">
+      <%for(var i=1,len=20;i<len;i++){%>
+      <li class="tab col s3"><a href="#">
+          # <%=i%>
+      </a></li>
+      <%}%>
+    </ul>
+  </div>
+</div>
+
+<!-- main content -->
+<div class="row">
+  <div class="col s12 card-panel" style="position: relative;">
+    <a class="btn-floating btn-medium waves-effect waves-light red" style="position: absolute; left: calc(50% - 20px);top: -20px;" href="settask"><i class="mdi-content-add"></i></a>
+    <div class="row">
+      <div class="col s6">
+        <h4>Sample: #123</h4>
+        <a class="waves-effect waves-light btn">Download</a>
+      </div>
+      <div class="col s6">
+        <h4>Patient: Kubko</h4>
+        <h4>Additional info:</h4>
+        <p>adfasdfadfasdfsdf</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <table>
+          <thead>
+            <tr>
+              <th>#id</th>
+              <th>
+                Gene
+              </th>
+              <th>Description</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>GEE123-34</td>
+              <td>Breast cancer</td>
+              <td>Negative</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include footer %>

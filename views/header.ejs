@@ -5,13 +5,29 @@
   <meta name="viewport" content="width=device-width">
   <title><%-title %></title>
 
-  <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/components/materialize/dist/css/materialize.css">
   <link rel="stylesheet" href="/css/style.css">
 
 
   <script src="/components/socket.io-client/socket.io.js"></script>
   <script src="http://localhost:35729/livereload.js"></script>
   <script src="/components/jquery/dist/jquery.js"></script>
-  <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="/components/materialize/dist/js/materialize.js"></script>
 </head>
 <body>
+<nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Diplomovka</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="#">
+          <% if(locals.username){ %>
+            <%=username%>
+          <%}else{%>
+            <%="unknown"%>
+          <%}%>
+      </a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+
