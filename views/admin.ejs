@@ -1,0 +1,92 @@
+<% include header %>
+
+<div class="row">
+  <div class="col s12">
+    <ul class="tabs">
+      <li class="tab col s3">
+        <a href="#create-user" class="active">Create user</a>
+      </li>
+      <li class="tab col s3">
+        <a href="#user-list">User list</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- create user form -->
+  <div id="create-user" class="col s6 offset-s3">
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="username" type="text" class="validate">
+        <label for="username">Username</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="password1" type="password" class="validate">
+        <label for="password1">Password</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="password2" type="password" class="validate">
+        <label for="password2">Password again</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="email" type="email" class="validate">
+        <label for="email">Email</label>
+      </div>
+    </div>
+    <div class="row" style="text-align: center">
+      <span>
+        <input name="userType" type="radio" id="client" checked/>
+        <label for="client">Client</label>
+      </span>
+      <span>
+        <input name="userType" type="radio" id="node" />
+        <label for="node">Node</label>
+      </span>
+    </div>
+    <div class="row pull-right">
+      <a href="#" id="createUserSubmit" class="btn-floating btn-large waves-effect waves-light green" style="float: right;"><i class="mdi-navigation-check"></i></a>
+    </div>
+  </div>
+  <!-- //create user form -->
+
+  <!-- list users -->
+  <div id="user-list">
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>username</th>
+          <th>email</th>
+          <th>role</th>
+          <th>created</th>
+          <th>last updated</th>
+          <th>actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- TODO list all users from route -->
+        <%for (var i=0, len=users.length; i < len; i++){%>
+          <tr>
+            <td><%=users[i].id%></td>
+            <td><%=users[i].username%></td>
+            <td><%=users[i].email%></td>
+            <td><%=(users[i].isClient)?'client':'node'%></td>
+            <td><%=moment(users[i].createdAt).fromNow()%></td>
+            <td><%=moment(users[i].updatedAt).fromNow()%></td>
+            <td>
+              <!--actions -->
+            </td>
+          </tr>
+        <%}%>
+      </tbody>
+    </table>
+  </div>
+  <!-- //list users -->
+
+
+</div>
+
+<% include footer %>

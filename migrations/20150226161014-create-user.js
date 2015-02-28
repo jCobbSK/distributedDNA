@@ -14,6 +14,9 @@ module.exports = {
       password: {
         type: DataTypes.STRING
       },
+      email: {
+        type: DataTypes.STRING
+      },
       isClient: {
         type: DataTypes.BOOLEAN
       },

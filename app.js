@@ -12,6 +12,7 @@ var results = require('./routes/results');
 var settask = require('./routes/settask');
 var computeStart = require('./routes/computestart');
 var computing = require('./routes/computing');
+var admin = require('./routes/admin')
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/admin', admin);
 app.use('/users', users);
 app.use('/results', results);
 app.use('/settask', settask);

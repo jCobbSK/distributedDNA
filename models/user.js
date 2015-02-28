@@ -4,12 +4,16 @@ module.exports = function(sequelize, DataTypes) {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     isClient: DataTypes.BOOLEAN,
-    computedTime: DataTypes.INTEGER
+    email: DataTypes.STRING,
+    computedTime: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        User.hasMany(Sample,{as: 'Samples'})
+        User.hasMany(models.Sample,{as: 'Samples'})
       }
     }
   });
