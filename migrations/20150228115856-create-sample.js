@@ -1,24 +1,32 @@
 "use strict";
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable("Users", {
+    migration.createTable("Samples", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      username: {
+
+      userId: {
+        type: DataTypes.INTEGER,
+        references: 'Users',
+        referencesKey: 'id',
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      },
+      data: {
+        type: DataTypes.BLOB
+      },
+      patientName: {
         type: DataTypes.STRING
       },
-      password: {
+      additionalInfo: {
         type: DataTypes.STRING
       },
-      isClient: {
+      isDone: {
         type: DataTypes.BOOLEAN
-      },
-      computedTime: {
-        type: DataTypes.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +39,6 @@ module.exports = {
     }).done(done);
   },
   down: function(migration, DataTypes, done) {
-    migration.dropTable("Users").done(done);
+    migration.dropTable("Samples").done(done);
   }
 };
