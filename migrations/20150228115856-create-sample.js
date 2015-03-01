@@ -9,15 +9,15 @@ module.exports = {
         type: DataTypes.INTEGER
       },
 
-      userId: {
+      UserId: {
         type: DataTypes.INTEGER,
         references: 'Users',
         referencesKey: 'id',
         onUpdate: 'cascade',
         onDelete: 'restrict'
       },
-      data: {
-        type: DataTypes.BLOB
+      dataPath: {
+        type: DataTypes.STRING
       },
       patientName: {
         type: DataTypes.STRING

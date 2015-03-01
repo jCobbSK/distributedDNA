@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var routes = require('./routes/index');
 var users = require('./routes/user');
@@ -12,7 +13,8 @@ var results = require('./routes/results');
 var settask = require('./routes/settask');
 var computeStart = require('./routes/computestart');
 var computing = require('./routes/computing');
-var admin = require('./routes/admin')
+var admin = require('./routes/admin');
+var samples = require('./routes/sample');
 
 var app = express();
 
@@ -29,6 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multer({dest: './tmpUploads/'}));
 
 app.use('/', routes);
 app.use('/admin', admin);
@@ -37,6 +40,7 @@ app.use('/results', results);
 app.use('/settask', settask);
 app.use('/computestart', computeStart);
 app.use('/computing', computing);
+app.use('/samples', samples);
 
 
 /// catch 404 and forward to error handler

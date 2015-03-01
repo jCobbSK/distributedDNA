@@ -12,7 +12,7 @@ $(document).ready(function(){
 
     //validation
     var valid = true;
-    if (!username || username.length < 6) {
+    if (!username || username.length < 4) {
       valid = false;
       $('#username').addClass('invalid');
     }
@@ -50,6 +50,19 @@ $(document).ready(function(){
 
   /**
    * //Aadmin page scripts
+   */
+
+  /**
+   * Set task (create sample)
+   */
+
+  $('#createSample').click(function(){
+    //TODO validation of fields
+    $('#setTaskForm').submit();
+  });
+
+  /**
+   * //Set task
    */
 })
 

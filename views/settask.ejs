@@ -1,38 +1,35 @@
 <% include header %>
-
-<div class="row">
-  <div class="input-field col s4 offset-s4">
-    <input id="patient-id" type="text" class="validate">
-    <label for="patient-id">Patient ID</label>
+<form method="post" enctype="multipart/form-data" action="/samples" id="setTaskForm">
+  <div class="row">
+    <div class="input-field col s4 offset-s4">
+      <input name="patientName" type="text" class="validate">
+      <label for="patientName">Patient ID</label>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="input-field col s4 offset-s4">
-    <textarea id="additional-info" class="materialize-textarea"></textarea>
-    <label for="additional-info">Additional info</label>
+  <div class="row">
+    <div class="input-field col s4 offset-s4">
+      <textarea name="additionalInfo" class="materialize-textarea"></textarea>
+      <label for="additionalInfo">Additional info</label>
+    </div>
   </div>
-</div>
-<div class="row">
-  <form action="#">
-    <div class=" col s4 offset-s4">
-      <div class="waves-effect waves-light btn">
-        <span>Sample</span>
-        <input type="file" style="display: none;"/>
+  <div class="row">
+    <form action="#">
+      <div class=" col s4 offset-s4">
+        <div class="file-field input-field">
+          <input class="file-path validate" type="text"/>
+          <div class="btn">
+            <span>File</span>
+            <input id="sampleFile" type="file" name="sampleFile"/>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
-</div>
-<div class="row">
-  <div class=" col s4 offset-s4">
-    <div class="progress">
-      <div class="determinate" style="width: 70%"></div>
+    </form>
+  </div>
+  <div class="row">
+    <div class=" col s4 offset-s4">
+      <a href="#" id="createSample" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-navigation-check"></i></a>
+      <a href="results" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-content-backspace"></i></a>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class=" col s4 offset-s4">
-    <a href="#" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-navigation-check"></i></a>
-    <a href="results" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="mdi-content-backspace"></i></a>
-  </div>
-</div>
+</form>
 <% include footer %>
