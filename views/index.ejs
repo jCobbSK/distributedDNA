@@ -1,6 +1,30 @@
 <% include header %>
 
-  <h1><%-title %></h1>
-  <p>Welcome to <%-title %></p>
+<form method="post" action="/login">
+  <div class="row">
+    <div class="col s6 offset-s3 card-panel" style="padding: 10px 10px;">
+      <div class="row" style="text-align: center;">
+        <h5>Welcome, please login to proceed</h5>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="username" type="text" name="username">
+          <label for="password">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" name="password">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="row" style="text-align: center;">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Login
+          <i class="mdi-content-send right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
 
 <% include footer %>

@@ -6,7 +6,7 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/', function(req, res) {
   models.User.findAll().then(function(result){
-    res.render('admin', {title: 'Diplomka',users: result, moment: moment});
+    res.render('admin', {user: req.user,users: result, moment: moment});
   });
 });
 

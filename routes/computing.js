@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  res.render('computing', { title: 'Express' });
+  res.render('computing', { user: req.user });
 });
 
 module.exports = router;
