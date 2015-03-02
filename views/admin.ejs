@@ -9,6 +9,9 @@
       <li class="tab col s3">
         <a href="#user-list">User list</a>
       </li>
+      <li class="tab col s3">
+        <a href="#gene-list">Gene list</a>
+      </li>
     </ul>
   </div>
 
@@ -84,6 +87,30 @@
     </table>
   </div>
   <!-- //list users -->
+
+  <!-- gene list -->
+  <div id="gene-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Pattern</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%for(var i=0,len=patterns.length;i<len;i++){%>
+          <tr>
+            <td><%=patterns[i].id%></td>
+            <td><%=patterns[i].name%></td>
+            <td><%=patterns[i].description%></td>
+            <td>Button for data</td>
+          </tr>
+        <%}%>
+      </tbody>
+    </table>
+  </div>
 
 
 </div>

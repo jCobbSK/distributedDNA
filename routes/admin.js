@@ -6,8 +6,22 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/',auth.roleAuthenticate(['admin']),function(req, res) {
+  var respond = {
+    user: req.user,
+    moment: moment
+  };
   models.User.findAll().then(function(result){
-    res.render('admin', {user: req.user,users: result, moment: moment});
+    respond.users = result;
+    if (respond.patterns) {
+      res.render('admin', respond);
+    }
+  });
+
+  models.Pattern.findAll().then(function(result){
+    respond.patterns = result;
+    if (respond.users) {
+      res.render('admin', respond);
+    }
   });
 });
 
