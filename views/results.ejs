@@ -1,13 +1,17 @@
 <% include header %>
 
+<script>
+  var data = '<%=JSON.stringify(locals.samples)%>';
+  data = JSON.parse(data.replace(/&quot;/g,'"'));
+</script>
 <!-- main content -->
 <div class="row">
   <div class="col s2 card-panel" style="position: relative;">
     <a class="btn-floating btn-medium waves-effect waves-light red" style="position: absolute; left: calc(50% - 20px);" href="settask"><i class="mdi-content-add"></i></a>
     <ul class="collection" style="margin-top: 40px;">
-      <a href="#" class="collection-item">#1</a>
-      <a href="#" class="collection-item">#1</a>
-      <a href="#" class="collection-item">#1</a>
+      <%for (var i=0,len=samples.length;i<len;i++){%>
+        <a href="#" class="collection-item">#<%= samples[i].id %></a>
+      <%}%>
     </ul>
   </div>
   <div class="col s10 card-panel">
