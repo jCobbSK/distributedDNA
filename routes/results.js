@@ -9,8 +9,7 @@ router.get('/',auth.roleAuthenticate(['client']), function(req, res) {
     user: req.user,
     sampleId: 132,
     patientName: 'Kubko',
-    additionalInfo: 'Blablabla',
-    title: 'Penis'
+    additionalInfo: 'Blablabla'
   });
 });
 
