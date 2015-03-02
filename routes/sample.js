@@ -1,11 +1,12 @@
 var express = require('express');
 var fs = require('fs');
 var models = require('../models');
+var auth = require('../custom/authentification');
 var router = express.Router();
 
 /* GET samples of logged user. */
-router.get('/', function(req, res) {
-  var userId = 1; //TODO get actual logged user id
+router.get('/',auth.roleAuthenticate(['client']), function(req, res) {
+  var userId = req.user.id;
   models.Sample.findAll({where: {UserId:userId}})
     .then(function(samples){
       res.json(samples);
@@ -13,8 +14,8 @@ router.get('/', function(req, res) {
 });
 
 /* POST create sample */
-router.post('/', function(req, res) {
-  var userId = 1; //TODO get actual logged user id
+router.post('/',auth.roleAuthenticate(['client']), function(req, res) {
+  var userId = req.user.id;
   var sample = models.Sample.build({
     patientName: req.body.patientName,
     additionalInfo: req.body.additionalInfo,

@@ -1,16 +1,17 @@
 var express = require('express');
 var models = require('../models');
+var auth = require('../custom/authentification');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res) {
+router.get('/',auth.roleAuthenticate(['admin']), function(req, res) {
   models.User.findAndCount().then(function(result){
     res.json(result);
   });
 });
 
 /* POST create user */
-router.post('/', function(req, res) {
+router.post('/',auth.roleAuthenticate(['admin']), function(req, res) {
   var params = req.body;
   var user = models.User.build({
     username: params.username,

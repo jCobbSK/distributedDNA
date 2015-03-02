@@ -4,6 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     isClient: DataTypes.BOOLEAN,
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     email: DataTypes.STRING,
     computedTime: {
       type: DataTypes.INTEGER,

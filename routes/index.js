@@ -1,17 +1,16 @@
 var express = require('express');
-var passport = require('passport');
+var auth = require('../custom/authentification');
 var router = express.Router();
 
 /* GET home page. */
 
 router.get('/', function(req, res) {
-  //TODO if user is logged, render results or computeStart base on user's role, if he isn't logged, render index page
   if (!req.user) {
     res.render('index', { user: null });
     return;
   }
 
-  if (req.user.username == 'admin') {
+  if (req.user.isAdmin) {
     res.redirect('/admin');
     return;
   }
@@ -22,10 +21,8 @@ router.get('/', function(req, res) {
     res.redirect('/computeStart');
 });
 
-router.post('/login', passport.authenticate('local',{
-    successRedirect: '/',
-    failureRedirect: '/'
-  })
+router.post('/login',
+  auth.authenticate()
 );
 
 router.get('/logout', function(req, res) {
