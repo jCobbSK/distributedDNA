@@ -14,10 +14,21 @@ module.exports = {
       description: {
         type: DataTypes.STRING
       },
-      data: {
-        type: DataTypes.STRING
+      chromosome: {
+        type: DataTypes.INTEGER
       },
-
+      sequenceStart: {
+        type: DataTypes.INTEGER
+      },
+      sequenceEnd: {
+        type: DataTypes.INTEGER
+      },
+      isForwardStrand: {
+        type: DataTypes.BOOLEAN
+      },
+      data: {
+        type: DataTypes.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
