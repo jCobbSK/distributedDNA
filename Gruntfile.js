@@ -3,6 +3,7 @@
 var request = require('request');
 var models = require('./models');
 var async = require('async');
+var crawler = require('./custom/patternCrawler');
 
 module.exports = function (grunt) {
   // show elapsed time at the end
@@ -128,7 +129,7 @@ module.exports = function (grunt) {
       createUser('node2', 'node2', false, false, 'node2@nodes.com'),
     ], function(err, results){
       if (err)
-        console.err('Error during creation');
+        console.error('Error during creation');
       else
         console.log('Done!');
       //finally end grunt task
@@ -165,5 +166,19 @@ module.exports = function (grunt) {
         console.log('Error finding table');
         done();
       });
+  });
+
+  /**
+   * Grunt task for populate pattern table from ensembl genome browser. Function is provided from patternCrawler.js
+   */
+  grunt.registerTask('fetchEnsemblData', 'Crawl and persist pattern data from ensembl genome browser', function(){
+    var done = this.async();
+    crawler.crawl(function(err, result){
+      if (err)
+        console.error('something went wrong');
+      else
+        console.log('Fetching is complete!')
+      done();
+    });
   });
 };

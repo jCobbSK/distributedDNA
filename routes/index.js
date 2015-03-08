@@ -1,6 +1,5 @@
 var express = require('express');
 var auth = require('../custom/authentification');
-var crawler = require('../custom/patternCrawler');
 var router = express.Router();
 
 /* GET home page. */
@@ -31,13 +30,6 @@ router.get('/logout', function(req, res) {
   console.log('LOGGING OUT '+ name);
   req.logout();
   res.redirect('/');
-});
-
-/**
- * TEMPORARY ROUTE FOR CALLING MY CRAWLER FOR PATTERNS
- */
-router.get('/populatePatterns', function(req,res){
-  crawler.crawl();
 });
 
 module.exports = router;

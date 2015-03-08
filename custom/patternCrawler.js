@@ -31,7 +31,6 @@ module.exports = {
       sequenceStart: data.sequenceStart,
       sequenceEnd: data.sequenceEnd
     }).then(function(pattern){
-      console.log('Create pattern #'+pattern.id);
       callback();
     });
   },
@@ -40,8 +39,9 @@ module.exports = {
    * Actual application logic.
    *
    * It is optimize for crawling ensembl.org @ 2.3.2015
+   * @param {function} callback - callback called after finished callback(err, result)
    */
-  crawl: function() {
+  crawl: function(callback) {
     var connection = mysql.createConnection({
       host: 'ensembldb.ensembl.org',
       user: 'anonymous'
@@ -63,7 +63,6 @@ module.exports = {
 
       for (var i in rows) {
         var path = 'http://rest.ensembl.org/sequence/id/'+rows[i].stable_id+'?content-type=application/json';
-        console.log(path);
         temporaryObjects[rows[i].stable_id] = {
           name: rows[i].stable_id,
           description: rows[i].description,
@@ -89,10 +88,13 @@ module.exports = {
              //save object
              self.savePattern(temporaryObjects[data.id],function(){
                delete temporaryObjects[data.id];
+               if (Object.keys(temporaryObjects).length == 0)
+                 callback(null, true);
              });
            });
         }).on('error', function(e){
            console.log('REQ ERROR: '+ e.message);
+           callback(true, null);
         });
       }
 
