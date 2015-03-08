@@ -96,6 +96,7 @@
           <th>Id</th>
           <th>Name</th>
           <th>Description</th>
+          <th>Position</th>
           <th>Pattern</th>
         </tr>
       </thead>
@@ -105,7 +106,12 @@
             <td><%=patterns[i].id%></td>
             <td><%=patterns[i].name%></td>
             <td><%=patterns[i].description%></td>
-            <td>Button for data</td>
+            <td>
+              <%=patterns[i].chromosome+' : '+patterns[i].sequenceStart+' : '+patterns[i].sequenceEnd%>
+            </td>
+            <td>
+              <a class="mdi-editor-insert-chart medium" href="/patterns/<%=patterns[i].id%>" style="font-size: 24px;"></a>
+            </td>
           </tr>
         <%}%>
       </tbody>

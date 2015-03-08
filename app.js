@@ -21,6 +21,7 @@ var computeStart = require('./routes/computestart');
 var computing = require('./routes/computing');
 var admin = require('./routes/admin');
 var samples = require('./routes/sample');
+var patterns = require('./routes/pattern');
 
 var app = express();
 
@@ -53,6 +54,7 @@ app.use('/settask', settask);
 app.use('/computestart', computeStart);
 app.use('/computing', computing);
 app.use('/samples', samples);
+app.use('/patterns', patterns);
 
 
 /// catch 404 and forward to error handler
