@@ -18,6 +18,13 @@ This project tries to build distributive system for advanced big data pattern re
 8. run: grunt
 9. open browser on localhost:3000
 
+### Tasks TODO
+1. normalize sample data
+2. normalize ensembl sequences
+3. setup socket connections
+4. design distributive system interfaces
+5. implement DS interfaces
+
 
 ### Who do I talk to? ###
 
