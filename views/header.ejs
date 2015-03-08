@@ -13,14 +13,14 @@
   <script src="http://localhost:35729/livereload.js"></script>
   <script src="/components/jquery/dist/jquery.js"></script>
   <script src="/components/materialize/dist/js/materialize.js"></script>
-  <script src="js/main.js"></script>
+  <script src="/js/main.js"></script>
 </head>
 <body>
 <nav>
   <div class="nav-wrapper">
     <a href="#" class="brand-logo">Diplomovka</a>
     <ul id="nav-mobile" class="right">
-      <li><a href="logout">
+      <li><a href="/logout">
           <% if(locals.user){ %>
             <%=user.username%>
           <%}else{%>

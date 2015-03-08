@@ -1,29 +1,31 @@
 <% include header %>
-
-<script>
-  var data = '<%=JSON.stringify(locals.samples)%>';
-  data = JSON.parse(data.replace(/&quot;/g,'"'));
-</script>
 <!-- main content -->
 <div class="row">
   <div class="col s2 card-panel" style="position: relative;">
-    <a class="btn-floating btn-medium waves-effect waves-light red" style="position: absolute; left: calc(50% - 20px);" href="settask"><i class="mdi-content-add"></i></a>
+    <a class="btn-floating btn-medium waves-effect waves-light red" style="position: absolute; left: calc(50% - 20px);" href="/settask"><i class="mdi-content-add"></i></a>
     <ul class="collection" style="margin-top: 40px;">
       <%for (var i=0,len=samples.length;i<len;i++){%>
-        <a href="#" class="collection-item">#<%= samples[i].id %></a>
+          <a href="<%=samples[i].id%>" class="collection-item <%= samples[i].id == actualSample ? 'active': ''%>">
+            #<%= samples[i].id %>
+            <%if (samples[i].isDone){%>
+              <i class="mdi-navigation-check" style="float: right;"></i>
+            <%}else{%>
+              <i class="mdi-navigation-refresh rotating" style="float: right;"></i>
+            <%}%>
+          </a>
       <%}%>
     </ul>
   </div>
   <div class="col s10 card-panel">
     <div class="row">
       <div class="col s6">
-        <h4>Sample: #123</h4>
-        <a class="waves-effect waves-light btn">Download</a>
+        <h4>Sample: #<%=sample.id%></h4>
+        <a class="waves-effect waves-light btn" href="<%=sample.id%>/download">Download</a>
       </div>
       <div class="col s6">
-        <h4>Patient: Kubko</h4>
+        <h4>Patient: <%=sample.patientName%></h4>
         <h4>Additional info:</h4>
-        <p>adfasdfadfasdfsdf</p>
+        <p><%=sample.additionalInfo%></p>
       </div>
     </div>
 

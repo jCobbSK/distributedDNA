@@ -26,6 +26,7 @@ var patterns = require('./routes/pattern');
 var app = express();
 
 app.locals.title = 'DIPLOMOVKA';
+global.appRoot = path.resolve(__dirname);
 
 // view engine setup
 
@@ -76,6 +77,7 @@ passport.use(new LocalStrategy(
         console.log('INCORRECT PASSWORD',user.password,password);
         return done(null, false, { message: 'Incorrect password.' });
       }
+      app.locals.user = user;
       return done(null, user);
     }).catch(function(err){
       return done(err);
