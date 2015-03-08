@@ -1,6 +1,8 @@
 'use strict';
 
 var request = require('request');
+var models = require('./models');
+var async = require('async');
 
 module.exports = function (grunt) {
   // show elapsed time at the end
@@ -87,4 +89,81 @@ module.exports = function (grunt) {
     'develop',
     'watch'
   ]);
+
+  /**
+   * Grunt task for creating default accounts
+   */
+  grunt.registerTask('createData', 'Create default accounts', function(){
+
+    //set grunt task as async -> finished after call done();
+    var done = this.async();
+
+    var createUser = function(username, password, isClient, isAdmin, email) {
+      return function(callback){
+        models.User.create({
+          username: username,
+          password: password,
+          isClient: isClient,
+          isAdmin: isAdmin,
+          email: email
+        }).then(function(user){
+          callback(null, user);
+        }).catch(function(err){
+          callback(err, null);
+        });
+      }
+    }
+
+    //async module deals with handling multiple parallel async tasks
+    async.parallel([
+      //admin account
+      createUser('admin', 'admin', true, true, 'admin@admin.com'),
+      //clients
+      createUser('client', 'client', true, false, 'client@clients.com'),
+      createUser('client1', 'client1', true, false, 'client1@clients.com'),
+      createUser('client2', 'client2', true, false, 'client2@clients.com'),
+      //nodes
+      createUser('node', 'node', false, false, 'node@nodes.com'),
+      createUser('node1', 'node1', false, false, 'node1@nodes.com'),
+      createUser('node2', 'node2', false, false, 'node2@nodes.com'),
+    ], function(err, results){
+      if (err)
+        console.err('Error during creation');
+      else
+        console.log('Done!');
+      //finally end grunt task
+      done();
+    });
+
+  });
+
+  /**
+   * Remove all data from table provided in param
+   */
+  grunt.registerTask('purgeData', 'Deleting IRREVERSABLE all data from selected table', function(tableName){
+    var done = this.async();
+    models[tableName].findAll()
+      .then(function(rows){
+        if (rows.length == 0)
+          done();
+
+        var destroyedRows = 0;
+        for (var i= 0,len = rows.length;i<len;i++) {
+          rows[i].destroy()
+            .then(function(){
+              destroyedRows++;
+              if (destroyedRows == len)
+                done();
+            })
+            .catch(function(){
+              console.log('Error deleting row');
+              done();
+            });
+        }
+      })
+      .catch(function(err){
+        console.log('Error finding table');
+        done();
+      });
+  });
 };
