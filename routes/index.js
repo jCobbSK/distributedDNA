@@ -1,35 +1,31 @@
-var express = require('express');
-var auth = require('../custom/authentification');
-var router = express.Router();
+/**
+ * Sums top logic behind routing of API. It includes all routes files, binds
+ * them into express.Router with proper mapping.
+ *
+ * @module Router
+ */
 
-/* GET home page. */
+module.exports = function(app) {
 
-router.get('/', function(req, res) {
-  if (!req.user) {
-    res.render('index', { user: null });
-    return;
-  }
+  var routes = require('./main');
+  var users = require('./user');
 
-  if (req.user.isAdmin) {
-    res.redirect('/admin');
-    return;
-  }
+  var results = require('./results');
+  var settask = require('./settask');
+  var computeStart = require('./computestart');
+  var computing = require('./computing');
+  var admin = require('./admin');
+  var samples = require('./sample');
+  var patterns = require('./pattern');
 
-  if (req.user.isClient)
-    res.redirect('/results');
-  else
-    res.redirect('/computeStart');
-});
+  app.use('/', routes);
+  app.use('/admin', admin);
+  app.use('/users', users);
+  app.use('/results', results);
+  app.use('/settask', settask);
+  app.use('/computestart', computeStart);
+  app.use('/computing', computing);
+  app.use('/samples', samples);
+  app.use('/patterns', patterns);
 
-router.post('/login',
-  auth.authenticate()
-);
-
-router.get('/logout', function(req, res) {
-  var name = req.user.username;
-  console.log('LOGGING OUT '+ name);
-  req.logout();
-  res.redirect('/');
-});
-
-module.exports = router;
+}

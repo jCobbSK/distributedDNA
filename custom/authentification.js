@@ -1,6 +1,57 @@
-//custom middleware module for username+password auth with additional roles
+/**
+ * Custom middleware module for setting up authorization module and
+ * username+password auth with additional roles
+ *
+ * @module Authentification
+ */
 var passport = require('passport');
+var models = require('../models');
 module.exports = {
+
+  /**
+   * Initialize all authorization + authentification middlewares and dependencies
+   *
+   * @param {expressjs app instance} app
+   */
+  init: function(app) {
+    //authorization modules
+    var session = require('express-session');
+    var LocalStrategy = require('passport-local').Strategy;
+
+    app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    //PASSPORT authorization
+    passport.use(new LocalStrategy(
+      function(username, password, done) {
+        models.User.find({where:{username:username}}).then(function(user) {
+          if (!user) {
+            console.log('INCORRECT USERNAME');
+            return done(null, false, { message: 'Incorrect username.' });
+          }
+          if (user.password != password) {
+            console.log('INCORRECT PASSWORD',user.password,password);
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+          app.locals.user = user;
+          return done(null, user);
+        }).catch(function(err){
+          return done(err);
+        })
+      }
+    ));
+    passport.serializeUser(function(user,done){
+      console.log('serializing', user);
+      done(null,user);
+    });
+
+    passport.deserializeUser(function(obj,done){
+      console.log('deserialize', obj);
+      done(null, obj);
+    });
+  },
+
   authenticate : function() {
     return passport.authenticate('local', {
       successRedirect: '/',
@@ -11,7 +62,7 @@ module.exports = {
   /**
    * Our role based authentification function
    * @param roles
-   * @returns {Function}
+   * @returns {Middleware function}
    */
   roleAuthenticate: function(roles) {
     return function(req, res, next) {

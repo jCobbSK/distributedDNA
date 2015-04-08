@@ -1,27 +1,9 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
-var models = require('./models');
-
-//authorization modules
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
-var routes = require('./routes/index');
-var users = require('./routes/user');
-
-var results = require('./routes/results');
-var settask = require('./routes/settask');
-var computeStart = require('./routes/computestart');
-var computing = require('./routes/computing');
-var admin = require('./routes/admin');
-var samples = require('./routes/sample');
-var patterns = require('./routes/pattern');
 
 var app = express();
 
@@ -29,11 +11,10 @@ app.locals.title = 'DIPLOMOVKA';
 global.appRoot = path.resolve(__dirname);
 
 // view engine setup
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// app.use(favicon(__dirname + '/public/img/favicon.ico'));
+//setting default middlewares
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -43,20 +24,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(multer({dest: './tmpUploads/'}));
 
-app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
-app.use(passport.initialize());
-app.use(passport.session());
+//setting authentification module
+require('./custom/authentification').init(app);
 
-app.use('/', routes);
-app.use('/admin', admin);
-app.use('/users', users);
-app.use('/results', results);
-app.use('/settask', settask);
-app.use('/computestart', computeStart);
-app.use('/computing', computing);
-app.use('/samples', samples);
-app.use('/patterns', patterns);
-
+//setting all routes -> logic inside routes module
+require('./routes')(app);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -64,36 +36,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
-//PASSPORT authorization
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    models.User.find({where:{username:username}}).then(function(user) {
-      if (!user) {
-        console.log('INCORRECT USERNAME');
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (user.password != password) {
-        console.log('INCORRECT PASSWORD',user.password,password);
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      app.locals.user = user;
-      return done(null, user);
-    }).catch(function(err){
-      return done(err);
-    })
-  }
-));
-passport.serializeUser(function(user,done){
-  console.log('serializing', user);
-  done(null,user);
-});
-
-passport.deserializeUser(function(obj,done){
-  console.log('deserialize', obj);
-  done(null, obj);
-});
-
 
 /// error handlers
 
