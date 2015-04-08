@@ -11,8 +11,14 @@ router.get('/',auth.roleAuthenticate(['admin']), function(req, res) {
 });
 
 /* POST create user */
-router.post('/',auth.roleAuthenticate(['admin']), function(req, res) {
+router.post('/', function(req, res) {
   var params = req.body;
+
+  //client can be made only by admin
+  if (params.isClient && !req.user.isAdmin){
+    res.sendStatus(401);
+  }
+
   var user = models.User.build({
     username: params.username,
     password: params.password,

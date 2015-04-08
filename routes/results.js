@@ -79,7 +79,7 @@ router.get('/:id/download', function(req, res) {
         res.sendStatus(401);
       } else {
         var file = appRoot + '/samples/'+sample.dataPath;
-        res.download(file);
+        res.download('../samples/'+sample.dataPath);
       }
     })
 });

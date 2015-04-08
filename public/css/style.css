@@ -4,6 +4,9 @@ body {
 nav {
   padding: 0px 15px; }
 
+.center-text {
+  text-align: center; }
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg); }
