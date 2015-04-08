@@ -6,7 +6,11 @@
  *
  * @param {sockets.io object} socketsIO
  */
+
 var Node = require('./node');
+var _ = require('underscore');
+var reqHandler = require('./requestsHandler');
+
 module.exports = function(socketsIO) {
 
   /**
@@ -18,11 +22,21 @@ module.exports = function(socketsIO) {
     socketsIO.on('connection', function(socket){
       var node = registerNode(socket);
 
+      node.setOnUnregisterCallback(function(){
+        unregisterNode(node);
+      });
+
       //so we can handle disconnect
       socket.on('disconnect', function(){
         unregisterNode(node);
       });
+
+      socket.on('results', function(results){
+
+      });
     });
+
+    requestsHandler = reqHandler();
 
   })();
 
@@ -45,12 +59,12 @@ module.exports = function(socketsIO) {
    */
   var onUnregister = null;
 
+
   /**
-   * All requests which nodes are working on.
-   * @property pendingRequests
-   * @type {Array}
+   * Managing requests/responses
+   * @type {requestsHandler instance}
    */
-  var pendingRequests = [];
+  var requestsHandler = null;
 
   /**
    * Register node after initialize (socket connect)
@@ -82,14 +96,6 @@ module.exports = function(socketsIO) {
       nodes.splice(positionOfNode, 1);
   }
 
-  /**
-   * When any respond for request comes from node, this function handle it.
-   * @param data
-   */
-  var respondFromNode = function(data) {
-
-  }
-
   return {
     /**
      * Find registered node, if not found null is returned
@@ -97,7 +103,9 @@ module.exports = function(socketsIO) {
      * @return {node}
      */
     find: function(nodeId) {
-
+      return _.find(nodes, function(node){
+        return node.getId() == nodeId;
+      })
     },
 
     /**
@@ -106,7 +114,7 @@ module.exports = function(socketsIO) {
      * @return {node}
      */
     findBy: function(compareFunc) {
-
+      return _.find(nodes, compareFunc);
     },
 
     /**
@@ -114,7 +122,9 @@ module.exports = function(socketsIO) {
      * @return {node}
      */
     findFree: function() {
-
+      return _.find(nodes, function(node){
+        return node.getIsFree();
+      });
     },
 
     /**

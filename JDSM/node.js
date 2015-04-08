@@ -5,7 +5,6 @@
  * @module JDSM
  *
  * @param {socket.IO socket object} socket
- * @param {function} onUnregisterCallback -- because Node itself will check it's conne
  */
 module.exports = function(_socket) {
 
@@ -14,6 +13,8 @@ module.exports = function(_socket) {
    */
   (function init(){
     socket = _socket;
+    onUnregisterCallback = _onUnregisterCallback;
+    latencyUpdater();
   })();
 
   /**
@@ -56,6 +57,55 @@ module.exports = function(_socket) {
    */
   var averageUse = 0.0;
 
+  /**
+   * Set on init, that is time when Node is created.
+   * @type {date}
+   * @default actual timestamp
+   */
+  var connectedAt = Date.now();
+
+  /**
+   *
+   * @type {number}
+   */
+  var timeout = 10000;
+
+  /**
+   * Are we still waiting for ping response from client.
+   * @type {boolean}
+   */
+  var pendingPing = false;
+
+  /**
+   * Calculating latency of server,
+   */
+  var latencyUpdater = function() {
+    setInterval(function(){
+      if (pendingPing) {
+        //we havent got response for ping as long as timeout is set -> we are assuming node is
+        //disconnected
+        if (onUnregisterCallback)
+          onUnregisterCallback();
+      }
+      var startTime = Date.now();
+      socket.emit('ping');
+      pendingPing = true;
+      socket.on('ping', function(){
+        var latency = Date.now() - startTime;
+        averagePing = (averagePing + latency) / 2;
+        pendingPing = false;
+      })
+    }.call(this), timeout*1000);
+  }
+
+  /**
+   * If client crashes without socket emit disconnected we find out by pinging, and need to
+   * act on it.
+   *
+   * @type {function}
+   */
+  var onUnregisterCallback = null;
+
   return {
     /**
      * Determine latency and transaction speed of node to server.
@@ -68,12 +118,40 @@ module.exports = function(_socket) {
     /**
      * Actual communication with node.
      *
+     * @param {string} eventName
      * @param {string/JSON stringifyable object} data
-     * @param {string} msgId
      * @param {nodejs standardized callback} callback
      */
-    sendReq: function(data, msgId, callback) {
+    sendReq: function(eventName, data, callback) {
+      socket.emit(eventName, data);
+    },
 
+    /**
+     * Set timeout after which client doesn't respond on ping request, we declare it disconnected.
+     * @param {integer} timeInSec
+     */
+    setTimeout: function(timeInSec) {
+      timeout = timeInSec;
+    },
+
+    /**
+     * When client disconnects, we need to call it.
+     * @param {function} _callback
+     */
+    setOnUnregisterCallback: function(_callback) {
+      onUnregisterCallback = _callback;
+    },
+
+    /**
+     * Getter
+     * @returns {boolean}
+     */
+    getIsFree: function() {
+      return isFree;
+    },
+
+    getId: function() {
+      return id;
     }
   }
 }
