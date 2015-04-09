@@ -5,15 +5,17 @@
  * @module JDSM
  *
  * @param {socket.IO socket object} socket
+ * @param {Object} [options] init options object
+ * @param {function} [options.onUnregisterCallback] Callback triggered after node is declared disconnected
+ * @param {integer} [options.timeout] Timeout in ms after which node doesn't respond is declared disconnected
  */
-module.exports = function(_socket) {
+module.exports = function(_socket, options) {
 
   /**
    * @constructor
    */
   (function init(){
     socket = _socket;
-    onUnregisterCallback = _onUnregisterCallback;
     latencyUpdater();
   })();
 
@@ -65,10 +67,10 @@ module.exports = function(_socket) {
   var connectedAt = Date.now();
 
   /**
-   *
+   * Timeout in ms after which node doesn't respond is declared disconnected
    * @type {number}
    */
-  var timeout = 10000;
+  var timeout = options['timeout'] || 10000;
 
   /**
    * Are we still waiting for ping response from client.
@@ -104,7 +106,7 @@ module.exports = function(_socket) {
    *
    * @type {function}
    */
-  var onUnregisterCallback = null;
+  var onUnregisterCallback = options['onUnregisterCallback'] || null;
 
   return {
     /**

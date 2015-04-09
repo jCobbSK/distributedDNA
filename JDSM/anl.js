@@ -5,13 +5,17 @@
  * @module JDSM
  *
  * @param {sockets.io object} socketsIO
+ * @param {Object} [options] Data to initial set options
+ * @param {function(Node)} [options.onRegisterCallback] Callback triggered everytime new node is connected
+ * @param {function(Node)} [options.onUnregisterCallback] Callback triggered everytime node is disconnected
+ * @param {Integer} [options.nodeTimeout] Time in ms after which node doesn't respond is declared disconnected
  */
 
 var Node = require('./node');
 var _ = require('underscore');
 var reqHandler = require('./requestsHandler');
 
-module.exports = function(socketsIO) {
+module.exports = function(socketsIO, options) {
 
   /**
    * @constructor
@@ -36,8 +40,6 @@ module.exports = function(socketsIO) {
       });
     });
 
-    requestsHandler = reqHandler();
-
   })();
 
   /**
@@ -50,21 +52,23 @@ module.exports = function(socketsIO) {
   /**
    * Optional register callback
    * @type {function}
+   * @default callback from options || null
    */
-  var onRegister = null;
+  var onRegisterCallback = options['onRegisterCallback']  || null;
 
   /**
    * Optional unregister callback
    * @type {function}
+   * @default callback from options || null
    */
-  var onUnregister = null;
+  var onUnregisterCallback = options['onUnregisterCallback'] || null;
 
 
   /**
    * Managing requests/responses
    * @type {requestsHandler instance}
    */
-  var requestsHandler = null;
+  var requestsHandler = reqHandler();
 
   /**
    * Register node after initialize (socket connect)
@@ -76,8 +80,8 @@ module.exports = function(socketsIO) {
 
     nodes.push(newNode);
 
-    if (onRegister)
-      onRegister(newNode);
+    if (onRegisterCallback)
+      onRegisterCallback(newNode);
 
     return newNode;
   }
@@ -87,8 +91,8 @@ module.exports = function(socketsIO) {
    * @param {Node} node
    */
   var unregisterNode = function(node) {
-    if (onUnregister)
-      onUnregister(node);
+    if (onUnregisterCallback)
+      onUnregisterCallback(node);
 
     //remove node
     var positionOfNode = nodes.splice(nodes.indexOf(node));
@@ -168,8 +172,8 @@ module.exports = function(socketsIO) {
      * @param {function(node)} unregisterCallback
      */
     setCallbacks: function(registerCallback, unregisterCallback) {
-      onRegister = registerCallback;
-      onUnregister = unregisterCallback;
+      onRegisterCallback = registerCallback;
+      onUnregisterCallback = unregisterCallback;
     }
   }
 }

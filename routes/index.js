@@ -3,6 +3,7 @@
  * them into express.Router with proper mapping.
  *
  * @module Router
+ * @param {express application instance}
  */
 
 module.exports = function(app) {
