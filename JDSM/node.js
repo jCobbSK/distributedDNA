@@ -122,9 +122,8 @@ module.exports = function(_socket, options) {
      *
      * @param {string} eventName
      * @param {string/JSON stringifyable object} data
-     * @param {nodejs standardized callback} callback
      */
-    sendReq: function(eventName, data, callback) {
+    sendReq: function(eventName, data) {
       socket.emit(eventName, data);
     },
 
@@ -150,6 +149,10 @@ module.exports = function(_socket, options) {
      */
     getIsFree: function() {
       return isFree;
+    },
+
+    setIsFree: function(_isFree) {
+      isFree = _isFree;
     },
 
     getId: function() {

@@ -11,8 +11,10 @@
  * @param {Integer} [options.nodeTimeout] Time in ms after which node doesn't respond is declared disconnected
  */
 
-var Node = require('./node');
-var _ = require('underscore');
+var Node = require('./node'),
+    _ = require('underscore'),
+    Request = require('./request'),
+    MasterRequest = require('./masterRequest');
 
 module.exports = function(socketsIO, options) {
 
@@ -72,10 +74,10 @@ module.exports = function(socketsIO, options) {
 
   /**
    * Every request will increment this property -> every request will have unique id
-   * @property actualId
+   * @property requestIdFactory
    * @type {number}
    */
-  var actualId = 0;
+  var requestIdFactory = 1;
 
   /**
    * Register node after initialize (socket connect)
@@ -108,52 +110,94 @@ module.exports = function(socketsIO, options) {
   }
 
   /**
-   *
+   * All responses from sockets are going through this function, it finds request and call response
+   * method.
    * @param {response object} data
    */
   var handleResponse = function(data) {
+    var id = data['requestId'];
+    if (!data['id'])
+      throw new Error('Corrupted response from client, does not contain id');
+
+    var request = _.find(pendingRequests, function(request){
+      return request.getId() == id;
+    });
+
+    if (!request)
+      throw new Error('Not found request for response');
+
+    request.handleResponse(data);
+  }
+
+  /**
+   * Initialize master request.
+   * @param type - 'sync' or 'async'
+   * @param requests
+   * @param callback
+   * @returns {MasterRequest}
+   */
+  var createMasterRequest = function(type, requests, callback) {
+    var dependents = [];
+    var masterReq = new MasterRequest({
+      id: requestIdFactory++,
+      type: type,
+      callback: callback
+    });
+
+    _.each(requests, function(request){
+      dependents.push(
+        new Request({
+          id: requestIdFactory++,
+          node: request['node'] || findBestAvailable(),
+          requestData: request['requestData'],
+          masterRequest: masterReq
+        })
+      );
+    });
+
+    masterReq.setDependentRequests(dependents);
+    return masterReq;
+  }
+
+  /**
+   * Find registered node, if not found null is returned
+   * @param {number}node
+   * @return {node}
+   */
+  var find = function(nodeId) {
+    return _.find(nodes, function(node){
+      return node.getId() == nodeId;
+    })
+  }
+
+  /**
+   * Find registered node by specified function called on Node objects
+   * @param {function} compareFunc
+   * @return {node}
+   */
+  var findBy = function(compareFunc) {
+    return _.find(nodes, compareFunc);
+  }
+
+  /**
+   * Find free node based on basic criteria.
+   * @return {node}
+   */
+  var findFree = function() {
+    return _.find(nodes, function(node){
+      return node.getIsFree();
+    });
+  }
+
+  /**
+   * Find node with the least traffic, lowest latency and other criteria.
+   * @return {node}
+   */
+  var findBestAvailable = function() {
 
   }
 
   return {
-    /**
-     * Find registered node, if not found null is returned
-     * @param {number}node
-     * @return {node}
-     */
-    find: function(nodeId) {
-      return _.find(nodes, function(node){
-        return node.getId() == nodeId;
-      })
-    },
-
-    /**
-     * Find registered node by specified function called on Node objects
-     * @param {function} compareFunc
-     * @return {node}
-     */
-    findBy: function(compareFunc) {
-      return _.find(nodes, compareFunc);
-    },
-
-    /**
-     * Find free node based on basic criteria.
-     * @return {node}
-     */
-    findFree: function() {
-      return _.find(nodes, function(node){
-        return node.getIsFree();
-      });
-    },
-
-    /**
-     * Find node with the least traffic, lowest latency and other criteria.
-     * @return {node}
-     */
-    findBestAvailable: function() {
-
-    },
-
     /**
      * Send asynchronous requests, callback is called after all requests responded.
      * All requests are independent, callback is called with err and results where
@@ -165,7 +209,8 @@ module.exports = function(socketsIO, options) {
      * @param {nodejs standard callback} callback
      */
     sendAsyncRequest: function(requests, callback) {
-
+      var masterReq = createMasterRequest('async', requests, callback);
+      masterReq.run();
     },
 
     /**
@@ -180,7 +225,8 @@ module.exports = function(socketsIO, options) {
      * @param callback
      */
     sendSyncRequest: function(requests, callback) {
-
+      var masterReq = createMasterRequest('sync', requests, callback);
+      masterReq.run();
     },
 
     /**
@@ -191,6 +237,40 @@ module.exports = function(socketsIO, options) {
     setCallbacks: function(registerCallback, unregisterCallback) {
       onRegisterCallback = registerCallback;
       onUnregisterCallback = unregisterCallback;
+    },
+
+    /**
+     * Find registered node, if not found null is returned
+     * @param {number}node
+     * @return {node}
+     */
+    find: function(nodeId) {
+      return find(nodeId);
+    },
+
+    /**
+     * Find registered node by specified function called on Node objects
+     * @param {function} compareFunc
+     * @return {node}
+     */
+    findBy: function(compareFunc) {
+      return findBy(compareFunc);
+    },
+
+    /**
+     * Find free node based on basic criteria.
+     * @return {node}
+     */
+    findFree: function() {
+      return findFree();
+    },
+
+    /**
+     * Find node with the least traffic, lowest latency and other criteria.
+     * @return {node}
+     */
+    findBestAvailable: function() {
+      return findBestAvailable();
     }
   }
 }
