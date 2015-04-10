@@ -13,7 +13,6 @@
 
 var Node = require('./node');
 var _ = require('underscore');
-var reqHandler = require('./requestsHandler');
 
 module.exports = function(socketsIO, options) {
 
@@ -36,7 +35,7 @@ module.exports = function(socketsIO, options) {
       });
 
       socket.on('results', function(results){
-
+        handleResponse(results);
       });
     });
 
@@ -65,10 +64,18 @@ module.exports = function(socketsIO, options) {
 
 
   /**
-   * Managing requests/responses
-   * @type {requestsHandler instance}
+   * All requests which nodes are working on.
+   * @property pendingRequests
+   * @type {Array}
    */
-  var requestsHandler = reqHandler();
+  var pendingRequests = [];
+
+  /**
+   * Every request will increment this property -> every request will have unique id
+   * @property actualId
+   * @type {number}
+   */
+  var actualId = 0;
 
   /**
    * Register node after initialize (socket connect)
@@ -98,6 +105,14 @@ module.exports = function(socketsIO, options) {
     var positionOfNode = nodes.splice(nodes.indexOf(node));
     if (positionOfNode > 0)
       nodes.splice(positionOfNode, 1);
+  }
+
+  /**
+   *
+   * @param {response object} data
+   */
+  var handleResponse = function(data) {
+
   }
 
   return {
@@ -141,7 +156,8 @@ module.exports = function(socketsIO, options) {
 
     /**
      * Send asynchronous requests, callback is called after all requests responded.
-     * All requests are independent, that is why they are called asynchronous.
+     * All requests are independent, callback is called with err and results where
+     * results is array of responds for all requests.
      *
      * If object in data array doesn't have property node: with valid Node object,
      * it is provided automaticaly by findBestAvailable.
@@ -154,8 +170,9 @@ module.exports = function(socketsIO, options) {
 
     /**
      * Send synchrounous requests, callback is called after all requests responded,
-     * and they are called sequentially, first is called and respond is append to next
-     * request object into 'prerequisites' property and so forth.
+     * and they are called sequentially, first is called and respond is append to the next
+     * request object into 'prerequisites' property and so forth. Callback is
+     * called with err and results where results is respond for last request.
      *
      * If object in data array doesn't have property node: with valid Node object,
      * it is provided automaticaly by findBestAvailable.

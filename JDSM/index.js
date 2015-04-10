@@ -9,7 +9,7 @@
 module.exports = function(server) {
   var socketsIO = require('socket.io')(server);
 
-  var anl = require('./anl')(socketsIO);
+  var anl = require('./anl')(socketsIO, {});
 
   return anl;
 }
