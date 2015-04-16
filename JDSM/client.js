@@ -3,6 +3,7 @@
  * use.
  * @class Client
  * @module JDSM
+ * @constructor
  * @param {Url string} socketUrl - socket server address (default http://localhost:3000)
  */
 var socketIoClient = require('socket.io-client')
@@ -23,7 +24,10 @@ module.exports = function(socketUrl) {
    * Class passed to task callback. It's purpose is to strap system data from request
    * and put them back for respond so user can't mess it up.
    * @class RespondObject
-   * @for Client
+   * @for RespondObject
+   * @constructor
+   * @param {Object} serverData
+   * @param {socket.io-client Socket} socket
    */
   var RespondObject = function(serverData, socket) {
     /**

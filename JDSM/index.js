@@ -3,6 +3,7 @@
  *
  * @module JDSM
  *
+ * @constructor
  * @param {http's module Server object} server
  */
 

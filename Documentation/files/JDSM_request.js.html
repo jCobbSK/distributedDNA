@@ -89,7 +89,15 @@
 /**
  * Low level request object.
  * @class Request
- * @param options
+ *
+ * @constructor
+ * @param {Object} [options] Data to init options
+ * @param {Integer} [options.id] Required unique id
+ * @param {Node} [options.node] Required node to which request is sent
+ * @param {MasterRequest} [options.masterRequest] Master request where request belongs
+ * @param {Object} [options.requestData] Data which we want to send to node
+ * @param {String} [options.requestData.eventName] Event name, based on that, Node knows what to do
+ * @param {Object} [options.requestData.data] Additional data
  * @module JDSM
  */
 module.exports = function(options) {

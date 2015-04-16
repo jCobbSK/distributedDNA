@@ -6,4 +6,14 @@
  */
 module.exports = function(JDSM) {
 
+  return {
+    /**
+     * Start resolving sample.
+     * @method resolveSample
+     * @param {string} pathToFile Path to file with sample.
+     */
+    resolveSample: function(pathToFile) {
+
+    }
+  }
 }

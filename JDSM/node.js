@@ -4,6 +4,7 @@
  * @class Node
  * @module JDSM
  *
+ * @constructor
  * @param {socket.IO socket object} socket
  * @param {Object} [options] init options object
  * @param {function} [options.onUnregisterCallback] Callback triggered after node is declared disconnected

@@ -1,7 +1,12 @@
 /**
  * Class handling sync and async requests. It contains N requests.
  * @class MasterRequest
- * @param options
+ * @constructor
+ * @param {Object} [options] Data to initial set options
+ * @param {Integer} [options.id] Required property of ID, unique identifier
+ * @param {String} [options.type] Type of request, possible values are: 'async' or 'sync'
+ * @param {Array of Request} [options.dependentRequests] Array of low level requests for nodes
+ * @param {function} [options.callback] Callback after request is done based on type
  * @module JDSM
  */
 var _ = require('underscore');
