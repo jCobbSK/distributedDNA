@@ -1,0 +1,1292 @@
+{
+    "project": {
+        "name": "diplomka",
+        "description": "",
+        "version": "0.0.1",
+        "url": ""
+    },
+    "files": {
+        "JDSM\\anl.js": {
+            "name": "JDSM\\anl.js",
+            "modules": {
+                "JDSM": 1
+            },
+            "classes": {
+                "ANL": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\client.js": {
+            "name": "JDSM\\client.js",
+            "modules": {},
+            "classes": {
+                "Client": 1,
+                "RespondObject": 1
+            },
+            "fors": {
+                "Client": 1
+            },
+            "namespaces": {}
+        },
+        "JDSM\\index.js": {
+            "name": "JDSM\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\masterRequest.js": {
+            "name": "JDSM\\masterRequest.js",
+            "modules": {},
+            "classes": {
+                "MasterRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\node.js": {
+            "name": "JDSM\\node.js",
+            "modules": {},
+            "classes": {
+                "Node": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\request.js": {
+            "name": "JDSM\\request.js",
+            "modules": {},
+            "classes": {
+                "Request": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\index.js": {
+            "name": "DNAAnalysis\\index.js",
+            "modules": {
+                "DNAAnalysis": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "JDSM": {
+            "name": "JDSM",
+            "submodules": {},
+            "classes": {
+                "ANL": 1,
+                "Client": 1,
+                "RespondObject": 1,
+                "MasterRequest": 1,
+                "Node": 1,
+                "Request": 1
+            },
+            "fors": {
+                "Client": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "JDSM\\request.js",
+            "line": 1,
+            "description": "Class Active Node List (ANL)",
+            "params": [
+                {
+                    "name": "server",
+                    "description": "",
+                    "type": "Http's module Server object"
+                }
+            ]
+        },
+        "DNAAnalysis": {
+            "name": "DNAAnalysis",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "DNAAnalysis\\index.js",
+            "line": 1,
+            "description": "Module with implementation of JDSM for purpose of analysing DNA sequences.",
+            "params": [
+                {
+                    "name": "JDSM",
+                    "description": "",
+                    "type": "JDSM module instance"
+                }
+            ]
+        }
+    },
+    "classes": {
+        "ANL": {
+            "name": "ANL",
+            "shortname": "ANL",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "file": "JDSM\\anl.js",
+            "line": 1,
+            "description": "Class Active Node List (ANL)",
+            "params": [
+                {
+                    "name": "socketsIO",
+                    "description": "",
+                    "type": "sockets.io object"
+                },
+                {
+                    "name": "options",
+                    "description": "Data to initial set options",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "onRegisterCallback",
+                            "description": "Callback triggered everytime new node is connected",
+                            "type": "Function(Node)",
+                            "optional": true
+                        },
+                        {
+                            "name": "onUnregisterCallback",
+                            "description": "Callback triggered everytime node is disconnected",
+                            "type": "Function(Node)",
+                            "optional": true
+                        },
+                        {
+                            "name": "nodeTimeout",
+                            "description": "Time in ms after which node doesn't respond is declared disconnected",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Client": {
+            "name": "Client",
+            "shortname": "Client",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\client.js",
+            "line": 1,
+            "description": "Client class handling front-end interaction. It is required to browserify this module before\nuse.",
+            "params": [
+                {
+                    "name": "socketUrl",
+                    "description": "- socket server address (default http://localhost:3000)",
+                    "type": "Url string"
+                }
+            ]
+        },
+        "RespondObject": {
+            "name": "RespondObject",
+            "shortname": "RespondObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\client.js",
+            "line": 22,
+            "description": "Class passed to task callback. It's purpose is to strap system data from request\nand put them back for respond so user can't mess it up."
+        },
+        "MasterRequest": {
+            "name": "MasterRequest",
+            "shortname": "MasterRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\masterRequest.js",
+            "line": 1,
+            "description": "Class handling sync and async requests. It contains N requests.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": ""
+                }
+            ]
+        },
+        "Node": {
+            "name": "Node",
+            "shortname": "Node",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\node.js",
+            "line": 1,
+            "description": "Basic Node class, representing one connected user to system.",
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "socket.IO socket object"
+                },
+                {
+                    "name": "options",
+                    "description": "init options object",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "onUnregisterCallback",
+                            "description": "Callback triggered after node is declared disconnected",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "timeout",
+                            "description": "Timeout in ms after which node doesn't respond is declared disconnected",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Request": {
+            "name": "Request",
+            "shortname": "Request",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\request.js",
+            "line": 1,
+            "description": "Low level request object.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": ""
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "JDSM\\anl.js",
+            "line": 24,
+            "is_constructor": 1,
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 51,
+            "description": "List of active connected nodes",
+            "itemtype": "property",
+            "name": "nodes",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of Nodes} nodes",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 60,
+            "description": "Optional register callback",
+            "itemtype": "property",
+            "name": "onRegisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "default": "callback from options || null",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 69,
+            "description": "Optional unregister callback",
+            "itemtype": "property",
+            "name": "onUnregisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "default": "callback from options || null",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 79,
+            "description": "All requests which nodes are working on.",
+            "itemtype": "property",
+            "name": "pendingRequests",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array}",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 87,
+            "description": "Every request will increment this property -> every request will have unique id",
+            "itemtype": "property",
+            "name": "requestIdFactory",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 95,
+            "description": "Register node after initialize (socket connect)",
+            "itemtype": "method",
+            "name": "registerNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "Socket"
+                }
+            ],
+            "return": {
+                "description": "newNode",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 113,
+            "description": "Unregister node.",
+            "itemtype": "method",
+            "name": "unregisterNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Node"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 129,
+            "description": "All responses from sockets are going through this function, it finds request and call response\nmethod.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Response object"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 153,
+            "description": "Initialize master request.",
+            "itemtype": "method",
+            "name": "createMasterRequest",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "- 'sync' or 'async'"
+                },
+                {
+                    "name": "requests",
+                    "description": ""
+                },
+                {
+                    "name": "callback",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "MasterRequest"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 185,
+            "description": "Find registered node, if not found null is returned",
+            "itemtype": "method",
+            "name": "find",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 198,
+            "description": "Find registered node by specified function called on Node objects",
+            "itemtype": "method",
+            "name": "findBy",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "compareFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 209,
+            "description": "Find free node based on basic criteria.",
+            "itemtype": "method",
+            "name": "findFree",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 221,
+            "description": "Find node with the least traffic, lowest latency and other criteria.",
+            "itemtype": "method",
+            "name": "findBestAvailable",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 232,
+            "description": "Send asynchronous requests, callback is called after all requests responded.\nAll requests are independent, callback is called with err and results where\nresults is array of responds for all requests.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
+            "itemtype": "method",
+            "name": "sendAsyncRequest",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": "",
+                    "type": "Array of objects"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Nodejs standard callback"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 248,
+            "description": "Send synchrounous requests, callback is called after all requests responded,\nand they are called sequentially, first is called and respond is append to the next\nrequest object into 'prerequisites' property and so forth. Callback is\ncalled with err and results where results is respond for last request.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
+            "itemtype": "method",
+            "name": "sendSyncRequest",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": "",
+                    "type": "Array of objects"
+                },
+                {
+                    "name": "callback",
+                    "description": ""
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 265,
+            "description": "Setters for callbacks on connection/disconnection of nodes",
+            "itemtype": "method",
+            "name": "setCallbacks",
+            "params": [
+                {
+                    "name": "registerCallback",
+                    "description": "",
+                    "type": "Function(node)"
+                },
+                {
+                    "name": "unregisterCallback",
+                    "description": "",
+                    "type": "Function(node)"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 276,
+            "description": "Find registered node, if not found null is returned",
+            "itemtype": "method",
+            "name": "find",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 286,
+            "description": "Find registered node by specified function called on Node objects",
+            "itemtype": "method",
+            "name": "findBy",
+            "params": [
+                {
+                    "name": "compareFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 296,
+            "description": "Find free node based on basic criteria.",
+            "itemtype": "method",
+            "name": "findFree",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 305,
+            "description": "Find node with the least traffic, lowest latency and other criteria.",
+            "itemtype": "method",
+            "name": "findBestAvailable",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 10,
+            "description": "Default socket object for communication with server.",
+            "itemtype": "property",
+            "name": "socket",
+            "access": "private",
+            "tagname": "",
+            "type": "{socket.client.io io object}",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 29,
+            "itemtype": "property",
+            "name": "requestId",
+            "type": "Integer",
+            "access": "private",
+            "tagname": "",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 36,
+            "itemtype": "property",
+            "name": "masterRequestId",
+            "type": "Integer",
+            "access": "private",
+            "tagname": "",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 43,
+            "itemtype": "property",
+            "name": "socket",
+            "type": "{socket.io socket object}",
+            "access": "private",
+            "tagname": "",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 50,
+            "description": "Respond method used as middleware to set required ids of request.",
+            "itemtype": "method",
+            "name": "respond",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 64,
+            "description": "Browserify close scopes, so public method doesn't have access to privates, so\nwe need to set a property.",
+            "itemtype": "property",
+            "name": "socket",
+            "type": "{socket.io socket object}",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 72,
+            "description": "Register task based on eventName.",
+            "itemtype": "method",
+            "name": "registerTask",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function(string: eventName, function(data, respondObject)"
+                }
+            ],
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 13,
+            "description": "Unique id of masterRequest",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 21,
+            "description": "Type of request, possible values: 'async', 'sync'",
+            "itemtype": "property",
+            "name": "type",
+            "access": "private",
+            "tagname": "",
+            "default": "'async'",
+            "type": "{string}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 30,
+            "description": "Requests of master request. They are dealt properly based on type.",
+            "itemtype": "property",
+            "name": "dependentRequests",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of Request objects}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 38,
+            "description": "Callback function called after all dependentRequests are handled, based on type.",
+            "itemtype": "property",
+            "name": "callback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 46,
+            "description": "During synchronous request, if the response from some of the dependentRequests request is\npassed into next request, and after the last one is resolved, callback is called.",
+            "itemtype": "method",
+            "name": "handleSync",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "",
+                    "type": "Request object"
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 67,
+            "description": "During asynchronous request, callback is called after all dependent requests are resolved.",
+            "itemtype": "method",
+            "name": "handleAsync",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "",
+                    "type": "Request object"
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 94,
+            "description": "Handling response of child requests.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "params": [
+                {
+                    "name": "request",
+                    "description": ""
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 112,
+            "description": "Start request (send requests to nodes)",
+            "itemtype": "method",
+            "name": "run",
+            "params": [
+                {
+                    "name": "optional",
+                    "description": "callback overrided callback from constructor",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 134,
+            "description": "Getter of id",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 143,
+            "description": "Setter of dependent requests",
+            "itemtype": "method",
+            "name": "setDependentRequests",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": ""
+                }
+            ],
+            "type": "Array of Requests",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 17,
+            "description": "Start cyclic interval which measure latency of node.",
+            "itemtype": "method",
+            "name": "runLatencyUpdater",
+            "access": "private",
+            "tagname": "",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 41,
+            "description": "Default socket object, use for communication and identification of node.\nInitialize in constructor.",
+            "itemtype": "property",
+            "name": "socket",
+            "access": "private",
+            "tagname": "",
+            "type": "{socket.IO socket object}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 50,
+            "description": "Unique identifier.",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 58,
+            "description": "Is some pending request for this node.",
+            "itemtype": "property",
+            "name": "isFree",
+            "access": "private",
+            "tagname": "",
+            "type": "{boolean}",
+            "default": "false",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 67,
+            "description": "Average latency of node computed during all requests on node so far.",
+            "itemtype": "property",
+            "name": "averagePing",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 75,
+            "description": "Ratio of time with node with pending request (working) and all time\nconnected.",
+            "itemtype": "property",
+            "name": "averageUse",
+            "access": "private",
+            "tagname": "",
+            "type": "{float number}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 84,
+            "description": "Set on init, that is time when Node is created.",
+            "itemtype": "property",
+            "name": "connectedAt",
+            "access": "private",
+            "tagname": "",
+            "type": "{date}",
+            "default": "actual timestamp",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 93,
+            "description": "Timeout in ms after which node doesn't respond is declared disconnected",
+            "itemtype": "property",
+            "name": "timeout",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 101,
+            "description": "Are we still waiting for ping response from client.",
+            "itemtype": "property",
+            "name": "pendingPing",
+            "access": "private",
+            "tagname": "",
+            "type": "{boolean}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 109,
+            "description": "If client crashes without socket emit disconnected we find out by pinging, and need to\nact on it.",
+            "itemtype": "property",
+            "name": "onUnregisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 118,
+            "is_constructor": 1,
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 127,
+            "description": "Determine latency and transaction speed of node to server.",
+            "itemtype": "method",
+            "name": "ping",
+            "return": {
+                "description": "latency (ms) and bandwidth (kB/s)",
+                "type": "Object"
+            },
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 136,
+            "description": "Actual communication with node.",
+            "itemtype": "method",
+            "name": "sendReq",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "String/JSON stringifyable object"
+                }
+            ],
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 146,
+            "description": "Set timeout after which client doesn't respond on ping request, we declare it disconnected.",
+            "itemtype": "method",
+            "name": "setTimeout",
+            "params": [
+                {
+                    "name": "timeInSec",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 155,
+            "description": "When client disconnects, we need to call it.",
+            "itemtype": "method",
+            "name": "setOnUnregisterCallback",
+            "params": [
+                {
+                    "name": "_callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 164,
+            "description": "Getter",
+            "itemtype": "method",
+            "name": "getIsFree",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 173,
+            "description": "Setter",
+            "itemtype": "method",
+            "name": "setIsFree",
+            "params": [
+                {
+                    "name": "_isFree",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 182,
+            "description": "getter",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 13,
+            "description": "Self referencing property",
+            "itemtype": "property",
+            "name": "self",
+            "access": "private",
+            "tagname": "",
+            "type": "{Request class}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 21,
+            "description": "Unique id of request",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "required": 1,
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 30,
+            "description": "Node -> representing user",
+            "itemtype": "property",
+            "name": "node",
+            "access": "private",
+            "tagname": "",
+            "type": "{JDSM.node}",
+            "required": 1,
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 39,
+            "description": "Master request object.",
+            "itemtype": "property",
+            "name": "masterRequest",
+            "access": "private",
+            "tagname": "",
+            "type": "{JDSM.Request}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 47,
+            "description": "Response for the request from client node.",
+            "itemtype": "property",
+            "name": "response",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 55,
+            "description": "Object consists of 'eventName' and 'data'",
+            "itemtype": "property",
+            "name": "requestData",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object} json stringifyable object so it can be send to node",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 65,
+            "description": "Low level handling.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "params": [
+                {
+                    "name": "_response",
+                    "description": "Data object directly from client socket.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 78,
+            "description": "Send request to node for calculating.",
+            "itemtype": "method",
+            "name": "run",
+            "params": [
+                {
+                    "name": "_requestData",
+                    "description": "- object send to node (override Object provided to constructor),\n                               required attributes are eventName and data",
+                    "type": "Object"
+                },
+                {
+                    "name": "prerequisites",
+                    "description": "- object append to attribute 'prerequisites' of requestData",
+                    "type": "Object"
+                }
+            ],
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 100,
+            "description": "Basic getter",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 109,
+            "description": "Basic getter",
+            "itemtype": "method",
+            "name": "getResponse",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "Request",
+            "module": "JDSM"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\anl.js:153"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\masterRequest.js:134"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\node.js:164"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\node.js:182"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\request.js:100"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\request.js:109"
+        },
+        {
+            "message": "Missing item type",
+            "line": " JDSM\\anl.js:24"
+        },
+        {
+            "message": "Missing item type",
+            "line": " JDSM\\node.js:118"
+        }
+    ]
+}

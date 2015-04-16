@@ -1,5 +1,6 @@
 /**
- * Request object used for handling async and sync requests.
+ * Low level request object.
+ * @class Request
  * @param options
  * @module JDSM
  */
@@ -11,12 +12,16 @@ module.exports = function(options) {
 
   /**
    * Self referencing property
+   * @property self
+   * @private
    * @type {Request class}
    */
   var self = this;
 
   /**
    * Unique id of request
+   * @property id
+   * @private
    * @type {number}
    * @required
    */
@@ -24,6 +29,8 @@ module.exports = function(options) {
 
   /**
    * Node -> representing user
+   * @property node
+   * @private
    * @type {JDSM.node}
    * @required
    */
@@ -31,18 +38,24 @@ module.exports = function(options) {
 
   /**
    * Master request object.
+   * @property masterRequest
+   * @private
    * @type {JDSM.Request}
    */
   var masterRequest = options['masterRequest'] || null;
 
   /**
    * Response for the request from client node.
+   * @property response
+   * @private
    * @type {Object}
    */
   var response = null;
 
   /**
    * Object consists of 'eventName' and 'data'
+   * @property requestData
+   * @private
    * @type {Object} json stringifyable object so it can be send to node
    */
   var requestData = options['requestData'] || {};
@@ -51,6 +64,7 @@ module.exports = function(options) {
 
     /**
      * Low level handling.
+     * @method handleResponse
      * @param {Object} _response Data object directly from client socket.
      */
     handleResponse: function(_response) {
@@ -63,6 +77,7 @@ module.exports = function(options) {
 
     /**
      * Send request to node for calculating.
+     * @method run
      * @param {Object} _requestData - object send to node (override Object provided to constructor),
      *                                required attributes are eventName and data
      * @param {Object} prerequisites - object append to attribute 'prerequisites' of requestData
@@ -82,10 +97,20 @@ module.exports = function(options) {
       node.sendReq(requestData['eventName'], requestData['data']);
     },
 
+    /**
+     * Basic getter
+     * @method getId
+     * @returns {number}
+     */
     getId: function() {
       return id;
     },
 
+    /**
+     * Basic getter
+     * @method getResponse
+     * @returns {Object}
+     */
     getResponse: function() {
       return response;
     }

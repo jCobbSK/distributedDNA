@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JDSM\request.js - diplomka</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
+                                <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/Request.html">Request</a></li>
+                                <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
+                                <li><a href="../modules/JDSM.html">JDSM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: JDSM\request.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Low level request object.
+ * @class Request
+ * @param options
+ * @module JDSM
+ */
+module.exports = function(options) {
+  //if options doesn&#x27;t contains required params throw err
+  if (!options[&#x27;id&#x27;] || !options[&#x27;node&#x27;])
+    throw new Error(&#x27;Request can\&#x27;t be created without id and Node&#x27;);
+
+
+  /**
+   * Self referencing property
+   * @property self
+   * @private
+   * @type {Request class}
+   */
+  var self = this;
+
+  /**
+   * Unique id of request
+   * @property id
+   * @private
+   * @type {number}
+   * @required
+   */
+  var id = options[&#x27;id&#x27;];
+
+  /**
+   * Node -&gt; representing user
+   * @property node
+   * @private
+   * @type {JDSM.node}
+   * @required
+   */
+  var node = options[&#x27;node&#x27;];
+
+  /**
+   * Master request object.
+   * @property masterRequest
+   * @private
+   * @type {JDSM.Request}
+   */
+  var masterRequest = options[&#x27;masterRequest&#x27;] || null;
+
+  /**
+   * Response for the request from client node.
+   * @property response
+   * @private
+   * @type {Object}
+   */
+  var response = null;
+
+  /**
+   * Object consists of &#x27;eventName&#x27; and &#x27;data&#x27;
+   * @property requestData
+   * @private
+   * @type {Object} json stringifyable object so it can be send to node
+   */
+  var requestData = options[&#x27;requestData&#x27;] || {};
+
+  return {
+
+    /**
+     * Low level handling.
+     * @method handleResponse
+     * @param {Object} _response Data object directly from client socket.
+     */
+    handleResponse: function(_response) {
+      if (!masterRequest)
+        throw Error(&#x27;Can\&#x27;t handle response of request without mainRequest&#x27;);
+      response = _response;
+      node.setIsFree(true);
+      masterRequest.handleResponse(self);
+    },
+
+    /**
+     * Send request to node for calculating.
+     * @method run
+     * @param {Object} _requestData - object send to node (override Object provided to constructor),
+     *                                required attributes are eventName and data
+     * @param {Object} prerequisites - object append to attribute &#x27;prerequisites&#x27; of requestData
+     */
+    run: function(_requestData, prerequisites) {
+      if (!node)
+        throw new Error(&#x27;Not defined node in request&#x27;);
+
+      node.setIsFree(false);
+      requestData = _requestData || requestData;
+
+      if (prerequisites)
+        requestData[&#x27;data&#x27;][&#x27;prerequisites&#x27;] = prerequisites;
+
+      requestData[&#x27;requestId&#x27;] = id;
+      requestData[&#x27;masterRequestId&#x27;] = masterRequest.getId();
+      node.sendReq(requestData[&#x27;eventName&#x27;], requestData[&#x27;data&#x27;]);
+    },
+
+    /**
+     * Basic getter
+     * @method getId
+     * @returns {number}
+     */
+    getId: function() {
+      return id;
+    },
+
+    /**
+     * Basic getter
+     * @method getResponse
+     * @returns {Object}
+     */
+    getResponse: function() {
+      return response;
+    }
+  }
+}
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

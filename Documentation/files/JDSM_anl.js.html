@@ -1,3 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JDSM\anl.js - diplomka</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
+                                <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/Request.html">Request</a></li>
+                                <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
+                                <li><a href="../modules/JDSM.html">JDSM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: JDSM\anl.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
 /**
  * Class Active Node List (ANL)
  *
@@ -8,13 +96,13 @@
  * @param {Object} [options] Data to initial set options
  * @param {function(Node)} [options.onRegisterCallback] Callback triggered everytime new node is connected
  * @param {function(Node)} [options.onUnregisterCallback] Callback triggered everytime node is disconnected
- * @param {Integer} [options.nodeTimeout] Time in ms after which node doesn't respond is declared disconnected
+ * @param {Integer} [options.nodeTimeout] Time in ms after which node doesn&#x27;t respond is declared disconnected
  */
 
-var Node = require('./node'),
-    _ = require('underscore'),
-    Request = require('./request'),
-    MasterRequest = require('./masterRequest');
+var Node = require(&#x27;./node&#x27;),
+    _ = require(&#x27;underscore&#x27;),
+    Request = require(&#x27;./request&#x27;),
+    MasterRequest = require(&#x27;./masterRequest&#x27;);
 
 module.exports = function(socketsIO, options) {
 
@@ -27,7 +115,7 @@ module.exports = function(socketsIO, options) {
   (function init(){
 
     //set up socket.io callbacks
-    socketsIO.on('connection', function(socket){
+    socketsIO.on(&#x27;connection&#x27;, function(socket){
       var node = registerNode(socket);
 
       node.setOnUnregisterCallback(function(){
@@ -35,15 +123,15 @@ module.exports = function(socketsIO, options) {
       });
 
       //so we can handle disconnect
-      socket.on('disconnect', function(){
+      socket.on(&#x27;disconnect&#x27;, function(){
         unregisterNode(node);
       });
 
-      socket.on('results', function(results){
+      socket.on(&#x27;results&#x27;, function(results){
         handleResponse(results);
       });
 
-      socket.emit('pong', {requestId: 1, masterRequestId: 2,penis: 2, doublePenis:'Double'});
+      socket.emit(&#x27;pong&#x27;, {requestId: 1, masterRequestId: 2,penis: 2, doublePenis:&#x27;Double&#x27;});
     });
 
   })();
@@ -64,7 +152,7 @@ module.exports = function(socketsIO, options) {
    * @type {function}
    * @default callback from options || null
    */
-  var onRegisterCallback = options['onRegisterCallback']  || null;
+  var onRegisterCallback = options[&#x27;onRegisterCallback&#x27;]  || null;
 
   /**
    * Optional unregister callback
@@ -73,7 +161,7 @@ module.exports = function(socketsIO, options) {
    * @type {function}
    * @default callback from options || null
    */
-  var onUnregisterCallback = options['onUnregisterCallback'] || null;
+  var onUnregisterCallback = options[&#x27;onUnregisterCallback&#x27;] || null;
 
 
   /**
@@ -85,7 +173,7 @@ module.exports = function(socketsIO, options) {
   var pendingRequests = [];
 
   /**
-   * Every request will increment this property -> every request will have unique id
+   * Every request will increment this property -&gt; every request will have unique id
    * @property requestIdFactory
    * @private
    * @type {number}
@@ -122,7 +210,7 @@ module.exports = function(socketsIO, options) {
 
     //remove node
     var positionOfNode = nodes.splice(nodes.indexOf(node));
-    if (positionOfNode > 0)
+    if (positionOfNode &gt; 0)
       nodes.splice(positionOfNode, 1);
   }
 
@@ -135,17 +223,17 @@ module.exports = function(socketsIO, options) {
    */
   var handleResponse = function(data) {
     console.log(data);
-    var requestId = data['requestId'];
-    var masterRequestId = data['masterRequestId'];
+    var requestId = data[&#x27;requestId&#x27;];
+    var masterRequestId = data[&#x27;masterRequestId&#x27;];
     if (!requestId || !masterRequestId)
-      throw new Error('Corrupted response from client, does not contain requestId or masterRequestId');
+      throw new Error(&#x27;Corrupted response from client, does not contain requestId or masterRequestId&#x27;);
 
     var request = _.find(pendingRequests, function(request){
       return request.getId() == id;
     });
 
     if (!request)
-      throw new Error('Not found request for response');
+      throw new Error(&#x27;Not found request for response&#x27;);
 
     request.handleResponse(data);
   }
@@ -154,7 +242,7 @@ module.exports = function(socketsIO, options) {
    * Initialize master request.
    * @method createMasterRequest
    * @private
-   * @param type - 'sync' or 'async'
+   * @param type - &#x27;sync&#x27; or &#x27;async&#x27;
    * @param requests
    * @param callback
    * @returns {MasterRequest}
@@ -171,8 +259,8 @@ module.exports = function(socketsIO, options) {
       dependents.push(
         new Request({
           id: requestIdFactory++,
-          node: request['node'] || findBestAvailable(),
-          requestData: request['requestData'],
+          node: request[&#x27;node&#x27;] || findBestAvailable(),
+          requestData: request[&#x27;requestData&#x27;],
           masterRequest: masterReq
         })
       );
@@ -234,31 +322,31 @@ module.exports = function(socketsIO, options) {
      * All requests are independent, callback is called with err and results where
      * results is array of responds for all requests.
      *
-     * If object in data array doesn't have property node: with valid Node object,
+     * If object in data array doesn&#x27;t have property node: with valid Node object,
      * it is provided automaticaly by findBestAvailable.
      * @method sendAsyncRequest
      * @param {Array of objects} requests
      * @param {nodejs standard callback} callback
      */
     sendAsyncRequest: function(requests, callback) {
-      var masterReq = createMasterRequest('async', requests, callback);
+      var masterReq = createMasterRequest(&#x27;async&#x27;, requests, callback);
       masterReq.run();
     },
 
     /**
      * Send synchrounous requests, callback is called after all requests responded,
      * and they are called sequentially, first is called and respond is append to the next
-     * request object into 'prerequisites' property and so forth. Callback is
+     * request object into &#x27;prerequisites&#x27; property and so forth. Callback is
      * called with err and results where results is respond for last request.
      *
-     * If object in data array doesn't have property node: with valid Node object,
+     * If object in data array doesn&#x27;t have property node: with valid Node object,
      * it is provided automaticaly by findBestAvailable.
      * @method sendSyncRequest
      * @param {array of objects} requests
      * @param callback
      */
     sendSyncRequest: function(requests, callback) {
-      var masterReq = createMasterRequest('sync', requests, callback);
+      var masterReq = createMasterRequest(&#x27;sync&#x27;, requests, callback);
       masterReq.run();
     },
 
@@ -312,3 +400,21 @@ module.exports = function(socketsIO, options) {
     }
   }
 }
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

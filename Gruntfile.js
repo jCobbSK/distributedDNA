@@ -14,6 +14,9 @@ module.exports = function (grunt) {
   //task for generating client side JDSM module
   grunt.loadNpmTasks('grunt-browserify');
 
+  //task for generating documentation
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+
   var reloadPort = 35729, files;
 
   grunt.initConfig({
@@ -67,6 +70,10 @@ module.exports = function (grunt) {
         }
       },
 
+      /**
+       * Automatic compile client side modules into front-end javascript file which
+       * can be included into page
+       */
       clientSide: {
         files: ['DNAAnalysis/client.js', 'JDSM/client.js'],
         tasks: ['browserify'],
@@ -80,6 +87,19 @@ module.exports = function (grunt) {
       main: {
         src: 'DNAAnalysis/client.js',
         dest: 'public/components/JDSM/index.js'
+      }
+    },
+
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        options: {
+          paths: ['JDSM/', 'DNAAnalysis/'],
+          outdir: 'Documentation'
+        }
       }
     }
   });

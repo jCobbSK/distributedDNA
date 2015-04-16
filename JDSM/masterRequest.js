@@ -1,5 +1,6 @@
 /**
- *
+ * Class handling sync and async requests. It contains N requests.
+ * @class MasterRequest
  * @param options
  * @module JDSM
  */
@@ -11,24 +12,33 @@ module.exports = function(options) {
 
   /**
    * Unique id of masterRequest
+   * @property id
+   * @private
    * @type {number}
    */
   var id = options['id'] || -1;
 
   /**
    * Type of request, possible values: 'async', 'sync'
+   * @property type
+   * @private
    * @default 'async'
    * @type {string}
    */
   var type = options['type'] || 'async';
 
   /**
+   * Requests of master request. They are dealt properly based on type.
+   * @property dependentRequests
+   * @private
    * @type {Array of Request objects}
    */
   var dependentRequests = options['dependentRequests'] || [];
 
   /**
    * Callback function called after all dependentRequests are handled, based on type.
+   * @property callback
+   * @private
    * @type {function}
    */
   var callback = options['callback'] || null;
@@ -36,6 +46,8 @@ module.exports = function(options) {
   /**
    * During synchronous request, if the response from some of the dependentRequests request is
    * passed into next request, and after the last one is resolved, callback is called.
+   * @method handleSync
+   * @private
    * @param {Request object} request
    */
   var handleSync = function(request) {
@@ -54,6 +66,8 @@ module.exports = function(options) {
 
   /**
    * During asynchronous request, callback is called after all dependent requests are resolved.
+   * @method handleAsync
+   * @private
    * @param {Request object} request
    */
   var handleAsync = function(request) {
@@ -79,6 +93,7 @@ module.exports = function(options) {
   return {
     /**
      * Handling response of child requests.
+     * @method handleResponse
      * @param request
      */
     handleResponse: function(request) {
@@ -96,6 +111,7 @@ module.exports = function(options) {
 
     /**
      * Start request (send requests to nodes)
+     * @method run
      * @param {function} [optional] callback overrided callback from constructor
      */
     run: function(_callback) {
@@ -115,10 +131,21 @@ module.exports = function(options) {
       }
     },
 
+    /**
+     * Getter of id
+     * @method getId
+     * @returns {number}
+     */
     getId: function() {
       return id;
     },
 
+    /**
+     * Setter of dependent requests
+     * @method setDependentRequests
+     * @param requests
+     * @type Array of Requests
+     */
     setDependentRequests: function(requests) {
       dependentRequests = requests;
     }
