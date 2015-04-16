@@ -11,13 +11,30 @@
  */
 module.exports = function(_socket, options) {
 
+  if (!options)
+    options = {};
+
   /**
-   * @constructor
+   * Calculating latency of server,
    */
-  (function init(){
-    socket = _socket;
-    latencyUpdater();
-  })();
+  var latencyUpdater = function() {
+    setInterval(function(){
+      if (pendingPing) {
+        //we havent got response for ping as long as timeout is set -> we are assuming node is
+        //disconnected
+        if (onUnregisterCallback)
+          onUnregisterCallback();
+      }
+      var startTime = Date.now();
+      socket.emit('ping');
+      pendingPing = true;
+      socket.on('ping', function(){
+        var latency = Date.now() - startTime;
+        averagePing = (averagePing + latency) / 2;
+        pendingPing = false;
+      })
+    }, timeout);
+  };
 
   /**
    * Default socket object, use for communication and identification of node.
@@ -79,34 +96,20 @@ module.exports = function(_socket, options) {
   var pendingPing = false;
 
   /**
-   * Calculating latency of server,
-   */
-  var latencyUpdater = function() {
-    setInterval(function(){
-      if (pendingPing) {
-        //we havent got response for ping as long as timeout is set -> we are assuming node is
-        //disconnected
-        if (onUnregisterCallback)
-          onUnregisterCallback();
-      }
-      var startTime = Date.now();
-      socket.emit('ping');
-      pendingPing = true;
-      socket.on('ping', function(){
-        var latency = Date.now() - startTime;
-        averagePing = (averagePing + latency) / 2;
-        pendingPing = false;
-      })
-    }.call(this), timeout*1000);
-  }
-
-  /**
    * If client crashes without socket emit disconnected we find out by pinging, and need to
    * act on it.
    *
    * @type {function}
    */
   var onUnregisterCallback = options['onUnregisterCallback'] || null;
+
+  /**
+   * @constructor
+   */
+  (function init(){
+    socket = _socket;
+    latencyUpdater();
+  })();
 
   return {
     /**

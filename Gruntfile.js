@@ -11,6 +11,9 @@ module.exports = function (grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
+  //task for generating client side JDSM module
+  grunt.loadNpmTasks('grunt-browserify');
+
   var reloadPort = 35729, files;
 
   grunt.initConfig({
@@ -62,6 +65,21 @@ module.exports = function (grunt) {
         options: {
           livereload: reloadPort
         }
+      },
+
+      clientSide: {
+        files: ['DNAAnalysis/client.js', 'JDSM/client.js'],
+        tasks: ['browserify'],
+        options: {
+          livereload: reloadPort
+        }
+      }
+    },
+
+    browserify: {
+      main: {
+        src: 'DNAAnalysis/client.js',
+        dest: 'public/components/JDSM/index.js'
       }
     }
   });
@@ -88,6 +106,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'sass',
     'develop',
+    'browserify',
     'watch'
   ]);
 

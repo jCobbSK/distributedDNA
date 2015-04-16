@@ -18,6 +18,9 @@ var Node = require('./node'),
 
 module.exports = function(socketsIO, options) {
 
+  if (!options)
+    options = {};
+
   /**
    * @constructor
    */
@@ -39,6 +42,8 @@ module.exports = function(socketsIO, options) {
       socket.on('results', function(results){
         handleResponse(results);
       });
+
+      socket.emit('pong', {requestId: 1, masterRequestId: 2,penis: 2, doublePenis:'Double'});
     });
 
   })();
@@ -115,9 +120,11 @@ module.exports = function(socketsIO, options) {
    * @param {response object} data
    */
   var handleResponse = function(data) {
-    var id = data['requestId'];
-    if (!data['id'])
-      throw new Error('Corrupted response from client, does not contain id');
+    console.log(data);
+    var requestId = data['requestId'];
+    var masterRequestId = data['masterRequestId'];
+    if (!requestId || !masterRequestId)
+      throw new Error('Corrupted response from client, does not contain requestId or masterRequestId');
 
     var request = _.find(pendingRequests, function(request){
       return request.getId() == id;
@@ -194,7 +201,7 @@ module.exports = function(socketsIO, options) {
    * @return {node}
    */
   var findBestAvailable = function() {
-
+    //TODO
   }
 
   return {

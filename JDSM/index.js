@@ -9,6 +9,10 @@
 module.exports = function(server) {
   var socketsIO = require('socket.io')(server);
 
+  socketsIO.on('connection', function(socket){
+    console.log('Somebody CONNECTED');
+  });
+
   var anl = require('./anl')(socketsIO, {});
 
   return anl;
