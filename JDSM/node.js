@@ -66,7 +66,7 @@ module.exports = function(_socket, options) {
   /**
    * Connection bandwidth calculated and set by bandwidthAndPerformanceUpdater
    * @property bandwidth
-   * @type {Integer}
+   * @type {Float}
    * @private
    */
   var bandwidth = 0;
@@ -127,7 +127,7 @@ module.exports = function(_socket, options) {
       /**
        * Add latency from request.
        * @method addLatency
-       * @param {integer} latency
+       * @param {Float} latency
        */
       addLatency: function(latency) {
         sumOfLatencies += latency;
@@ -141,7 +141,7 @@ module.exports = function(_socket, options) {
    * connected.
    * @property averageUse
    * @private
-   * @type {float number}
+   * @type {Float}
    */
   var averageUse = 0.0;
 
