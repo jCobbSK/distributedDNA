@@ -116,8 +116,13 @@ module.exports = function(socketsIO, options) {
    * @param {Node} node
    */
   var unregisterNode = function(node) {
-    if (onUnregisterCallback)
-      onUnregisterCallback(node);
+    if (onUnregisterCallback) {
+      //to unregister callback we pass all pending request which have to be redistributed
+      var pendingRequestsForNode = _.filter(nodes, function(request){
+        request.node == node;
+      });
+      onUnregisterCallback(node, pendingRequestsForNode);
+    }
 
     //remove node
     var positionOfNode = nodes.splice(nodes.indexOf(node));
@@ -267,7 +272,7 @@ module.exports = function(socketsIO, options) {
      * Setters for callbacks on connection/disconnection of nodes
      * @method setCallbacks
      * @param {function(node)} registerCallback
-     * @param {function(node)} unregisterCallback
+     * @param {function(node, pendingRequests)} unregisterCallback
      */
     setCallbacks: function(registerCallback, unregisterCallback) {
       onRegisterCallback = registerCallback;
