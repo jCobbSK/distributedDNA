@@ -6,7 +6,8 @@
  * @constructor
  * @param {Url string} socketUrl - socket server address (default http://localhost:3000)
  */
-var socketIoClient = require('socket.io-client')
+var socketIoClient = require('socket.io-client'),
+  randomString = require('randomstring');
 module.exports = function(socketUrl) {
   /**
    * Default socket object for communication with server.
@@ -16,8 +17,32 @@ module.exports = function(socketUrl) {
    */
   var socket = socketIoClient((socketUrl) ? socketUrl : 'http://localhost:3000');
 
-  socket.on('ping', function(){
-    socket.emit('ping');
+  /**
+   * Ping client handler.
+   */
+  socket.on('ping', function(data){
+    socket.emit('ping', data);
+  });
+
+  /**
+   * Benchmark client handler.
+   */
+  socket.on('benchmark', function(data){
+    var received = Date.now();
+    //do benchmark tests on data
+    var dataString = data['randomString'];
+    for (var i= 0, len = 1000; i<len; i++) {
+      //generate regexp string
+      var regExp = new RegExp(randomString.generate(25));
+      regExp.test(dataString);
+    }
+    var calculationsDone = Date.now();
+    socket.emit('benchmark', {
+      data: data['randomString'],
+      sendTimestamp: data['sendTimestamp'],
+      receivedTimestamp: received,
+      calculationsDoneTimestamp: calculationsDone
+    });
   });
 
   /**

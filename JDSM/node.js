@@ -10,6 +10,7 @@
  * @param {function} [options.onUnregisterCallback] Callback triggered after node is declared disconnected
  * @param {integer} [options.timeout] Timeout in ms after which node doesn't respond is declared disconnected
  */
+var randomstring = require('randomstring');
 module.exports = function(_socket, options) {
 
   if (!options)
@@ -28,16 +29,56 @@ module.exports = function(_socket, options) {
         if (onUnregisterCallback)
           onUnregisterCallback();
       }
-      var startTime = Date.now();
-      socket.emit('ping');
+
+      socket.emit('ping', Date.now());
       pendingPing = true;
-      socket.on('ping', function(){
-        var latency = Date.now() - startTime;
-        averagePing = (averagePing + latency) / 2;
+      socket.on('ping', function(data){
+        var latency = Date.now() - data;
+        PingHandler.addLatency(latency);
+        console.log('Latency: ',PingHandler.getAverageLatency(),'ms');
         pendingPing = false;
       })
     }, timeout);
   };
+
+  /**
+   * Calculate bandwidth and performance of node. It send 1MB of random string, node after receive
+   * mark timestamp, perform benchmark calculations on it, mark timestamp and send everything back.
+   * @method bandwidthAndPerformanceUpdater
+   * @private
+   */
+  var bandwidthAndPerformanceUpdater = function() {
+    //generate data
+    var data = {
+      randomString: randomstring.generate(50000),
+      sendTimestamp: Date.now()
+    };
+    socket.emit('benchmark', data);
+    socket.on('benchmark', function(data){
+      var downloadTime = data['receivedTimestamp'] - data['sendTimestamp'];
+      var uploadTime = Date.now() - data['sendTimestamp'];
+      var calculationTime = data['calculationsDoneTimestamp'] - data['receivedTimestamp'];
+      bandwidth = (downloadTime + uploadTime) / 2;
+      performance = calculationTime;
+    });
+  }
+
+  /**
+   * Connection bandwidth calculated and set by bandwidthAndPerformanceUpdater
+   * @property bandwidth
+   * @type {Integer}
+   * @private
+   */
+  var bandwidth = 0;
+
+  /**
+   * Performance index calculated and set by bandwidthAndPerformanceUpdater. Higher means longer
+   * calculation time -> higher is worse.
+   * @property performance
+   * @type {Integer}
+   * @private
+   */
+  var performance = 0;
 
   /**
    * Default socket object, use for communication and identification of node.
@@ -45,6 +86,7 @@ module.exports = function(_socket, options) {
    * @property socket
    * @private
    * @type {socket.IO socket object}
+   * @required
    */
   var socket = null;
 
@@ -66,12 +108,33 @@ module.exports = function(_socket, options) {
   var isFree = false;
 
   /**
-   * Average latency of node computed during all requests on node so far.
-   * @property averagePing
-   * @private
-   * @type {number}
+   * Self-Invoked Class for handling ping measurements. Get actual average ping with getAveragePing() method.
+   * @class PingHandler
+   * @for PingHandler
    */
-  var averagePing = 0;
+  var PingHandler = (function() {
+    var sumOfLatencies = 0;
+    var numberOfMeasurements = 0;
+    return {
+      /**
+       * Get average latency based on all available ping requests.
+       * @method getAverageLatency
+       * @returns {integer}
+       */
+      getAverageLatency: function() {
+        return sumOfLatencies / numberOfMeasurements;
+      },
+      /**
+       * Add latency from request.
+       * @method addLatency
+       * @param {integer} latency
+       */
+      addLatency: function(latency) {
+        sumOfLatencies += latency;
+        numberOfMeasurements++;
+      }
+    }
+  })();
 
   /**
    * Ratio of time with node with pending request (working) and all time
@@ -121,16 +184,18 @@ module.exports = function(_socket, options) {
    */
   (function init(){
     socket = _socket;
+    console.log('Node constructor');
     runLatencyUpdater();
+    bandwidthAndPerformanceUpdater();
   })();
 
   return {
     /**
      * Determine latency and transaction speed of node to server.
-     * @method ping
-     * @return {Object} latency (ms) and bandwidth (kB/s)
+     * @method getPing
+     * @return {Integer} latency in (ms)
      */
-    ping: function() {
+    getPing: function() {
 
     },
 

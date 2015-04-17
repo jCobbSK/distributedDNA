@@ -43,8 +43,6 @@ module.exports = function(socketsIO, options) {
       socket.on('results', function(results){
         handleResponse(results);
       });
-
-      socket.emit('pong', {requestId: 1, masterRequestId: 2,penis: 2, doublePenis:'Double'});
     });
 
   })();
