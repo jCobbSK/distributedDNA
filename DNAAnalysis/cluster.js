@@ -9,7 +9,7 @@
  * @param {integer} [options.id] Unique id of cluster
  * @param {integer} [options.sequenceStart] Start of cluster
  * @param {integer} [options.sequenceEnd] End of cluster
- * @param {Array of Pattern} [options.patterns] Array of Pattern objects
+ * @param {Array of models.Pattern} [options.patterns] Array of Pattern objects
  */
 module.exports = function(options) {
   if (!options)
@@ -55,7 +55,7 @@ module.exports = function(options) {
    * Patterns in cluster.
    * @property patterns
    * @private
-   * @type {Array of Pattern}
+   * @type {Array of models.Pattern}
    */
   var patterns = options['patterns'] || [];
 
@@ -87,14 +87,14 @@ module.exports = function(options) {
     /**
      * Add pattern to cluster, sequenceStart and sequenceEnd will expand if neccessery.
      * @method addPattern
-     * @param {Pattern} pattern
+     * @param {models.Pattern} pattern
      */
     addPattern: function(pattern) {
-      if (sequenceStart > pattern.start)
-        sequenceStart = pattern.start;
+      if (sequenceStart > pattern.sequenceStart)
+        sequenceStart = pattern.sequenceStart;
 
-      if (sequenceEnd < pattern.end)
-        sequenceEnd = pattern.end;
+      if (sequenceEnd < pattern.sequenceEnd)
+        sequenceEnd = pattern.sequenceEnd;
 
       patterns.push(pattern);
     }
