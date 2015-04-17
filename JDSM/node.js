@@ -122,12 +122,12 @@ module.exports = function(_socket, options) {
        * @returns {integer}
        */
       getAverageLatency: function() {
-        return sumOfLatencies / numberOfMeasurements;
+        return Math.ceil(sumOfLatencies / numberOfMeasurements);
       },
       /**
        * Add latency from request.
        * @method addLatency
-       * @param {Float} latency
+       * @param {Integer} latency
        */
       addLatency: function(latency) {
         sumOfLatencies += latency;
@@ -137,13 +137,11 @@ module.exports = function(_socket, options) {
   })();
 
   /**
-   * Ratio of time with node with pending request (working) and all time
-   * connected.
-   * @property averageUse
-   * @private
-   * @type {Float}
+   * Number of requests called since connected. Used in getAverageUse method
+   * @property numberOfRequests
+   * @type {Integer}
    */
-  var averageUse = 0.0;
+  var numberOfRequests = 0;
 
   /**
    * Set on init, that is time when Node is created.
@@ -191,12 +189,21 @@ module.exports = function(_socket, options) {
 
   return {
     /**
-     * Determine latency and transaction speed of node to server.
+     * Get average latency of node.
      * @method getPing
      * @return {Integer} latency in (ms)
      */
     getPing: function() {
+      return PingHandler.getAverageLatency();
+    },
 
+    /**
+     * Average number of requests per minute.
+     * @method getAverageUse
+     * @return {integer}
+     */
+    getAverageUse: function() {
+      return Math.ceil(numberOfRequests / ((Date.now() - connectedAt)/60000));
     },
 
     /**
@@ -206,6 +213,7 @@ module.exports = function(_socket, options) {
      * @param {string/JSON stringifyable object} data
      */
     sendReq: function(eventName, data) {
+      numberOfRequests++;
       socket.emit(eventName, data);
     },
 
