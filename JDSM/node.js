@@ -182,7 +182,6 @@ module.exports = function(_socket, options) {
    */
   (function init(){
     socket = _socket;
-    console.log('Node constructor');
     runLatencyUpdater();
     bandwidthAndPerformanceUpdater();
   })();
@@ -204,6 +203,16 @@ module.exports = function(_socket, options) {
      */
     getAverageUse: function() {
       return Math.ceil(numberOfRequests / ((Date.now() - connectedAt)/60000));
+    },
+
+    /**
+     * Index which indicates likeliness to choose this node for request.
+     * It considers latency and usage of node.
+     * @method availabilityIndex
+     * @return {float}
+     */
+    availabilityIndex: function() {
+      return (this.getPing()/10)*this.getAverageUse();
     },
 
     /**

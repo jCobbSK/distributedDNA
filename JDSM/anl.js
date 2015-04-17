@@ -224,7 +224,9 @@ module.exports = function(socketsIO, options) {
    * @return {node}
    */
   var findBestAvailable = function() {
-    //TODO
+    return _.min(nodes, function(obj){
+      return obj.availabilityIndex();
+    });
   }
 
   return {
