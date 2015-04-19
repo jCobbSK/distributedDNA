@@ -179,6 +179,7 @@ module.exports = function(options) {
     /**
      * Merge neighbour clusters to eliminate small
      * @method finalizeClustering
+     * @private
      */
     finalizeClustering: function() {
 
