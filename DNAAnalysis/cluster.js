@@ -9,7 +9,6 @@
  * @param {integer} [options.id] Unique id of cluster
  * @param {integer} [options.sequenceStart] Start of cluster
  * @param {integer} [options.sequenceEnd] End of cluster
- * @param {Array of models.Pattern} [options.patterns] Array of Pattern objects
  */
 module.exports = function(options) {
   if (!options)
@@ -31,7 +30,7 @@ module.exports = function(options) {
    * @default 1
    * @private
    */
-  var chromosome = options['chromosome'] || 1;
+  var chromosome = options['chromosome'] || -1;
 
   /**
    * Start index of cluster
@@ -40,7 +39,7 @@ module.exports = function(options) {
    * @default 0
    * @private
    */
-  var sequenceStart = options['sequenceStart'] || 0;
+  var sequenceStart = options['sequenceStart'] || -1;
 
   /**
    * End index of cluster
@@ -49,7 +48,7 @@ module.exports = function(options) {
    * @default 100000
    * @private
    */
-  var sequenceEnd = options['sequenceEnd'] || 100000;
+  var sequenceEnd = options['sequenceEnd'] || -1;
 
   /**
    * Patterns in cluster.
@@ -57,7 +56,7 @@ module.exports = function(options) {
    * @private
    * @type {Array of models.Pattern}
    */
-  var patterns = options['patterns'] || [];
+  var patterns = [];
 
   return {
 
@@ -88,15 +87,108 @@ module.exports = function(options) {
      * Add pattern to cluster, sequenceStart and sequenceEnd will expand if neccessery.
      * @method addPattern
      * @param {models.Pattern} pattern
+     * @throws {Error}
      */
     addPattern: function(pattern) {
-      if (sequenceStart > pattern.sequenceStart)
+
+      if(chromosome == -1)
+        chromosome = pattern.chromosome;
+      else if (chromosome != pattern.chromosome)
+        throw new Error('Can\'t add pattern to cluster with different chromosome number');
+
+      if (sequenceStart == -1)
+        sequenceStart = pattern.sequenceStart;
+      else if (sequenceStart > pattern.sequenceStart)
         sequenceStart = pattern.sequenceStart;
 
-      if (sequenceEnd < pattern.sequenceEnd)
+      if (sequenceEnd == -1)
+        sequenceEnd = pattern.sequenceEnd
+      else if (sequenceEnd < pattern.sequenceEnd)
         sequenceEnd = pattern.sequenceEnd;
 
       patterns.push(pattern);
+    },
+
+    /**
+     * Get sequence bounds if pattern is added to cluster.
+     * @method simulateAddPattern
+     * @param pattern
+     * @return {Object} sequenceStart, sequenceEnd, sequenceLength
+     */
+    simulateAddPattern: function(pattern) {
+      var seqStart = sequenceStart;
+      var seqEnd = sequenceEnd;
+      if (seqStart == -1)
+        seqStart = pattern.sequenceStart;
+      else if(seqStart > pattern.sequenceStart)
+        seqStart = pattern.sequenceStart;
+
+      if(seqEnd == -1)
+        seqEnd = pattern.sequenceEnd;
+      else if (seqEnd < pattern.sequenceEnd)
+        seqEnd = pattern.sequenceEnd;
+
+      return {
+        'sequenceStart': seqStart,
+        'sequenceEnd': seqEnd,
+        'sequenceLength': seqEnd - seqStart
+      }
+    },
+
+    /**
+     * Getter of chromosome number
+     * @method getChromosome
+     * @returns {integer}
+     */
+    getChromosome: function() {
+      return chromosome;
+    },
+
+    /**
+     * Getter of sequence start
+     * @method getSequenceStart
+     * @returns {integer}
+     */
+    getSequenceStart: function() {
+      return sequenceStart;
+    },
+
+    /**
+     * Getter of sequence end
+     * @method getSequenceEnd
+     * @returns {integer}
+     */
+    getSequenceEnd: function() {
+      return sequenceEnd;
+    },
+
+    /**
+     * Get sequence length.
+     * @nethod getSequenceLength
+     * @returns {integer}
+     */
+    getSequenceLength: function() {
+      return sequenceEnd - sequenceStart;
+    },
+
+    /**
+     * Get all patterns of this cluster.
+     * @method getPatterns
+     * @returns {Array of Pattern}
+     */
+    getPatterns: function() {
+      return patterns;
+    },
+
+    /**
+     * Get all properties, used during testing.
+     * @method toString
+     * @return {String}
+     */
+    toString: function() {
+      return 'Id:'+id+';Chromosome:'+chromosome
+             + ';SequenceStart:'+sequenceStart+';SequenceEnd:'+sequenceEnd
+             + ';PatternsLength:'+patterns.length;
     }
   }
 }

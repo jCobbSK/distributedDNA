@@ -13,7 +13,6 @@ describe('JDSM', function(){
             return true;
           return false;
         })
-        console.log(res);
       })
     })
   })
