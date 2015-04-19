@@ -87,8 +87,13 @@ module.exports = function(options) {
       chromosome: cluster1.getChromosome()
     });
 
-    result.addPatterns(cluster1.getPatterns());
-    result.addPatterns(cluster2.getPatterns());
+    _.each(cluster1.getPatterns(), function(pattern){
+      result.addPattern(pattern);
+    });
+
+    _.each(cluster2.getPatterns(), function(pattern){
+      result.addPattern(pattern);
+    });
     return result;
   }
 
@@ -165,17 +170,45 @@ module.exports = function(options) {
      * @param {Array of Pattern} patterns
      */
     addPatterns: function(patterns) {
+      var self = this;
       _.each(patterns, function(element, index, list){
-        this.addPattern(element);
+        self.addPattern(element);
       });
     },
 
     /**
-     * TODO merge neighbour clusters to eliminate small
+     * Merge neighbour clusters to eliminate small
      * @method finalizeClustering
      */
     finalizeClustering: function() {
 
+      for (var chromosomeIndex = 0, len = clusters.length; chromosomeIndex < len; chromosomeIndex++) {
+        //sort clusters
+        clusters[chromosomeIndex].sort(function(c1, c2){
+          return c1.getSequenceStart() - c2.getSequenceStart();
+        });
+
+        var newArray = [];
+        //check for merge
+        var clustersArray = clusters[chromosomeIndex];
+        if (clustersArray.length > 1) {
+          for (var i = 1, ilen = clustersArray.length; i < ilen; i++) {
+            //if neighbour clusters collide and merged are smaller than idealSequenceLength -> merge them
+            if (clustersArray[i].getSequenceStart() < clustersArray[i-1].getSequenceEnd() &&
+                clustersArray[i].getSequenceEnd() - clustersArray[i-1].getSequenceStart() < idealSequenceLength) {
+              var mergedCluster = mergeClusters(clustersArray[i-1], clustersArray[i]);
+              clustersArray[i] = mergedCluster;
+              newArray.push(mergedCluster);
+            } else {
+              if (i==1)
+                newArray.push(clustersArray[0]);
+              newArray.push(clustersArray[i]);
+            }
+          }
+          clusters[chromosomeIndex] = newArray;
+        }
+
+      }
     },
 
     /**

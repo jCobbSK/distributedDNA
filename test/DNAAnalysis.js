@@ -180,12 +180,59 @@ describe('DNAAnalysisModule', function(){
 
     })
 
-    describe('#addPatterns', function(){
+    describe('#finalizeClustering', function() {
 
-      it('should create multiple clusters', function(){
+      var clusterHandlerInstance;
 
+      before(function(){
+        clusterHandlerInstance = new clusterHandler({
+          idealSequenceLength: 100
+        });
+
+        clusterHandlerInstance.addPatterns([
+          {
+            sequenceStart: 1,
+            sequenceEnd: 15,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 14,
+            sequenceEnd: 99,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 98,
+            sequenceEnd: 105,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 110,
+            sequenceEnd: 120,
+            chromosome: 1
+          }
+        ]);
+
+        clusterHandlerInstance.finalizeClustering();
+        assert(clusterHandlerInstance.getClusters()[0].length == 3);
       })
 
+      it('should merge clusters if collides and together have good length', function() {
+        var cluster = clusterHandlerInstance.getClusters()[0][0];
+        assert(cluster.getSequenceStart() == 1);
+        assert(cluster.getSequenceEnd() == 99);
+      })
+
+      it('should NOT merge clusters if not collides', function(){
+        var cluster = clusterHandlerInstance.getClusters()[0][2];
+        assert(cluster.getSequenceStart() == 110);
+        assert(cluster.getSequenceEnd() == 120);
+      })
+
+      it('should NOT merge clusters if together exceeds ideal length of cluster', function(){
+        var cluster = clusterHandlerInstance.getClusters()[0][1];
+        assert(cluster.getSequenceStart() == 98);
+        assert(cluster.getSequenceEnd() == 105);
+      })
     })
 
   })
