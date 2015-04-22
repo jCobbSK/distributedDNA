@@ -237,4 +237,39 @@ describe('DNAAnalysisModule', function(){
 
   })
 
+  describe('SampleReader', function(){
+
+    var SampleReader = require('../DNAAnalysis/sampleReader');
+
+    it('should add chunk of data to sequence', function() {
+      var sr = new SampleReader();
+      sr.addChunk('Hello');
+      sr.addChunk(' World!');
+      assert(sr.getSequence() === 'Hello World!');
+    })
+
+    it('should trim begin and update startIndex', function() {
+      var sr = new SampleReader();
+      var myCustomString = 'Hello World of NodeJS. Glad to be here';
+      sr.addChunk(myCustomString);
+      assert(sr.getStartIndex() == 0);
+      assert(sr.getEndIndex() == myCustomString.length);
+      sr.trimBeginToIndex(4);
+      assert(sr.getStartIndex() == 4);
+      assert(sr.getEndIndex() == myCustomString.length);
+    })
+
+    it('should return correct substring based on indexes', function() {
+      var sr = new SampleReader();
+      var myCustomString = 'Hello World of NodeJS. Glad to be here';
+      sr.addChunk(myCustomString);
+      assert(sr.getStartIndex() == 0);
+      assert(sr.getEndIndex() == myCustomString.length);
+      sr.trimBeginToIndex(4);
+      assert(sr.getStartIndex() == 4);
+      assert(sr.getEndIndex() == myCustomString.length);
+      assert(sr.getPartOfSequence(5,10) == myCustomString.substring(5,10));
+    })
+  })
+
 })
