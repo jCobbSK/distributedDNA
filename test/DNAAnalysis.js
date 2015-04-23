@@ -270,6 +270,21 @@ describe('DNAAnalysisModule', function(){
       assert(sr.getEndIndex() == myCustomString.length);
       assert(sr.getPartOfSequence(5,10) == myCustomString.substring(5,10));
     })
+
+    it('should correctly parse sample format with multiple portions', function(){
+      var sample1chunk = '[1]aaabccddd[2]abcdefghij[13:100]aaaabbbb[4]';
+      var sample2chunk = 'aabd[1:100]bcde';
+      var result = '';
+      var sr = new SampleReader();
+      var handlerEnd = function(sequence, chromosome, startIndex) {
+        result += '['+chromosome+':'+startIndex+']'+sequence;
+      }
+      sr.addChunk(sample1chunk, handlerEnd);
+      sr.addChunk(sample2chunk, handlerEnd);
+      assert(result == '[1:0]aaabccddd[2:0]abcdefghij[13:100]aaaabbbb[4:0]aabd');
+      assert(sr.getSequence() == 'bcde');
+      assert(sr.getStartIndex() == 100);
+    })
   })
 
 })

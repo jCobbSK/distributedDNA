@@ -20,14 +20,47 @@ module.exports = function() {
    */
   var startIndex = 0;
 
+  /**
+   * Sequence might contain multiple chromosomes, defined by certain rules defined in DNAAnalysis.index
+   * @property actualChrosome
+   * @private
+   * @type {integer}
+   */
+  var actualChromosome = -1;
+
   return {
     /**
      * Add chunk of data to sequence.
      * @method addChunk
      * @param {string} chunk
+     * @param {function} endChromosomeCallback(sequence, chromosomeNumber, startIndex)
      */
-    addChunk: function(chunk) {
+    addChunk: function(chunk, endChromosomeCallback) {
       sequence += chunk;
+      //check for chromosome specifications in sequence
+      do {
+        var startControl = sequence.indexOf('[');
+        var endControl = sequence.indexOf(']');
+        if (startControl != -1 && endControl != -1) {
+          var control = sequence.substring(startControl+1, endControl);
+
+          //we are starting new potion of sample, we need to call the end of previous one
+          if (endChromosomeCallback && actualChromosome != -1) {
+              endChromosomeCallback(sequence.substring(0, startControl), actualChromosome, startIndex);
+          }
+
+          //set new states
+          if (control.indexOf(':') != -1) {
+            var arr = control.split(':');
+            actualChromosome = parseInt(arr[0]);
+            startIndex = parseInt(arr[1]);
+          } else {
+            actualChromosome = parseInt(control);
+            startIndex = 0;
+          }
+          sequence = sequence.substring(endControl+1);
+        }
+      }while(startControl != -1 && endControl != -1);
     },
 
     /**
