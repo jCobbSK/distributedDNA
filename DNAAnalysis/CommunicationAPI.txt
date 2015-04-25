@@ -1,0 +1,32 @@
+Server -> Client
+1. Request for analyze with patterns inside cache of client
+   {
+    type: 'analyze',
+    data: {
+      'sampleSequence':'',
+      'sampleId':1
+    }
+   }
+
+2. Request for analyze with patterns inside request
+  {
+    type: 'analyzeNoCache',
+    data: {
+      'sampleSequence':'',
+      'patterns':[ PatternObject, PatternObject...],
+      'sampleId': 1
+    }
+  }
+
+
+Client -> Server
+1. Request after analyze && analyzeNoCache
+ {
+  'sampleId': 1,
+  results: [
+    {
+      patternId: 1,
+      result: true|false
+    }
+  ]
+ }

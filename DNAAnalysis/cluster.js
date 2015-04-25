@@ -58,6 +58,14 @@ module.exports = function(options) {
    */
   var patterns = [];
 
+  /**
+   * Node who handles this cluster at the moment.
+   * @property handlingNode
+   * @private
+   * @type {JDSM.Node}
+   */
+  var handlingNode = null;
+
   return {
 
     /**
@@ -133,6 +141,24 @@ module.exports = function(options) {
         'sequenceEnd': seqEnd,
         'sequenceLength': seqEnd - seqStart
       }
+    },
+
+    /**
+     * Set new handling node.
+     * @method setHandlingNode
+     * @param {JDSM.Node} newNode
+     */
+    setHandlingNode: function(newNode) {
+      handlingNode = newNode;
+    },
+
+    /**
+     * Get node set to this cluster.
+     * @method getHandlingNode
+     * @returns {JDSM.Node}
+     */
+    getHandlingNode: function() {
+      return handlingNode;
     },
 
     /**

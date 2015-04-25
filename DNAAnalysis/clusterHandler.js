@@ -44,6 +44,15 @@ module.exports = function(options) {
   var clusterIndexFactory = 1;
 
   /**
+   * Complex object for tracking information which clusters have been send to calculation for particular sample.
+   * It is created and manipulated by getClusterForSample and finishSample methods.
+   * @property samplesProgress
+   * @private
+   * @type {Object}
+   */
+  var samplesProgress = {};
+
+  /**
    * Find clusters which collide with pattern.
    * @method findCollideClustersWithPattern
    * @private
@@ -210,6 +219,70 @@ module.exports = function(options) {
         }
 
       }
+    },
+
+    /**
+     * Returns first not already provided cluster for particular sample defined by unique sampleId.
+     * @method getClusterForSample
+     * @param {integer} chromosome
+     * @param {integer} sampleId
+     * @param {integer} sequenceStart
+     * @param {integer} sequenceEnd
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    getClustersForSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+
+      if (!samplesProgress[sampleId]) {
+        samplesProgress[sampleId] = {};
+      }
+
+      if (!samplesProgress[sampleId][chromosome]) {
+        samplesProgress[sampleId][chromosome] = [];
+      }
+
+      var result = _.filter(clusters[chromosome], function(cluster, index){
+        if (cluster.getSequenceStart() >= sequenceStart && cluster.getSequenceEnd() <= sequenceEnd &&
+            samplesProgress[sampleId][chromosome].indexOf(index) == -1) {
+          samplesProgress[sampleId][chromosome].push(index);
+          return true;
+        }
+        return false;
+      });
+
+      return result;
+    },
+
+    /**
+     * Removes object with progress for particular sample in addition returns clusters which may have
+     * partially patterns inside sequence => not all cluster is inside sequence.
+     * @method finishAnalyzingSample
+     * @param {integer} sampleId
+     * @param {integer} chromosome
+     * @param {integer} sequenceStart
+     * @param {integer} sequenceEnd
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    finishAnalyzingSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+      if (!samplesProgress[sampleId]) {
+        samplesProgress[sampleId] = {};
+      }
+
+      if (!samplesProgress[sampleId][chromosome]) {
+        samplesProgress[sampleId][chromosome] = [];
+      }
+      var result = _.filter(clusters[chromosome], function(cluster, index){
+        if (cluster.getSequenceStart() <= sequenceEnd && cluster.getSequenceEnd() >= sequenceStart &&
+            samplesProgress[sampleId][chromosome].indexOf(index) == -1) {
+          samplesProgress[sampleId][chromosome].push(index);
+          return true;
+        }
+        return false;
+      });
+
+      if (samplesProgress[sampleId])
+        samplesProgress[sampleId] = null;
+
+      return result;
     },
 
     /**

@@ -117,6 +117,15 @@ module.exports = function() {
         return sequence.substring(_startIndex - this.getStartIndex(), _endIndex - this.getStartIndex());
       }
       return null;
+    },
+
+    /**
+     * Getter for actual chromosome number of sequence in sequence property.
+     * @method getChromosomeNumber
+     * @returns {integer}
+     */
+    getChromosomeNumber: function() {
+      return actualChromosome;
     }
   }
 

@@ -235,6 +235,56 @@ describe('DNAAnalysisModule', function(){
       })
     })
 
+    describe('#getClustersForSample & #finishAnalyzingSample', function(){
+      var clusterHandlerInstance;
+      before(function(){
+        clusterHandlerInstance = new clusterHandler({
+          idealSequenceLength: 100
+        });
+
+        clusterHandlerInstance.addPatterns([
+          {
+            sequenceStart: 1,
+            sequenceEnd: 15,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 14,
+            sequenceEnd: 99,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 98,
+            sequenceEnd: 105,
+            chromosome: 1
+          },
+          {
+            sequenceStart: 110,
+            sequenceEnd: 120,
+            chromosome: 1
+          }
+        ]);
+
+        clusterHandlerInstance.finalizeClustering();
+        assert(clusterHandlerInstance.getClusters()[0].length == 3);
+      })
+
+      it('should return cluster', function(){
+        var r = clusterHandlerInstance.getClustersForSample(1, 0, 1, 100);
+        assert(r.length == 1);
+      })
+
+      it('should return 1 partial cluster', function() {
+        var r = clusterHandlerInstance.finishAnalyzingSample(1,0,1,100);
+        assert(r.length == 1);
+      })
+
+      it('should return 2 clusters', function() {
+        var r = clusterHandlerInstance.finishAnalyzingSample(1,0,1,100);
+        assert(r.length == 2);
+      })
+    })
+
   })
 
   describe('SampleReader', function(){
