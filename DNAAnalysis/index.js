@@ -112,8 +112,18 @@ module.exports = function(JDSM) {
     }
 
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
-      //TODO handle response -> create model.result
+      //handle response -> create model.result
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
+      var sampleId = data.sampleId;
+      _.each(data.results, function(res){
+        Pattern.create({
+          sampleId: sampleId,
+          patternId: res.patternId,
+          result: res.result
+        }).then(function(result){
+          console.log('created result');
+        });
+      })
     });
   }
 
