@@ -72,19 +72,45 @@ module.exports = function(JDSM) {
    */
   var analyzeCluster = function(sampleReader, cluster, sampleId) {
     //create request to node
-    //TODO pick correct request based on isCachingClustersInNodes
-    var requestsArr = [
-      {
-        node: cluster.getHandlingNode(),
-        requestData: {
-          eventName: 'analyze',
-          data: {
-            sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
-            sampleId: sampleId
+    //pick correct request based on isCachingClustersInNodes
+    var requestsArr;
+    if (isCachingClustersInNodes()) {
+      requestsArr = [
+        {
+          node: cluster.getHandlingNode(),
+          requestData: {
+            eventName: 'analyze',
+            data: {
+              sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
+              sampleId: sampleId
+            }
           }
         }
-      }
-    ];
+      ];
+    } else {
+      requestsArr = [
+        {
+          node: cluster.getHandlingNode(),
+          requestData: {
+            eventName: 'analyzeNoCache',
+            data: {
+              sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
+              sampleId: sampleId,
+              patterns: _.map(cluster.getPatterns(), function(pattern){
+                return {
+                  id: pattern.id,
+                  sequence: pattern.data,
+                  sequenceStart: pattern.sequenceStart,
+                  sequenceEnd: pattern.sequenceEnd,
+                  chromosome: pattern.chromosome
+                }
+              })
+            }
+          }
+        }
+      ];
+    }
+
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
       //TODO handle response -> create model.result
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
