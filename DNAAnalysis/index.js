@@ -47,10 +47,9 @@ module.exports = function(JDSM) {
       });
       //finalize clustering
       clusterHandler.finalizeClustering();
+      //JDSM on connect && on disconnect handlers
+      JDSM.setCallbacks(registerNode, unregisterNode);
     });
-
-    //JDSM on connect && on disconnect handlers
-    JDSM.setCallbacks(registerNode, unregisterNode);
   }).call(this);
 
   /**
@@ -183,13 +182,12 @@ module.exports = function(JDSM) {
    */
   var registerNode = function(node) {
     var clustersForNewNode = [];
+    var startingCalculation = (nodes.length == 0);
 
     if (nodes.length == 0) {
       //all clusters put into first node
       var allClusters = clusterHandler.getAllClustersAsArray();
       clustersForNewNode = allClusters;
-
-      initialCalculation();
     } else {
       //remove certain amount of clusters from all nodes and put them into newly connected node
       var numberOfClusters = clusterHandler.allClustersCount();
@@ -204,6 +202,11 @@ module.exports = function(JDSM) {
     _.each(clustersForNewNode, function(cluster){
       cluster.setHandlingNode(node);
     });
+
+    //after first node has been registered we have computing power to start computation of
+    //not finished samples
+    if (startingCalculation)
+      initialCalculation();
   }
 
   /**
@@ -232,7 +235,14 @@ module.exports = function(JDSM) {
    * @private
    */
   var initialCalculation = function() {
-      //TODO get all not finished samples from DBS and call analyzePartialyFinished on them
+      //get all not finished samples from DBS and call analyzePartialyFinished on them
+    Sample.find({
+      where: {isDone: false}
+    }).then(function(samples){
+      _.each(samples, function(sample){
+        analyzePartialyFinished(sample);
+      })
+    })
   }
 
   /**
@@ -240,31 +250,28 @@ module.exports = function(JDSM) {
    * resolved so we don't want to call them again.
    * @method analyzePartial
    * @private
-   * @param {integer} sampleId
+   * @param {models.Sample} sample
    */
-  var analyzePartialyFinished = function(sampleId) {
-    Sample.find(sampleId).then(function(sample){
-      var sr = new SimpleReader();
+  var analyzePartialyFinished = function(sample) {
+    var sr = new SimpleReader();
 
-      fs.readFile(sample.dataPath, function(err, data){
-        var clustersForSequence = [];
-        sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
-          clustersForSequence = clusterHandler.finishAnalyzingSample(
-            sample.id,chromosomeNumber, startIndex,
-              startIndex + sequence.length);
-          filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
-            analyzeClusters(sr,clustersForSequence, sample.id);
-          });
-        })
-
-        //check if sr.sequence is for some cluster
-        clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
+    fs.readFile(sample.dataPath, function(err, data){
+      var clustersForSequence = [];
+      sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
+        clustersForSequence = clusterHandler.finishAnalyzingSample(
+          sample.id,chromosomeNumber, startIndex,
+            startIndex + sequence.length);
         filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
           analyzeClusters(sr,clustersForSequence, sample.id);
         });
       })
-    })
 
+      //check if sr.sequence is for some cluster
+      clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
+      filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
+        analyzeClusters(sr,clustersForSequence, sample.id);
+      });
+    })
   }
 
   /**
