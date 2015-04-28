@@ -64,7 +64,7 @@ module.exports = function(JDSM) {
       {
         node: cluster.getHandlingNode(),
         requestData: {
-          type: 'analyze',
+          eventName: 'analyze',
           data: {
             sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
             sampleId: sampleId
@@ -94,8 +94,8 @@ module.exports = function(JDSM) {
       JDSM.sendAsyncRequest([{
         node: node,
         requestData: {
-          type: 'freeClusters',
-          clusters: _.map(removedClusters, function(cluster){
+          eventName: 'freeClusters',
+          data: _.map(removedClusters, function(cluster){
             return cluster.id;
           })
         }
@@ -125,7 +125,7 @@ module.exports = function(JDSM) {
       JDSM.sendAsyncRequest([{
         node: node,
         requestData:{
-          type: 'addClusters',
+          eventName: 'addClusters',
           data: _.map(addingClusters, function(cluster){
             return {
               clusterId: cluster.id,

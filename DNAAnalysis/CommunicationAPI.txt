@@ -1,7 +1,7 @@
 Server -> Client
 1. Request for analyze with patterns inside cache of client
    {
-    type: 'analyze',
+    eventName: 'analyze',
     data: {
       'sampleSequence':'',
       'sampleId':1
@@ -10,7 +10,7 @@ Server -> Client
 
 2. Request for analyze with patterns inside request
   {
-    type: 'analyzeNoCache',
+    eventName: 'analyzeNoCache',
     data: {
       'sampleSequence':'',
       'patterns':[ PatternObject, PatternObject...],
@@ -20,7 +20,7 @@ Server -> Client
 
 3. Initialization data for node
   {
-    type: 'addClusters',
+    eventName: 'addClusters',
     data: [{
       clusterId: 1,
       patterns: [
@@ -35,8 +35,8 @@ Server -> Client
 
 4. Free data from node
   {
-    type: 'freeClusters',
-    clusters: [1,2,3]
+    eventName: 'freeClusters',
+    data: [1,2,3]
   }
 
 
