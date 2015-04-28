@@ -286,12 +286,36 @@ module.exports = function(options) {
     },
 
     /**
-     * Getter of clusters.
+     * Getter of clusters, it is array of 23 arrays of n clusters.
      * @method getClusters
-     * @returns {Array}
+     * @returns {Array of 23 arrays}
      */
     getClusters: function() {
       return clusters;
+    },
+
+    /**
+     * Get all clusters independent on chromosome number.
+     * @method getAllClustersAsArray
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    getAllClustersAsArray: function() {
+      var result = [];
+      for (var i= 0,len=clusters.length;i<len;i++)
+        result = result.concat(clusters[i]);
+      return result;
+    },
+
+    /**
+     * Returns count of all clusters in handler. This method is preferable then getAllClustersAsArray.length, because
+     * doesn't create array.
+     * @method allClustersCount
+     * @returns {integer}
+     */
+    allClustersCount: function() {
+      return _.reduce(clusters, function(memo, chromosomeClusters){
+        return memo + chromosomeClusters.length;
+      });
     },
 
     /**

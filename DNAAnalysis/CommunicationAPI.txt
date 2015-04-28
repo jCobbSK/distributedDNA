@@ -18,6 +18,27 @@ Server -> Client
     }
   }
 
+3. Initialization data for node
+  {
+    type: 'addClusters',
+    data: [{
+      clusterId: 1,
+      patterns: [
+        id: 1,
+        sequence: 'cgtaggta',
+        sequenceStart: 1,
+        sequenceEnd: 2,
+        chromosome: 1
+      ]
+    }]
+  }
+
+4. Free data from node
+  {
+    type: 'freeClusters',
+    clusters: [1,2,3]
+  }
+
 
 Client -> Server
 1. Request after analyze && analyzeNoCache
