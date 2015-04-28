@@ -14,7 +14,9 @@ var fs = require('fs'),
     SimpleReader = require('./simpleReader'),
     ClusterHandler = require('./clusterHandler'),
     Pattern = require('../models/pattern'),
-    Settings = require('./settings');
+    Settings = require('./settings'),
+    Sample = require('../models/sample'),
+    Result = require('../models/result');
 module.exports = function(JDSM) {
 
   /**
@@ -71,6 +73,7 @@ module.exports = function(JDSM) {
    */
   var analyzeCluster = function(sampleReader, cluster, sampleId) {
     //create request to node
+    //TODO pick correct request based on isCachingClustersInNodes
     var requestsArr = [
       {
         node: cluster.getHandlingNode(),
@@ -86,6 +89,20 @@ module.exports = function(JDSM) {
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
       //TODO handle response -> create model.result
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
+    });
+  }
+
+  /**
+   * Equivalent to analyzeCluster method but with array of clusters.
+   * @method analyzeClusters
+   * @private
+   * @param {DNAAnalysis.SampleReader} sampleReader
+   * @param {Array of DNAAnalysis.Cluster} clusters
+   * @param {integer} sampleId
+   */
+  var analyzeClusters = function(sampleReader, clusters, sampleId) {
+    _.each(clusters, function(cluster){
+      analyzeCluster(sampleReader, cluster, sampleId);
     });
   }
 
@@ -159,20 +176,6 @@ module.exports = function(JDSM) {
   }
 
   /**
-   * Equivalent to analyzeCluster method but with array of clusters.
-   * @method analyzeClusters
-   * @private
-   * @param {DNAAnalysis.SampleReader} sampleReader
-   * @param {Array of DNAAnalysis.Cluster} clusters
-   * @param {integer} sampleId
-   */
-  var analyzeClusters = function(sampleReader, clusters, sampleId) {
-    _.each(clusters, function(cluster){
-      analyzeCluster(sampleReader, cluster, sampleId);
-    });
-  }
-
-  /**
    * Callback when new Node is registered.
    * @method registerNode
    * @private
@@ -185,6 +188,8 @@ module.exports = function(JDSM) {
       //all clusters put into first node
       var allClusters = clusterHandler.getAllClustersAsArray();
       clustersForNewNode = allClusters;
+
+      initialCalculation();
     } else {
       //remove certain amount of clusters from all nodes and put them into newly connected node
       var numberOfClusters = clusterHandler.allClustersCount();
@@ -218,6 +223,76 @@ module.exports = function(JDSM) {
 
     distributeClustersToNodes(internalNode.clusters);
     //TODO resend pendingRequests
+  }
+
+  /**
+   * A method called in the beginning of calculation, after first node has connected and calculation
+   * may begun. We seek all not finished samples and make steps to finish them.
+   * @method initialCalculation
+   * @private
+   */
+  var initialCalculation = function() {
+      //TODO get all not finished samples from DBS and call analyzePartialyFinished on them
+  }
+
+  /**
+   * Similar method to analyzeSample but with difference, that some of patterns have already been
+   * resolved so we don't want to call them again.
+   * @method analyzePartial
+   * @private
+   * @param {integer} sampleId
+   */
+  var analyzePartialyFinished = function(sampleId) {
+    Sample.find(sampleId).then(function(sample){
+      var sr = new SimpleReader();
+
+      fs.readFile(sample.dataPath, function(err, data){
+        var clustersForSequence = [];
+        sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
+          clustersForSequence = clusterHandler.finishAnalyzingSample(
+            sample.id,chromosomeNumber, startIndex,
+              startIndex + sequence.length);
+          filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
+            analyzeClusters(sr,clustersForSequence, sample.id);
+          });
+        })
+
+        //check if sr.sequence is for some cluster
+        clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
+        filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
+          analyzeClusters(sr,clustersForSequence, sample.id);
+        });
+      })
+    })
+
+  }
+
+  /**
+   * Filter clusters where all patterns are resolved for sample. If one or more are not resolved (hasn't got result)
+   * we return that cluster in return and is put for further proceed.
+   * @method filterDoneClusters
+   * @private
+   * @param {models.Sample} sample
+   * @param {Array of DNAAnalysis.Cluster} clusters
+   * @param {function(clusters)} callback
+   * @returns {Array of DNAAnalysis.Cluster}
+   */
+  var filterDoneClusters = function(sample, clusters, callback) {
+    //get ids of resolved patterns for sample
+    Result.find({
+      where: {sampleId: sample.id},
+      attributes: ['patternId']
+    }).then(function(results){
+      //filter clusters only with at least 1 pattern not in results
+      var res = _.filter(clusters, function(cluster){
+        return _.find(cluster.getPatterns(), function(pattern){
+          return _.find(results, function(result){
+            return result.patternId == pattern.id;
+          })
+        })
+      })
+      callback(res);
+    })
   }
 
   return {
