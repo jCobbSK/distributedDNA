@@ -13,7 +13,8 @@
 var fs = require('fs'),
     SimpleReader = require('./simpleReader'),
     ClusterHandler = require('./clusterHandler'),
-    Pattern = require('../models/pattern');
+    Pattern = require('../models/pattern'),
+    Settings = require('./settings');
 module.exports = function(JDSM) {
 
   /**
@@ -49,6 +50,16 @@ module.exports = function(JDSM) {
     //JDSM on connect && on disconnect handlers
     JDSM.setCallbacks(registerNode, unregisterNode);
   }).call(this);
+
+  /**
+   * Method for determining if we have enough nodes for redistribution of clusters on Nodes.
+   * @method isCachingClustersInNodes
+   * @private
+   * @returns {boolean}
+   */
+  var isCachingClustersInNodes = function() {
+    return (clusterHandler.allClustersCount() / nodes.length) < Settings.clusterNodeRatioForCache;
+  }
 
   /**
    * Create and send request for analyze to cluster's node.

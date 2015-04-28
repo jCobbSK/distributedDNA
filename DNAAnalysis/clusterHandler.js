@@ -8,7 +8,8 @@
  * @module DNAAnalysis
  */
 var _ = require('underscore'),
-    Cluster = require('./cluster');
+    Cluster = require('./cluster'),
+    Settings = require('./settings');
 module.exports = function(options) {
   if (!options)
     options = {};
@@ -17,9 +18,9 @@ module.exports = function(options) {
    * Ideal sequence length of cluster.
    * @property idealSequenceLength
    * @type {integer}
-   * @default -1 (infinite)
+   * @default DNAAnalysis.Settings.optimalClusterSize
    */
-  var idealSequenceLength = options['idealSequenceLength'] || -1;
+  var idealSequenceLength = options['idealSequenceLength'] || Settings.optimalClusterSize;
 
   /**
    * Array of 23 arrays of clusters. One array for each chromosome.
