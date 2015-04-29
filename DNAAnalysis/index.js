@@ -11,12 +11,12 @@
  * @param {JDSM module instance} JDSM
  */
 var fs = require('fs'),
-    SimpleReader = require('./simpleReader'),
+    SampleReader = require('./sampleReader'),
     ClusterHandler = require('./clusterHandler'),
     Pattern = require('../models/pattern'),
     Settings = require('./settings'),
-    Sample = require('../models/sample'),
-    Result = require('../models/result');
+    Models = require('../models'),
+    _ = require('underscore');
 module.exports = function(JDSM) {
 
   /**
@@ -41,7 +41,7 @@ module.exports = function(JDSM) {
   (function init(){
 
     //add all patterns into cluster handler
-    Pattern.findAll().then(function(results){
+    Models.Pattern.findAll().then(function(results){
       _.each(results, function(patt){
         clusterHandler.addPattern(patt);
       });
@@ -119,7 +119,7 @@ module.exports = function(JDSM) {
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
       var sampleId = data.sampleId;
       _.each(data.results, function(res){
-        Pattern.create({
+        Models.Pattern.create({
           sampleId: sampleId,
           patternId: res.patternId,
           result: res.result
@@ -277,7 +277,7 @@ module.exports = function(JDSM) {
    */
   var initialCalculation = function() {
       //get all not finished samples from DBS and call analyzePartialyFinished on them
-    Sample.find({
+    Models.Sample.find({
       where: {isDone: false}
     }).then(function(samples){
       _.each(samples, function(sample){
@@ -294,7 +294,7 @@ module.exports = function(JDSM) {
    * @param {models.Sample} sample
    */
   var analyzePartialyFinished = function(sample) {
-    var sr = new SimpleReader();
+    var sr = new SampleReader();
 
     fs.readFile(sample.dataPath, function(err, data){
       var clustersForSequence = [];
@@ -327,7 +327,7 @@ module.exports = function(JDSM) {
    */
   var filterDoneClusters = function(sample, clusters, callback) {
     //get ids of resolved patterns for sample
-    Result.find({
+    Models.Result.find({
       where: {sampleId: sample.id},
       attributes: ['patternId']
     }).then(function(results){
@@ -350,7 +350,7 @@ module.exports = function(JDSM) {
      * @param {models.Sample} sample database object
      */
     analyzeSample: function(sample) {
-      var sr = new SimpleReader();
+      var sr = new SampleReader();
 
       fs.readFile(sample.dataPath, function(err, data){
         var clustersForSequence = [];
