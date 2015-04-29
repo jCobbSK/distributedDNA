@@ -1,6 +1,7 @@
 var JDSM = require('../JDSM/client')('http://localhost:3000'),
     _ = require('underscore'),
-    sizeof = require('object-sizeof');
+    sizeof = require('object-sizeof'),
+    $ = require('jquery');
 module.exports = (function() {
   /**
    * Cached clusters on client side.
@@ -34,13 +35,30 @@ module.exports = (function() {
     var uploadedData = 0;
 
     /**
+     * Format number of bytes into string with proper prefix kB, MB, GB
+     * @method formatBytes
+     * @private
+     * @param {integer} bytes
+     * @returns {string}
+     */
+    var formatBytes = function(bytes) {
+      if (bytes < 1000)
+        return bytes + 'B';
+      else if (bytes < 1000000)
+        return Math.floor(bytes / 1000)+'kB';
+      else
+        return Math.floor(bytes / 1000000)+'MB';
+    }
+
+    /**
      * Method called everytime data is changed. Used for updating DOM with actual data.
      * @method changeCallback
      * @private
      */
     var changeCallback = function() {
-      //TODO update DOM with accurate data
       console.log('Downloaded: ',downloadedData, ' Uploaded: ',uploadedData);
+      $('#downloaded-data').html(formatBytes(downloadedData));
+      $('#uploaded-data').html(formatBytes(uploadedData));
     }
 
     return {
@@ -95,7 +113,7 @@ module.exports = (function() {
    * @returns {Array of Object{patternId:*,result:*}}
    */
   var analyzeCluster = function(sequence, clusterId) {
-    var cluster = clusters[data.clusterId];
+    var cluster = clusters[clusterId];
     var results = [];
     _.each(cluster.patterns, function(pattern){
       results.push(
@@ -112,6 +130,7 @@ module.exports = (function() {
    */
   (function init(){
     JDSM.registerTask('analyze', function(data, respond){
+      console.log('analyze',data);
       DataTraffic.addDownload(sizeof(data));
       var resultObject = {
         sampleId: data.sampleId,
@@ -119,9 +138,10 @@ module.exports = (function() {
       };
       DataTraffic.addUpload(sizeof(resultObject));
       respond(resultObject);
-    })
+    });
 
     JDSM.registerTask('analyzeNoCache', function(data, respond){
+      console.log('analyzeNoCache',data);
       DataTraffic.addDownload(sizeof(data));
       var sequence = data.sampleSequence;
       var results = [];
@@ -135,23 +155,31 @@ module.exports = (function() {
       };
       DataTraffic.addUpload(sizeof(resObject));
       respond(resObject);
-    })
+    });
 
     JDSM.registerTask('addClusters', function(data, respond){
+      console.log('addClusters',data);
       DataTraffic.addDownload(sizeof(data));
       _.each(data, function(clusterObject){
         clusters[clusterObject.clusterId] = clusterObject;
       });
       respond('200');
-    })
+    });
 
     JDSM.registerTask('freeClusters', function(data, respond){
+      console.log('freeClusters',data);
       DataTraffic.addDownload(sizeof(data));
       _.each(data, function(clusterId){
         clusters[clusterId] = null;
       });
       respond('200');
-    })
+    });
+
+    //set timer to update time of calculation every minute
+    var startedTime = moment();
+    setInterval(function(){
+     $('#duration').html(moment().diff(startedTime,'minutes'));
+    }.call(this),60000);
   })()
 
 })()
