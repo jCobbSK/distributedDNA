@@ -81,6 +81,7 @@ module.exports = function(JDSM) {
           requestData: {
             eventName: 'analyze',
             data: {
+              clusterId: cluster.id,
               sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
               sampleId: sampleId
             }
@@ -95,6 +96,8 @@ module.exports = function(JDSM) {
             eventName: 'analyzeNoCache',
             data: {
               sampleSequence: sampleReader.getPartOfSequence(cluster.getSequenceStart(), cluster.getSequenceEnd()),
+              sampleSequenceStart: cluster.getSequenceStart(),
+              sampleSequenceEnd: cluster.getSequenceEnd(),
               sampleId: sampleId,
               patterns: _.map(cluster.getPatterns(), function(pattern){
                 return {
@@ -192,6 +195,8 @@ module.exports = function(JDSM) {
           data: _.map(addingClusters, function(cluster){
             return {
               clusterId: cluster.id,
+              clusterSequenceStart: cluster.getSequenceStart(),
+              clusterSequenceEnd: cluster.getSequenceEnd(),
               patterns: _.map(cluster.patterns, function(pattern){
                 return {
                   id: pattern.id,

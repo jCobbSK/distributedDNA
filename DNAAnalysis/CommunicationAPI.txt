@@ -3,6 +3,7 @@ Server -> Client
    {
     eventName: 'analyze',
     data: {
+      'clusterId': 1,
       'sampleSequence':'',
       'sampleId':1
     }
@@ -13,6 +14,8 @@ Server -> Client
     eventName: 'analyzeNoCache',
     data: {
       'sampleSequence':'',
+      'sampleSequenceStart': 1,
+      'sampleSequenceEnd': 100,
       'patterns':[ PatternObject, PatternObject...],
       'sampleId': 1
     }
@@ -23,6 +26,8 @@ Server -> Client
     eventName: 'addClusters',
     data: [{
       clusterId: 1,
+      clusterSequenceStart: 1,
+      clusterSequenceEnd: 100,
       patterns: [
         id: 1,
         sequence: 'cgtaggta',
