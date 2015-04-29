@@ -276,7 +276,7 @@ module.exports = function(JDSM) {
    * @private
    */
   var initialCalculation = function() {
-      //get all not finished samples from DBS and call analyzePartialyFinished on them
+    //get all not finished samples from DBS and call analyzePartialyFinished on them
     Models.Sample.find({
       where: {isDone: false}
     }).then(function(samples){
