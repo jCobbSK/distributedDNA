@@ -34,7 +34,9 @@ router.post('/',auth.roleAuthenticate(['client']), function(req, res) {
           console.log(err);
         else {
           sample.dataPath = newPath;
-          sample.save().then(function(){
+          sample.save().then(function(sample){
+            //start analyzing sample
+            global.applicationLogic.analyzeSample(sample);
             res.redirect('/results');
           });
         }
