@@ -47,6 +47,7 @@ module.exports = function(JDSM) {
       });
       //finalize clustering
       clusterHandler.finalizeClustering();
+
       //JDSM on connect && on disconnect handlers
       JDSM.setCallbacks(registerNode, unregisterNode);
     });
@@ -189,7 +190,7 @@ module.exports = function(JDSM) {
       })
       //create request to send addingClusters to node
       JDSM.sendAsyncRequest([{
-        node: node,
+        node: _node.node,
         requestData:{
           eventName: 'addClusters',
           data: _.map(addingClusters, function(cluster){
@@ -222,6 +223,7 @@ module.exports = function(JDSM) {
    * @param {JDSM.Node} node
    */
   var registerNode = function(node) {
+    console.log('REGISTERING NODE');
     var clustersForNewNode = [];
     var startingCalculation = (nodes.length == 0);
 
@@ -258,12 +260,17 @@ module.exports = function(JDSM) {
    * @param {Array of JDSM.Request} pendingRequests
    */
   var unregisterNode = function(node, pendingRequests) {
+    console.log('UNREGISTERING NODE');
     //redistributed node's clusters to other nodes
     var internalNode = _.find(nodes, function(_node){
-      return _node.node == node;
+      return _node.node.getId() == node.getId();
     });
 
-    nodes.splice(nodes.indexOf(internalNode),0);
+    nodes.splice(nodes.indexOf(internalNode),1);
+
+    //stop redistributing if no nodes available
+    if (nodes.length == 0)
+      return;
 
     distributeClustersToNodes(internalNode.clusters);
     //TODO resend pendingRequests
@@ -296,7 +303,7 @@ module.exports = function(JDSM) {
   var analyzePartialyFinished = function(sample) {
     var sr = new SampleReader();
 
-    fs.readFile(sample.dataPath, function(err, data){
+    fs.readFile('../'+sample.dataPath, function(err, data){
       var clustersForSequence = [];
       sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
         clustersForSequence = clusterHandler.finishAnalyzingSample(
@@ -328,8 +335,8 @@ module.exports = function(JDSM) {
   var filterDoneClusters = function(sample, clusters, callback) {
     //get ids of resolved patterns for sample
     Models.Result.find({
-      where: {sampleId: sample.id},
-      attributes: ['patternId']
+      where: {SampleId: sample.id},
+      attributes: ['PatternId']
     }).then(function(results){
       //filter clusters only with at least 1 pattern not in results
       var res = _.filter(clusters, function(cluster){

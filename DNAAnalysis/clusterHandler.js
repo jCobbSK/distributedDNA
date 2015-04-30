@@ -314,9 +314,11 @@ module.exports = function(options) {
      * @returns {integer}
      */
     allClustersCount: function() {
-      return _.reduce(clusters, function(memo, chromosomeClusters){
-        return memo + chromosomeClusters.length;
+      var result = 0;
+      _.each(clusters, function(chromosomeClusters){
+        result += chromosomeClusters.length;
       });
+      return result;
     },
 
     /**
