@@ -1,8 +1,10 @@
 /**
  * Custom middleware module for setting up authorization module and
- * username+password auth with additional roles
+ * username+password auth with method for generating authentification
+ * middleware for filtering based on defined roles (node, client, admin).
  *
- * @module Authentification
+ * @class Authentification
+ * @module Custom
  */
 var passport = require('passport');
 var models = require('../models');
@@ -10,7 +12,7 @@ module.exports = {
 
   /**
    * Initialize all authorization + authentification middlewares and dependencies
-   *
+   * @method init
    * @param {expressjs app instance} app
    */
   init: function(app) {
@@ -52,6 +54,11 @@ module.exports = {
     });
   },
 
+  /**
+   * Sets authenticate strategy and success and failure redirects.
+   * @method authenticate
+   * @returns {passport.authenticate instance}
+   */
   authenticate : function() {
     return passport.authenticate('local', {
       successRedirect: '/',
@@ -60,8 +67,10 @@ module.exports = {
   },
 
   /**
-   * Our role based authentification function
-   * @param roles
+   * Our role based authentification function. It returns middleware for filtering
+   * access by our defined roles (node, client, admin).
+   * @method roleAuthenticate
+   * @param {Array of strings} roles
    * @returns {Middleware function}
    */
   roleAuthenticate: function(roles) {

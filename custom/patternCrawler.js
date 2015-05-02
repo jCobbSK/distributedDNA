@@ -1,3 +1,9 @@
+/**
+ * Class for crawling ensembl genome browser for fetching and persisting patterns.
+ * It is used in grunt task fetchEnsemblData.
+ * @class PatternCrawler
+ * @module Custom
+ */
 var http = require('http');
 var util = require('util');
 var models = require('../models');
@@ -21,7 +27,7 @@ module.exports = {
   /**
    * Saving pattern to database, data attributes are name, description, data, chromosome, isForwardStrand
    * @method savePattern
-   * @param data
+   * @param {Object} data
    */
   savePattern: function(data, callback) {
     var pattern = models.Pattern.create({
