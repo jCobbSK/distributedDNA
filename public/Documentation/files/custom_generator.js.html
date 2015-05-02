@@ -190,7 +190,7 @@ module.exports = (function() {
    * @method generateSequence
    * @private
    * @throws Error(&#x27;Pattern collision&#x27;)
-   * @param {Models.Pattern[]} patterns
+   * @param {Array of Models.Pattern} patterns
    * @returns {string}
    */
   var generateSequence = function(patterns) {
@@ -294,7 +294,7 @@ module.exports = (function() {
     /**
      * Call private method generateSequence.
      * @method generateSequence
-     * @param {Pattern[]}
+     * @param {Array of Models.Pattern} patterns
      * @returns {string}
      */
     generateSequence: function(patterns) {

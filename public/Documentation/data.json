@@ -2970,7 +2970,7 @@
                 {
                     "name": "patterns",
                     "description": "",
-                    "type": "Models.Pattern[]"
+                    "type": "Array of Models.Pattern"
                 }
             ],
             "return": {
@@ -3014,9 +3014,9 @@
             "name": "generateSequence",
             "params": [
                 {
-                    "name": "UNKNOWN",
+                    "name": "patterns",
                     "description": "",
-                    "type": "Pattern[]"
+                    "type": "Array of Models.Pattern"
                 }
             ],
             "return": {
@@ -3321,10 +3321,6 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " custom\\generator.js:90"
-        },
-        {
-            "message": "param name missing: {Pattern[]}",
-            "line": " custom\\generator.js:196"
         },
         {
             "message": "replacing incorrect tag: returns with return",
