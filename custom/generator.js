@@ -4,8 +4,10 @@
  * @module Custom
  */
 var Models = require('../models'),
-    q = require('q'),
-    _ = require('underscore');
+    Q = require('q'),
+    _ = require('underscore'),
+    Sequelize = require('sequelize'),
+    fs = require('fs');
 module.exports = (function() {
 
   /**
@@ -16,7 +18,7 @@ module.exports = (function() {
   var settings = {
     patientName: 'Generator',
     additionalInfo: 'Generated Sample for patterns: ',
-    nucleotidSigns: ['c', 'g', 't', 'a']
+    nucleotidSigns: ['C', 'G', 'T', 'A']
   }
 
   /**
@@ -33,7 +35,7 @@ module.exports = (function() {
   }
 
   /**
-   * Returns random nucleotid sign. (c || g || t || a)
+   * Returns random nucleotid sign. (C || G || T || A)
    * @method getRandomNucleotid
    * @private
    * @returns {char}
@@ -117,13 +119,12 @@ module.exports = (function() {
       _.each(patternArray, function(pattern) {
         //if part of pattern is in result - check if it is matched add rest of pattern into result otherwise throw error
         if (pattern.sequenceStart < start + getRealChromosomeResultLength()) {
-          debugger;
-          var chResSub = chromosomeResult.substr(pattern.sequenceStart - start);
+          var chResSub = chromosomeResult.substr(pattern.sequenceStart - start + controlsLen);
           var patternSub = pattern.data.substr(0, start + getRealChromosomeResultLength() - pattern.sequenceStart);
           if (chResSub !== patternSub)
             throw new Error('Pattern collision');
 
-          chromosomeResult += pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart + 1);
+          chromosomeResult += pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart);
         }
         //if pattern starts at actual position of result, copy pattern into result
         else if (pattern.sequenceStart == start + getRealChromosomeResultLength()) {
@@ -131,7 +132,7 @@ module.exports = (function() {
         }
         //if pattern starts after position of result generate rand sequence and copy pattern
         else if (pattern.sequenceStart > start + getRealChromosomeResultLength()) {
-          chromosomeResult += getRandomSequence(pattern.sequenceStart - (start + chromosomeResult.length));
+          chromosomeResult += getRandomSequence(pattern.sequenceStart - (start + getRealChromosomeResultLength()));
           chromosomeResult += pattern.data;
         }
       });
@@ -151,7 +152,46 @@ module.exports = (function() {
      * @param {function(Sample)} callback
      */
     createSample: function(username, patternIds, callback) {
+      //get patterns model instances for patternIds
 
+      Q.all([
+        Models.Pattern.findAll({
+          where: Sequelize.or({id:patternIds})
+        }),
+        Models.User.find({
+          where: {username: username}
+        })
+      ]).then(function(results){
+        var patterns = results[0];
+        var user = results[1];
+        var sequence = generateSequence(patterns);
+        var tempPath = Math.floor(Math.random()*1000)+'.txt';
+        Q.all([
+          Q.nfcall(fs.writeFile, tempPath, sequence, 'utf-8'),
+          Models.Sample.build({
+            UserId: user.id,
+            isDone: false,
+            patientName: settings.patientName,
+            additionalInfo: settings.additionalInfo + patternIds
+          }).save()
+        ]).then(function(results){
+          var sample = results[1];
+          var correctPath = '/samples/'+user.id+'_'+sample.id+'.dna';
+          console.log('FIRST Q.ALL', correctPath);
+          Q.nfcall(fs.rename, tempPath, './'+correctPath).then(function(){
+            sample.dataPath = '.'+correctPath;
+            sample.save().then(function(sample){
+              callback(null, sample);
+            });
+          }).catch(function(err){
+            callback(err);
+          })
+        }).catch(function(err){
+          callback(err);
+        })
+      }).catch(function(err){
+        callback(err);
+      })
     },
 
     /**
