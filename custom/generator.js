@@ -156,7 +156,7 @@ module.exports = (function() {
 
       Q.all([
         Models.Pattern.findAll({
-          where: Sequelize.or({id:patternIds})
+          where:{id:patternIds}
         }),
         Models.User.find({
           where: {username: username}
