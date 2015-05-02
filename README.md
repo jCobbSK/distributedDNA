@@ -15,8 +15,9 @@ This project tries to build distributive system for advanced big data pattern re
 6. create database and set config/config.json
 6. run: sequelize db:migrate
 7. run: grunt createData
-8. run: grunt
-9. open browser on localhost:3000
+8. run: grunt fetchEnsemblData:100
+9. run: grunt
+10. open browser on localhost:3000
 
 ###Various tasks###
 1. grunt createData -- create default accounts
