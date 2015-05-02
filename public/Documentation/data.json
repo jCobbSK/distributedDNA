@@ -1,0 +1,3386 @@
+{
+    "project": {
+        "name": "diplomka",
+        "description": "",
+        "version": "0.0.1",
+        "url": ""
+    },
+    "files": {
+        "JDSM\\anl.js": {
+            "name": "JDSM\\anl.js",
+            "modules": {
+                "JDSM": 1
+            },
+            "classes": {
+                "ANL": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\client.js": {
+            "name": "JDSM\\client.js",
+            "modules": {},
+            "classes": {
+                "Client": 1,
+                "RespondObject": 1
+            },
+            "fors": {
+                "RespondObject": 1
+            },
+            "namespaces": {}
+        },
+        "JDSM\\index.js": {
+            "name": "JDSM\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\masterRequest.js": {
+            "name": "JDSM\\masterRequest.js",
+            "modules": {},
+            "classes": {
+                "MasterRequest": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "JDSM\\node.js": {
+            "name": "JDSM\\node.js",
+            "modules": {},
+            "classes": {
+                "Node": 1,
+                "PingHandler": 1
+            },
+            "fors": {
+                "PingHandler": 1
+            },
+            "namespaces": {}
+        },
+        "JDSM\\request.js": {
+            "name": "JDSM\\request.js",
+            "modules": {},
+            "classes": {
+                "Request": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\client.js": {
+            "name": "DNAAnalysis\\client.js",
+            "modules": {},
+            "classes": {
+                "DataTraffic": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\cluster.js": {
+            "name": "DNAAnalysis\\cluster.js",
+            "modules": {
+                "DNAAnalysis": 1
+            },
+            "classes": {
+                "Cluster": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\clusterHandler.js": {
+            "name": "DNAAnalysis\\clusterHandler.js",
+            "modules": {},
+            "classes": {
+                "ClusterHandler": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\index.js": {
+            "name": "DNAAnalysis\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\sampleReader.js": {
+            "name": "DNAAnalysis\\sampleReader.js",
+            "modules": {},
+            "classes": {
+                "SampleReader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "DNAAnalysis\\settings.js": {
+            "name": "DNAAnalysis\\settings.js",
+            "modules": {},
+            "classes": {
+                "Settings": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "custom\\authentification.js": {
+            "name": "custom\\authentification.js",
+            "modules": {
+                "Authentification": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "custom\\generator.js": {
+            "name": "custom\\generator.js",
+            "modules": {
+                "Custom": 1
+            },
+            "classes": {
+                "Generator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "custom\\patternCrawler.js": {
+            "name": "custom\\patternCrawler.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "custom\\usersStorage.js": {
+            "name": "custom\\usersStorage.js",
+            "modules": {},
+            "classes": {
+                "UsersStorage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "JDSM": {
+            "name": "JDSM",
+            "submodules": {},
+            "classes": {
+                "ANL": 1,
+                "Client": 1,
+                "RespondObject": 1,
+                "MasterRequest": 1,
+                "Node": 1,
+                "PingHandler": 1,
+                "Request": 1,
+                "DataTraffic": 1
+            },
+            "fors": {
+                "RespondObject": 1,
+                "PingHandler": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "DNAAnalysis\\client.js",
+            "line": 14,
+            "description": "Class Active Node List (ANL)",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "server",
+                    "description": "",
+                    "type": "Http's module Server object"
+                }
+            ]
+        },
+        "DNAAnalysis": {
+            "name": "DNAAnalysis",
+            "submodules": {},
+            "classes": {
+                "Cluster": 1,
+                "ClusterHandler": 1,
+                "SampleReader": 1,
+                "Settings": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "DNAAnalysis\\settings.js",
+            "line": 1,
+            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly",
+            "params": [
+                {
+                    "name": "JDSM",
+                    "description": "",
+                    "type": "JDSM module instance"
+                }
+            ]
+        },
+        "Authentification": {
+            "name": "Authentification",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "custom\\authentification.js",
+            "line": 1,
+            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with additional roles"
+        },
+        "Custom": {
+            "name": "Custom",
+            "submodules": {},
+            "classes": {
+                "Generator": 1,
+                "UsersStorage": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "custom\\usersStorage.js",
+            "line": 1,
+            "description": "Static class with methods of creating fixture data."
+        }
+    },
+    "classes": {
+        "ANL": {
+            "name": "ANL",
+            "shortname": "ANL",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "file": "JDSM\\anl.js",
+            "line": 1,
+            "description": "Class Active Node List (ANL)",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "socketsIO",
+                    "description": "",
+                    "type": "sockets.io object"
+                },
+                {
+                    "name": "options",
+                    "description": "Data to initial set options",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "onRegisterCallback",
+                            "description": "Callback triggered everytime new node is connected",
+                            "type": "Function(Node)",
+                            "optional": true
+                        },
+                        {
+                            "name": "onUnregisterCallback",
+                            "description": "Callback triggered everytime node is disconnected",
+                            "type": "Function(Node)",
+                            "optional": true
+                        },
+                        {
+                            "name": "nodeTimeout",
+                            "description": "Time in ms after which node doesn't respond is declared disconnected",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Client": {
+            "name": "Client",
+            "shortname": "Client",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\client.js",
+            "line": 1,
+            "description": "Client class handling front-end interaction. It is required to browserify this module before\nuse.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "socketUrl",
+                    "description": "- socket server address (default http://localhost:3000)",
+                    "type": "Url string"
+                }
+            ]
+        },
+        "RespondObject": {
+            "name": "RespondObject",
+            "shortname": "RespondObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\client.js",
+            "line": 48,
+            "description": "Class passed to task callback. It's purpose is to strap system data from request\nand put them back for respond so user can't mess it up.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "serverData",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "socket.io-client Socket"
+                }
+            ]
+        },
+        "MasterRequest": {
+            "name": "MasterRequest",
+            "shortname": "MasterRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\masterRequest.js",
+            "line": 1,
+            "description": "Class handling sync and async requests. It contains N requests.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Data to initial set options",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "Required property of ID, unique identifier",
+                            "type": "Integer",
+                            "optional": true
+                        },
+                        {
+                            "name": "type",
+                            "description": "Type of request, possible values are: 'async' or 'sync'",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "dependentRequests",
+                            "description": "Array of low level requests for nodes",
+                            "type": "Array of Request",
+                            "optional": true
+                        },
+                        {
+                            "name": "callback",
+                            "description": "Callback after request is done based on type",
+                            "type": "Function",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Node": {
+            "name": "Node",
+            "shortname": "Node",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\node.js",
+            "line": 1,
+            "description": "Basic Node class, representing one connected user to system.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "socket.IO socket object"
+                },
+                {
+                    "name": "options",
+                    "description": "init options object",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "onUnregisterCallback",
+                            "description": "Callback triggered after node is declared disconnected",
+                            "type": "Function",
+                            "optional": true
+                        },
+                        {
+                            "name": "timeout",
+                            "description": "Timeout in ms after which node doesn't respond is declared disconnected",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "PingHandler": {
+            "name": "PingHandler",
+            "shortname": "PingHandler",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\node.js",
+            "line": 110,
+            "description": "Self-Invoked Class for handling ping measurements. Get actual average ping with getAveragePing() method."
+        },
+        "Request": {
+            "name": "Request",
+            "shortname": "Request",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "JDSM\\request.js",
+            "line": 1,
+            "description": "Low level request object.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Data to init options",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "Required unique id",
+                            "type": "Integer",
+                            "optional": true
+                        },
+                        {
+                            "name": "node",
+                            "description": "Required node to which request is sent",
+                            "type": "Node",
+                            "optional": true
+                        },
+                        {
+                            "name": "masterRequest",
+                            "description": "Master request where request belongs",
+                            "type": "MasterRequest",
+                            "optional": true
+                        },
+                        {
+                            "name": "requestData",
+                            "description": "Data which we want to send to node",
+                            "type": "Object",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "eventName",
+                                    "description": "Event name, based on that, Node knows what to do",
+                                    "type": "String",
+                                    "optional": true
+                                },
+                                {
+                                    "name": "data",
+                                    "description": "Additional data",
+                                    "type": "Object",
+                                    "optional": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "DataTraffic": {
+            "name": "DataTraffic",
+            "shortname": "DataTraffic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JDSM",
+            "namespace": "",
+            "file": "DNAAnalysis\\client.js",
+            "line": 14,
+            "description": "Self-instantiate object for handling data trafic, so it is possible to measure\nnetwork activity of node."
+        },
+        "Cluster": {
+            "name": "Cluster",
+            "shortname": "Cluster",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DNAAnalysis",
+            "namespace": "",
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 1,
+            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Object with constructor parameters",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "Unique id of cluster",
+                            "type": "Integer",
+                            "optional": true
+                        },
+                        {
+                            "name": "sequenceStart",
+                            "description": "Start of cluster",
+                            "type": "Integer",
+                            "optional": true
+                        },
+                        {
+                            "name": "sequenceEnd",
+                            "description": "End of cluster",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "ClusterHandler": {
+            "name": "ClusterHandler",
+            "shortname": "ClusterHandler",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DNAAnalysis",
+            "namespace": "",
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 1,
+            "description": "Handler for clusters. Manages creation of clusters.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Hash with options into constructor",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "idealSequenceLength",
+                            "description": "Ideal sequence length of cluster. (default = infinite)",
+                            "type": "Integer",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "SampleReader": {
+            "name": "SampleReader",
+            "shortname": "SampleReader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DNAAnalysis",
+            "namespace": "",
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 1,
+            "description": "Class for manipulating with partially loaded sample sequence."
+        },
+        "Settings": {
+            "name": "Settings",
+            "shortname": "Settings",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DNAAnalysis",
+            "namespace": "",
+            "file": "DNAAnalysis\\settings.js",
+            "line": 1,
+            "description": "Settings for DNAAnalysis module."
+        },
+        "Generator": {
+            "name": "Generator",
+            "shortname": "Generator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Custom",
+            "namespace": "",
+            "file": "custom\\generator.js",
+            "line": 1,
+            "description": "Static class with methods of creating fixture data."
+        },
+        "UsersStorage": {
+            "name": "UsersStorage",
+            "shortname": "UsersStorage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Custom",
+            "namespace": "",
+            "file": "custom\\usersStorage.js",
+            "line": 1,
+            "description": "Storage class for connected users so it is possible to real-time update progress\nof analyzing particular sample."
+        }
+    },
+    "classitems": [
+        {
+            "file": "JDSM\\anl.js",
+            "line": 25,
+            "is_constructor": 1,
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 50,
+            "description": "List of active connected nodes",
+            "itemtype": "property",
+            "name": "nodes",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of Nodes} nodes",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 59,
+            "description": "Optional register callback",
+            "itemtype": "property",
+            "name": "onRegisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "default": "callback from options || null",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 68,
+            "description": "Optional unregister callback",
+            "itemtype": "property",
+            "name": "onUnregisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "default": "callback from options || null",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 78,
+            "description": "All requests which nodes are working on.",
+            "itemtype": "property",
+            "name": "pendingRequests",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array}",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 86,
+            "description": "Every request will increment this property -> every request will have unique id",
+            "itemtype": "property",
+            "name": "requestIdFactory",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 94,
+            "description": "Register node after initialize (socket connect)",
+            "itemtype": "method",
+            "name": "registerNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "Socket"
+                }
+            ],
+            "return": {
+                "description": "newNode",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 112,
+            "description": "Unregister node.",
+            "itemtype": "method",
+            "name": "unregisterNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Node"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 133,
+            "description": "All responses from sockets are going through this function, it finds request and call response\nmethod.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Response object"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 157,
+            "description": "Initialize master request.",
+            "itemtype": "method",
+            "name": "createMasterRequest",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "- 'sync' or 'async'"
+                },
+                {
+                    "name": "requests",
+                    "description": ""
+                },
+                {
+                    "name": "callback",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "MasterRequest"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 189,
+            "description": "Find registered node, if not found null is returned",
+            "itemtype": "method",
+            "name": "find",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 202,
+            "description": "Find registered node by specified function called on Node objects",
+            "itemtype": "method",
+            "name": "findBy",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "compareFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 213,
+            "description": "Find free node based on basic criteria.",
+            "itemtype": "method",
+            "name": "findFree",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 225,
+            "description": "Find node with the least traffic, lowest latency and other criteria.",
+            "itemtype": "method",
+            "name": "findBestAvailable",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 238,
+            "description": "Send asynchronous requests, callback is called after all requests responded.\nAll requests are independent, callback is called with err and results where\nresults is array of responds for all requests.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
+            "itemtype": "method",
+            "name": "sendAsyncRequest",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": "",
+                    "type": "Array of objects"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Nodejs standard callback"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 254,
+            "description": "Send synchrounous requests, callback is called after all requests responded,\nand they are called sequentially, first is called and respond is append to the next\nrequest object into 'prerequisites' property and so forth. Callback is\ncalled with err and results where results is respond for last request.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
+            "itemtype": "method",
+            "name": "sendSyncRequest",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": "",
+                    "type": "Array of objects"
+                },
+                {
+                    "name": "callback",
+                    "description": ""
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 271,
+            "description": "Setters for callbacks on connection/disconnection of nodes",
+            "itemtype": "method",
+            "name": "setCallbacks",
+            "params": [
+                {
+                    "name": "registerCallback",
+                    "description": "",
+                    "type": "Function(node)"
+                },
+                {
+                    "name": "unregisterCallback",
+                    "description": "",
+                    "type": "Function(node, pendingRequests)"
+                }
+            ],
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 282,
+            "description": "Find registered node, if not found null is returned",
+            "itemtype": "method",
+            "name": "find",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 292,
+            "description": "Find registered node by specified function called on Node objects",
+            "itemtype": "method",
+            "name": "findBy",
+            "params": [
+                {
+                    "name": "compareFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 302,
+            "description": "Find free node based on basic criteria.",
+            "itemtype": "method",
+            "name": "findFree",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\anl.js",
+            "line": 311,
+            "description": "Find node with the least traffic, lowest latency and other criteria.",
+            "itemtype": "method",
+            "name": "findBestAvailable",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "ANL",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 12,
+            "description": "Default socket object for communication with server.",
+            "itemtype": "property",
+            "name": "socket",
+            "access": "private",
+            "tagname": "",
+            "type": "{socket.client.io io object}",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 20,
+            "description": "Ping client handler.",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 27,
+            "description": "Benchmark client handler.",
+            "class": "Client",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 58,
+            "itemtype": "property",
+            "name": "requestId",
+            "type": "Integer",
+            "access": "private",
+            "tagname": "",
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 65,
+            "itemtype": "property",
+            "name": "masterRequestId",
+            "type": "Integer",
+            "access": "private",
+            "tagname": "",
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 72,
+            "itemtype": "property",
+            "name": "socket",
+            "type": "{socket.io socket object}",
+            "access": "private",
+            "tagname": "",
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 79,
+            "description": "Respond method used as middleware to set required ids of request.",
+            "itemtype": "method",
+            "name": "respond",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 93,
+            "description": "Browserify close scopes, so public method doesn't have access to privates, so\nwe need to set a property.",
+            "itemtype": "property",
+            "name": "socket",
+            "type": "{socket.io socket object}",
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\client.js",
+            "line": 101,
+            "description": "Register task based on eventName.",
+            "itemtype": "method",
+            "name": "registerTask",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function(string: eventName, function(data, respondObject)"
+                }
+            ],
+            "class": "RespondObject",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 18,
+            "description": "Unique id of masterRequest",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 26,
+            "description": "Type of request, possible values: 'async', 'sync'",
+            "itemtype": "property",
+            "name": "type",
+            "access": "private",
+            "tagname": "",
+            "default": "'async'",
+            "type": "{string}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 35,
+            "description": "Requests of master request. They are dealt properly based on type.",
+            "itemtype": "property",
+            "name": "dependentRequests",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of Request objects}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 43,
+            "description": "Callback function called after all dependentRequests are handled, based on type.",
+            "itemtype": "property",
+            "name": "callback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 51,
+            "description": "During synchronous request, if the response from some of the dependentRequests request is\npassed into next request, and after the last one is resolved, callback is called.",
+            "itemtype": "method",
+            "name": "handleSync",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "",
+                    "type": "Request object"
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 72,
+            "description": "During asynchronous request, callback is called after all dependent requests are resolved.",
+            "itemtype": "method",
+            "name": "handleAsync",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "request",
+                    "description": "",
+                    "type": "Request object"
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 99,
+            "description": "Handling response of child requests.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "params": [
+                {
+                    "name": "request",
+                    "description": ""
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 117,
+            "description": "Start request (send requests to nodes)",
+            "itemtype": "method",
+            "name": "run",
+            "params": [
+                {
+                    "name": "optional",
+                    "description": "callback overrided callback from constructor",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 139,
+            "description": "Getter of id",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\masterRequest.js",
+            "line": 148,
+            "description": "Setter of dependent requests",
+            "itemtype": "method",
+            "name": "setDependentRequests",
+            "params": [
+                {
+                    "name": "requests",
+                    "description": ""
+                }
+            ],
+            "type": "Array of Requests",
+            "class": "MasterRequest",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 19,
+            "description": "Start cyclic interval which measure latency of node.",
+            "itemtype": "method",
+            "name": "runLatencyUpdater",
+            "access": "private",
+            "tagname": "",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 44,
+            "description": "Calculate bandwidth and performance of node. It send 1MB of random string, node after receive\nmark timestamp, perform benchmark calculations on it, mark timestamp and send everything back.",
+            "itemtype": "method",
+            "name": "bandwidthAndPerformanceUpdater",
+            "access": "private",
+            "tagname": "",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 66,
+            "description": "Connection bandwidth calculated and set by bandwidthAndPerformanceUpdater",
+            "itemtype": "property",
+            "name": "bandwidth",
+            "type": "{Float}",
+            "access": "private",
+            "tagname": "",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 74,
+            "description": "Performance index calculated and set by bandwidthAndPerformanceUpdater. Higher means longer\ncalculation time -> higher is worse.",
+            "itemtype": "property",
+            "name": "performance",
+            "type": "{Integer}",
+            "access": "private",
+            "tagname": "",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 83,
+            "description": "Default socket object, use for communication and identification of node.\nInitialize in constructor.",
+            "itemtype": "property",
+            "name": "socket",
+            "access": "private",
+            "tagname": "",
+            "type": "{socket.IO socket object}",
+            "required": 1,
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 93,
+            "description": "Unique identifier.",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 101,
+            "description": "Is some pending request for this node.",
+            "itemtype": "property",
+            "name": "isFree",
+            "access": "private",
+            "tagname": "",
+            "type": "{boolean}",
+            "default": "false",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 119,
+            "description": "Get average latency based on all available ping requests.",
+            "itemtype": "method",
+            "name": "getAverageLatency",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 127,
+            "description": "Add latency from request.",
+            "itemtype": "method",
+            "name": "addLatency",
+            "params": [
+                {
+                    "name": "latency",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 139,
+            "description": "Number of requests called since connected. Used in getAverageUse method",
+            "itemtype": "property",
+            "name": "numberOfRequests",
+            "type": "{Integer}",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 146,
+            "description": "Set on init, that is time when Node is created.",
+            "itemtype": "property",
+            "name": "connectedAt",
+            "access": "private",
+            "tagname": "",
+            "type": "{date}",
+            "default": "actual timestamp",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 155,
+            "description": "Timeout in ms after which node doesn't respond is declared disconnected",
+            "itemtype": "property",
+            "name": "timeout",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 163,
+            "description": "Are we still waiting for ping response from client.",
+            "itemtype": "property",
+            "name": "pendingPing",
+            "access": "private",
+            "tagname": "",
+            "type": "{boolean}",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 171,
+            "description": "If client crashes without socket emit disconnected we find out by pinging, and need to\nact on it.",
+            "itemtype": "property",
+            "name": "onUnregisterCallback",
+            "access": "private",
+            "tagname": "",
+            "type": "{function}",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 180,
+            "is_constructor": 1,
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 190,
+            "description": "Get average latency of node.",
+            "itemtype": "method",
+            "name": "getPing",
+            "return": {
+                "description": "latency in (ms)",
+                "type": "Integer"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 199,
+            "description": "Average number of requests per minute.",
+            "itemtype": "method",
+            "name": "getAverageUse",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 208,
+            "description": "Index which indicates likeliness to choose this node for request.\nIt considers latency and usage of node.",
+            "itemtype": "method",
+            "name": "availabilityIndex",
+            "return": {
+                "description": "",
+                "type": "Float"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 218,
+            "description": "Actual communication with node.",
+            "itemtype": "method",
+            "name": "sendReq",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "String/JSON stringifyable object"
+                }
+            ],
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 229,
+            "description": "Set timeout after which client doesn't respond on ping request, we declare it disconnected.",
+            "itemtype": "method",
+            "name": "setTimeout",
+            "params": [
+                {
+                    "name": "timeInSec",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 238,
+            "description": "When client disconnects, we need to call it.",
+            "itemtype": "method",
+            "name": "setOnUnregisterCallback",
+            "params": [
+                {
+                    "name": "_callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 247,
+            "description": "Getter",
+            "itemtype": "method",
+            "name": "getIsFree",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 256,
+            "description": "Setter",
+            "itemtype": "method",
+            "name": "setIsFree",
+            "params": [
+                {
+                    "name": "_isFree",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 265,
+            "description": "getter",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 21,
+            "description": "Self referencing property",
+            "itemtype": "property",
+            "name": "self",
+            "access": "private",
+            "tagname": "",
+            "type": "{Request class}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 29,
+            "description": "Unique id of request",
+            "itemtype": "property",
+            "name": "id",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "required": 1,
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 38,
+            "description": "Node -> representing user",
+            "itemtype": "property",
+            "name": "node",
+            "access": "private",
+            "tagname": "",
+            "type": "{JDSM.node}",
+            "required": 1,
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 47,
+            "description": "Master request object.",
+            "itemtype": "property",
+            "name": "masterRequest",
+            "access": "private",
+            "tagname": "",
+            "type": "{JDSM.Request}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 55,
+            "description": "Response for the request from client node.",
+            "itemtype": "property",
+            "name": "response",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 63,
+            "description": "Object consists of 'eventName' and 'data'",
+            "itemtype": "property",
+            "name": "requestData",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object} json stringifyable object so it can be send to node",
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 73,
+            "description": "Low level handling.",
+            "itemtype": "method",
+            "name": "handleResponse",
+            "params": [
+                {
+                    "name": "_response",
+                    "description": "Data object directly from client socket.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 86,
+            "description": "Send request to node for calculating.",
+            "itemtype": "method",
+            "name": "run",
+            "params": [
+                {
+                    "name": "_requestData",
+                    "description": "- object send to node (override Object provided to constructor),\n                               required attributes are eventName and data",
+                    "type": "Object"
+                },
+                {
+                    "name": "prerequisites",
+                    "description": "- object append to attribute 'prerequisites' of requestData",
+                    "type": "Object"
+                }
+            ],
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 108,
+            "description": "Basic getter",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\request.js",
+            "line": 117,
+            "description": "Basic getter",
+            "itemtype": "method",
+            "name": "getResponse",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "Request",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 6,
+            "description": "Cached clusters on client side.",
+            "itemtype": "property",
+            "name": "clusters",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object with clusterId-s as keys}",
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 21,
+            "description": "Amount of downloaded data for processing. In Bytes.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "property",
+            "name": "downloadedData",
+            "type": "{integer}",
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 29,
+            "description": "Amount of uploaded data of results. In Bytes.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "property",
+            "name": "uploadedData",
+            "type": "{integer}",
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 37,
+            "description": "Format number of bytes into string with proper prefix kB, MB, GB",
+            "itemtype": "method",
+            "name": "formatBytes",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "bytes",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 53,
+            "description": "Method called everytime data is changed. Used for updating DOM with actual data.",
+            "itemtype": "method",
+            "name": "changeCallback",
+            "access": "private",
+            "tagname": "",
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 66,
+            "description": "Add download data in B.",
+            "itemtype": "method",
+            "name": "addDownload",
+            "params": [
+                {
+                    "name": "lengthInB",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 76,
+            "description": "Add upload data in B.",
+            "itemtype": "method",
+            "name": "addUpload",
+            "params": [
+                {
+                    "name": "lengthInB",
+                    "description": ""
+                }
+            ],
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 88,
+            "description": "Actual regExp testing of pattern with sequence.",
+            "itemtype": "method",
+            "name": "analyze",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "sequence",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "startSequence",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "pattern",
+                    "description": "",
+                    "type": "PatternObject"
+                }
+            ],
+            "return": {
+                "description": "}",
+                "type": "ObjectpatternId:*,result:*"
+            },
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 106,
+            "description": "Analyze all patterns inside cluster specified by clusterId, returns array of result objects\nfrom analyze method.",
+            "itemtype": "method",
+            "name": "analyzeCluster",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "sequence",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "clusterId",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "}",
+                "type": "Array of ObjectpatternId:*,result:*"
+            },
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\client.js",
+            "line": 127,
+            "description": "Register all tasks for Node to handle",
+            "is_constructor": 1,
+            "class": "DataTraffic",
+            "module": "JDSM"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 17,
+            "description": "Unique id of Cluster",
+            "itemtype": "property",
+            "name": "id",
+            "type": "{integer}",
+            "default": "-1",
+            "access": "private",
+            "tagname": "",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 26,
+            "description": "Chromosome number of cluster",
+            "itemtype": "property",
+            "name": "chromosome",
+            "type": "{integer}",
+            "default": "1",
+            "access": "private",
+            "tagname": "",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 35,
+            "description": "Start index of cluster",
+            "itemtype": "property",
+            "name": "sequenceStart",
+            "type": "{integer}",
+            "default": "0",
+            "access": "private",
+            "tagname": "",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 44,
+            "description": "End index of cluster",
+            "itemtype": "property",
+            "name": "sequenceEnd",
+            "type": "{integer}",
+            "default": "100000",
+            "access": "private",
+            "tagname": "",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 53,
+            "description": "Patterns in cluster.",
+            "itemtype": "property",
+            "name": "patterns",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of models.Pattern}",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 61,
+            "description": "Node who handles this cluster at the moment.",
+            "itemtype": "property",
+            "name": "handlingNode",
+            "access": "private",
+            "tagname": "",
+            "type": "{JDSM.Node}",
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 71,
+            "description": "Change chromosome number of cluster.",
+            "itemtype": "method",
+            "name": "changeChromosome",
+            "params": [
+                {
+                    "name": "newChromosome",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 80,
+            "description": "Resize sequence, if either parameter is null, the property doesn't change.",
+            "itemtype": "method",
+            "name": "resizeSequence",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "end",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 94,
+            "description": "Add pattern to cluster, sequenceStart and sequenceEnd will expand if neccessery.",
+            "itemtype": "method",
+            "name": "addPattern",
+            "params": [
+                {
+                    "name": "pattern",
+                    "description": "",
+                    "type": "models.Pattern"
+                }
+            ],
+            "throws": {
+                "description": "",
+                "type": "Error"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 120,
+            "description": "Get sequence bounds if pattern is added to cluster.",
+            "itemtype": "method",
+            "name": "simulateAddPattern",
+            "params": [
+                {
+                    "name": "pattern",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "sequenceStart, sequenceEnd, sequenceLength",
+                "type": "Object"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 146,
+            "description": "Set new handling node.",
+            "itemtype": "method",
+            "name": "setHandlingNode",
+            "params": [
+                {
+                    "name": "newNode",
+                    "description": "",
+                    "type": "JDSM.Node"
+                }
+            ],
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 155,
+            "description": "Get node set to this cluster.",
+            "itemtype": "method",
+            "name": "getHandlingNode",
+            "return": {
+                "description": "",
+                "type": "JDSM.Node"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 164,
+            "description": "Getter of chromosome number",
+            "itemtype": "method",
+            "name": "getChromosome",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 173,
+            "description": "Getter of sequence start",
+            "itemtype": "method",
+            "name": "getSequenceStart",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 182,
+            "description": "Getter of sequence end",
+            "itemtype": "method",
+            "name": "getSequenceEnd",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 191,
+            "description": "Get sequence length.",
+            "nethod": "getSequenceLength",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 200,
+            "description": "Get all patterns of this cluster.",
+            "itemtype": "method",
+            "name": "getPatterns",
+            "return": {
+                "description": "",
+                "type": "Array of Pattern"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\cluster.js",
+            "line": 209,
+            "description": "Get all properties, used during testing.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Cluster",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 17,
+            "description": "Ideal sequence length of cluster.",
+            "itemtype": "property",
+            "name": "idealSequenceLength",
+            "type": "{integer}",
+            "default": "DNAAnalysis.Settings.optimalClusterSize",
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 25,
+            "description": "Array of 23 arrays of clusters. One array for each chromosome.",
+            "itemtype": "property",
+            "name": "clusters",
+            "type": "{Array of Array of Cluster}",
+            "access": "private",
+            "tagname": "",
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 39,
+            "description": "Increment after every creation of cluster -> unique id",
+            "itemtype": "property",
+            "name": "clusterIndexFactory",
+            "access": "private",
+            "tagname": "",
+            "type": "{number}",
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 47,
+            "description": "Complex object for tracking information which clusters have been send to calculation for particular sample.\nIt is created and manipulated by getClusterForSample and finishSample methods.",
+            "itemtype": "property",
+            "name": "samplesProgress",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 56,
+            "description": "Find clusters which collide with pattern.",
+            "itemtype": "method",
+            "name": "findCollideClustersWithPattern",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "pattern",
+                    "description": "",
+                    "type": "Pattern"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array of Cluster"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 87,
+            "description": "Merge 2 clusters into new one.",
+            "itemtype": "method",
+            "name": "mergeClusters",
+            "params": [
+                {
+                    "name": "cluster1",
+                    "description": "",
+                    "type": "Cluster"
+                },
+                {
+                    "name": "cluster2",
+                    "description": "",
+                    "type": "Cluster"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Cluster"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 111,
+            "description": "Add one pattern. It either add new cluster or extend existing one.",
+            "itemtype": "method",
+            "name": "addPattern",
+            "params": [
+                {
+                    "name": "pattern",
+                    "description": "",
+                    "type": "Pattern"
+                }
+            ],
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 177,
+            "description": "Calls addPattern on multiple patterns.",
+            "itemtype": "method",
+            "name": "addPatterns",
+            "params": [
+                {
+                    "name": "patterns",
+                    "description": "",
+                    "type": "Array of Pattern"
+                }
+            ],
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 189,
+            "description": "Merge neighbour clusters to eliminate small",
+            "itemtype": "method",
+            "name": "finalizeClustering",
+            "access": "private",
+            "tagname": "",
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 225,
+            "description": "Returns first not already provided cluster for particular sample defined by unique sampleId.",
+            "itemtype": "method",
+            "name": "getClusterForSample",
+            "params": [
+                {
+                    "name": "chromosome",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sampleId",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sequenceStart",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sequenceEnd",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array of DNAAnalysis.Cluster"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 256,
+            "description": "Removes object with progress for particular sample in addition returns clusters which may have\npartially patterns inside sequence => not all cluster is inside sequence.",
+            "itemtype": "method",
+            "name": "finishAnalyzingSample",
+            "params": [
+                {
+                    "name": "sampleId",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "chromosome",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sequenceStart",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sequenceEnd",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array of DNAAnalysis.Cluster"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 289,
+            "description": "Getter of clusters, it is array of 23 arrays of n clusters.",
+            "itemtype": "method",
+            "name": "getClusters",
+            "return": {
+                "description": "",
+                "type": "Array of 23 arrays"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 298,
+            "description": "Get all clusters independent on chromosome number.",
+            "itemtype": "method",
+            "name": "getAllClustersAsArray",
+            "return": {
+                "description": "",
+                "type": "Array of DNAAnalysis.Cluster"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 310,
+            "description": "Returns count of all clusters in handler. This method is preferable then getAllClustersAsArray.length, because\ndoesn't create array.",
+            "itemtype": "method",
+            "name": "allClustersCount",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\clusterHandler.js",
+            "line": 324,
+            "description": "Return options of clusterHandler",
+            "itemtype": "method",
+            "name": "getOptions",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ClusterHandler",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 22,
+            "description": "Cluster handler property for managing clusters.",
+            "itemtype": "property",
+            "name": "clusterHandler",
+            "access": "private",
+            "tagname": "",
+            "type": "{DNAAnalysis.ClusterHandler}",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 30,
+            "description": "Local manager of nodes. It is handled by registerNode and unregisterNode callbacks.",
+            "itemtype": "property",
+            "name": "nodes",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array of Object}",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 38,
+            "is_constructor": 1,
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 56,
+            "description": "Method for determining if we have enough nodes for redistribution of clusters on Nodes.",
+            "itemtype": "method",
+            "name": "isCachingClustersInNodes",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 66,
+            "description": "Create and send request for analyze to cluster's node.",
+            "itemtype": "method",
+            "name": "analyzeCluster",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "{DNAAnalysis.SampleReader]",
+                    "description": "sampleReader"
+                },
+                {
+                    "name": "cluster",
+                    "description": "",
+                    "type": "DNAAnalysis.Cluster"
+                },
+                {
+                    "name": "sampleId",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 134,
+            "description": "Equivalent to analyzeCluster method but with array of clusters.",
+            "itemtype": "method",
+            "name": "analyzeClusters",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "sampleReader",
+                    "description": "",
+                    "type": "DNAAnalysis.SampleReader"
+                },
+                {
+                    "name": "clusters",
+                    "description": "",
+                    "type": "Array of DNAAnalysis.Cluster"
+                },
+                {
+                    "name": "sampleId",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 148,
+            "description": "Remove specific number of clusters from each node and return array of these clusters.",
+            "itemtype": "method",
+            "name": "removeClustersFromNodes",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "numberOfRemovedClusters",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array of clusters"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 178,
+            "description": "Add clusters evenly to all nodes.",
+            "itemtype": "method",
+            "name": "distributeClustersToNodes",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "clusters",
+                    "description": "",
+                    "type": "Array of DNAAnalysis.Cluster"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 219,
+            "description": "Callback when new Node is registered.",
+            "itemtype": "method",
+            "name": "registerNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "JDSM.Node"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 255,
+            "description": "Callback when Node disconnects",
+            "itemtype": "method",
+            "name": "unregisterNode",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "JDSM.Node"
+                },
+                {
+                    "name": "pendingRequests",
+                    "description": "",
+                    "type": "Array of JDSM.Request"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 279,
+            "description": "A method called in the beginning of calculation, after first node has connected and calculation\nmay begun. We seek all not finished samples and make steps to finish them.",
+            "itemtype": "method",
+            "name": "initialCalculation",
+            "access": "private",
+            "tagname": "",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 296,
+            "description": "Similar method to analyzeSample but with difference, that some of patterns have already been\nresolved so we don't want to call them again.",
+            "itemtype": "method",
+            "name": "analyzePartial",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "sample",
+                    "description": "",
+                    "type": "models.Sample"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 325,
+            "description": "Filter clusters where all patterns are resolved for sample. If one or more are not resolved (hasn't got result)\nwe return that cluster in return and is put for further proceed.",
+            "itemtype": "method",
+            "name": "filterDoneClusters",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "sample",
+                    "description": "",
+                    "type": "models.Sample"
+                },
+                {
+                    "name": "clusters",
+                    "description": "",
+                    "type": "Array of DNAAnalysis.Cluster"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function(clusters)"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array of DNAAnalysis.Cluster"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\index.js",
+            "line": 354,
+            "description": "Start analyzing sample.",
+            "itemtype": "method",
+            "name": "analyzeSample",
+            "params": [
+                {
+                    "name": "sample",
+                    "description": "database object",
+                    "type": "models.Sample"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 7,
+            "description": "Sequence of interest",
+            "itemtype": "property",
+            "name": "sequence",
+            "access": "private",
+            "tagname": "",
+            "type": "{string}",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 15,
+            "description": "Begining index of sequence.",
+            "itemtype": "property",
+            "name": "startIndex",
+            "access": "private",
+            "tagname": "",
+            "type": "{integer}",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 23,
+            "description": "Sequence might contain multiple chromosomes, defined by certain rules defined in DNAAnalysis.index",
+            "itemtype": "property",
+            "name": "actualChrosome",
+            "access": "private",
+            "tagname": "",
+            "type": "{integer}",
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 32,
+            "description": "Add chunk of data to sequence.",
+            "itemtype": "method",
+            "name": "addChunk",
+            "params": [
+                {
+                    "name": "chunk",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "endChromosomeCallback(sequence,",
+                    "description": "chromosomeNumber, startIndex)",
+                    "type": "Function"
+                }
+            ],
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 66,
+            "description": "Trim sequence to new start index.",
+            "itemtype": "method",
+            "name": "trimBeginToIndex",
+            "params": [
+                {
+                    "name": "newStartIndex",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "throws": {
+                "description": "Error('Can\\'t trim to index before actual')"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 80,
+            "description": "Getter for startIndex",
+            "itemtype": "method",
+            "name": "getStartIndex",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 89,
+            "description": "Getter for endIndex, simple calculation as startIndex + length of sequence",
+            "itemtype": "method",
+            "name": "getEndIndex",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 98,
+            "description": "Getter for sequence.",
+            "itemtype": "method",
+            "name": "getSequence",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 107,
+            "description": "Returns part of sequence if whole sequence from startIndex to endIndex is loaded in sequence,\notherwise return null.",
+            "itemtype": "method",
+            "name": "getPartOfSequence",
+            "params": [
+                {
+                    "name": "_startIndex",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "_endIndex",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String|null"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\sampleReader.js",
+            "line": 122,
+            "description": "Getter for actual chromosome number of sequence in sequence property.",
+            "itemtype": "method",
+            "name": "getChromosomeNumber",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "SampleReader",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\settings.js",
+            "line": 8,
+            "description": "Default value for DNAAnalysis.ClusterHandler for ideal sequence length of one cluster.\nIMPORTANT: if pattern's sequence is greater than optimal it WILL NOT be splitted, cluster size\nwill be the length of pattern's sequence length instead. So it MIGHT happen that optimalClusterSize = 100\nbut real cluster length may be 100 000.",
+            "itemtype": "property",
+            "name": "optimalClusterSize",
+            "type": "{integer}",
+            "default": "100",
+            "class": "Settings",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "DNAAnalysis\\settings.js",
+            "line": 19,
+            "description": "Cluster - Nodes ratio when module distribute clusters to Node's cache and will send only\nsample sequence without cluster's patterns.",
+            "itemtype": "property",
+            "name": "clusterNodeRatioForCache",
+            "type": "{float}",
+            "default": "3",
+            "example": [
+                "\n   3 means that if there are more than 3 clusters on 1 node, we will resend cluster's data with\n   each request, if less we will re-distribute clusters to all nodes evenly and in requests we\n   will re-send only sample's sequence"
+            ],
+            "class": "Settings",
+            "module": "DNAAnalysis"
+        },
+        {
+            "file": "custom\\authentification.js",
+            "line": 11,
+            "description": "Initialize all authorization + authentification middlewares and dependencies",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "",
+                    "type": "Expressjs app instance"
+                }
+            ],
+            "class": "Generator",
+            "module": "Authentification"
+        },
+        {
+            "file": "custom\\authentification.js",
+            "line": 62,
+            "description": "Our role based authentification function",
+            "params": [
+                {
+                    "name": "roles",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Middleware function"
+            },
+            "class": "Generator",
+            "module": "Authentification"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 13,
+            "description": "Object with static settings for class.",
+            "itemtype": "property",
+            "name": "settings",
+            "type": "{Object}",
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 24,
+            "description": "Creates control string for sequence with chromosome (0-indexed!!!) and\nsequence start position.",
+            "itemtype": "method",
+            "name": "getControlString",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "chromosome",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "sequenceStart",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 37,
+            "description": "Returns random nucleotid sign. (C || G || T || A)",
+            "itemtype": "method",
+            "name": "getRandomNucleotid",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Char"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 47,
+            "description": "Create random DNA sequence of specified length.",
+            "itemtype": "method",
+            "name": "getRandomSequence",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "length",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 62,
+            "description": "Cluster patterns into array of arrays, where every index represents\nchromosome (0-indexed). Patterns in chromosome are sorted.",
+            "itemtype": "method",
+            "name": "clusterPatternsByChromosomes",
+            "params": [
+                {
+                    "name": "patterns",
+                    "description": "",
+                    "type": "Models.Pattern[]"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Pattern[][]"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 90,
+            "description": "Generate minimal sequence for corret patterns.",
+            "itemtype": "method",
+            "name": "generateSequence",
+            "access": "private",
+            "tagname": "",
+            "throws": {
+                "description": "Error('Pattern collision')"
+            },
+            "params": [
+                {
+                    "name": "patterns",
+                    "description": "",
+                    "type": "Models.Pattern[]"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 146,
+            "description": "Creates sample record for user defined by username and\npositive for all patterns in patternIds array.",
+            "itemtype": "method",
+            "name": "createSample",
+            "params": [
+                {
+                    "name": "username",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "patternIds",
+                    "description": "",
+                    "type": "Integer[]"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function(Sample)"
+                }
+            ],
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 196,
+            "description": "Call private method generateSequence.",
+            "itemtype": "method",
+            "name": "generateSequence",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Models.Pattern[]"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\patternCrawler.js",
+            "line": 7,
+            "description": "Remove all database entries of patterns",
+            "itemtype": "method",
+            "name": "clearAll",
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\patternCrawler.js",
+            "line": 21,
+            "description": "Saving pattern to database, data attributes are name, description, data, chromosome, isForwardStrand",
+            "itemtype": "method",
+            "name": "savePattern",
+            "params": [
+                {
+                    "name": "data",
+                    "description": ""
+                }
+            ],
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\patternCrawler.js",
+            "line": 40,
+            "description": "Actual application logic.\n\nIt is optimize for crawling ensembl.org @ 2.3.2015",
+            "itemtype": "method",
+            "name": "crawl",
+            "params": [
+                {
+                    "name": "numberOfPatterns",
+                    "description": "- number of patterns to fetch",
+                    "type": "Integer"
+                },
+                {
+                    "name": "callback",
+                    "description": "- callback called after finished callback(err, result)",
+                    "type": "Function"
+                }
+            ],
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\usersStorage.js",
+            "line": 11,
+            "description": "Object property where key represents userId-s and values are sockets of particular\nuser.",
+            "itemtype": "property",
+            "name": "sockets",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\usersStorage.js",
+            "line": 21,
+            "description": "Add user's socket to storage.",
+            "itemtype": "method",
+            "name": "addSocket",
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "socket.io Client"
+                },
+                {
+                    "name": "userId",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\usersStorage.js",
+            "line": 31,
+            "description": "Removes user from storage by socket.",
+            "itemtype": "method",
+            "name": "removeSocketBySocket",
+            "params": [
+                {
+                    "name": "socket",
+                    "description": "",
+                    "type": "socket.io Client"
+                }
+            ],
+            "return": {
+                "description": "if socket has been removed",
+                "type": "Boolean"
+            },
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\usersStorage.js",
+            "line": 47,
+            "description": "Removes user from storage by userId.",
+            "itemtype": "method",
+            "name": "removeSocketByUserId",
+            "params": [
+                {
+                    "name": "userId",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "if socket has been removed",
+                "type": "Boolean"
+            },
+            "class": "UsersStorage",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\usersStorage.js",
+            "line": 61,
+            "description": "Sends raw object data to socket of userId if defined. For correct handling on client side\neventName is provided.l",
+            "params": [
+                {
+                    "name": "userId",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "success send",
+                "type": "Boolean"
+            },
+            "class": "UsersStorage",
+            "module": "Custom"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\anl.js:157"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\masterRequest.js:139"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\node.js:119"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\node.js:247"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\node.js:265"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\request.js:108"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " JDSM\\request.js:117"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\client.js:37"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\client.js:88"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\client.js:106"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:155"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:164"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:173"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:182"
+        },
+        {
+            "message": "unknown tag: nethod",
+            "line": " DNAAnalysis\\cluster.js:191"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:191"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\cluster.js:200"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:225"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:256"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:289"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:298"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\clusterHandler.js:310"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\index.js:56"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\index.js:148"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\index.js:325"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\sampleReader.js:80"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\sampleReader.js:89"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\sampleReader.js:98"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\sampleReader.js:107"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " DNAAnalysis\\sampleReader.js:122"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\authentification.js:62"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:24"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:37"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:47"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:62"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:90"
+        },
+        {
+            "message": "param name missing: {Models.Pattern[]}",
+            "line": " custom\\generator.js:196"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\generator.js:196"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\usersStorage.js:31"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\usersStorage.js:47"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " custom\\usersStorage.js:61"
+        },
+        {
+            "message": "Missing item type",
+            "line": " JDSM\\anl.js:25"
+        },
+        {
+            "message": "Missing item type\nPing client handler.",
+            "line": " JDSM\\client.js:20"
+        },
+        {
+            "message": "Missing item type\nBenchmark client handler.",
+            "line": " JDSM\\client.js:27"
+        },
+        {
+            "message": "Missing item type",
+            "line": " JDSM\\node.js:180"
+        },
+        {
+            "message": "Missing item type\nRegister all tasks for Node to handle",
+            "line": " DNAAnalysis\\client.js:127"
+        },
+        {
+            "message": "Missing item type\nGet sequence length.",
+            "line": " DNAAnalysis\\cluster.js:191"
+        },
+        {
+            "message": "Missing item type",
+            "line": " DNAAnalysis\\index.js:38"
+        },
+        {
+            "message": "Missing item type\nInitialize all authorization + authentification middlewares and dependencies",
+            "line": " custom\\authentification.js:11"
+        },
+        {
+            "message": "Missing item type\nOur role based authentification function",
+            "line": " custom\\authentification.js:62"
+        },
+        {
+            "message": "Missing item type\nSends raw object data to socket of userId if defined. For correct handling on client side\neventName is provided.l",
+            "line": " custom\\usersStorage.js:61"
+        }
+    ]
+}

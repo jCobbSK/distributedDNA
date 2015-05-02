@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JDSM\client.js - diplomka</title>
+    <title>JDSM\index.js - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -82,99 +92,26 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: JDSM\client.js</h1>
+<h1 class="file-heading">File: JDSM\index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * Client class handling front-end interaction. It is required to browserify this module before
- * use.
- * @class Client
+ * Main file for Javascript Distributive System Module (JDSM).
+ *
  * @module JDSM
+ *
  * @constructor
- * @param {Url string} socketUrl - socket server address (default http://localhost:3000)
+ * @param {http&#x27;s module Server object} server
  */
-var socketIoClient = require(&#x27;socket.io-client&#x27;)
-module.exports = function(socketUrl) {
-  /**
-   * Default socket object for communication with server.
-   * @property socket
-   * @private
-   * @type {socket.client.io io object}
-   */
-  var socket = socketIoClient((socketUrl) ? socketUrl : &#x27;http://localhost:3000&#x27;);
 
-  socket.on(&#x27;ping&#x27;, function(){
-    socket.emit(&#x27;ping&#x27;);
-  });
+module.exports = function(server) {
+  var socketsIO = require(&#x27;socket.io&#x27;)(server);
 
-  /**
-   * Class passed to task callback. It&#x27;s purpose is to strap system data from request
-   * and put them back for respond so user can&#x27;t mess it up.
-   * @class RespondObject
-   * @for RespondObject
-   * @constructor
-   * @param {Object} serverData
-   * @param {socket.io-client Socket} socket
-   */
-  var RespondObject = function(serverData, socket) {
-    /**
-     * @property requestId
-     * @type Integer
-     * @private
-     */
-    var requestId = serverData[&#x27;requestId&#x27;];
+  var anl = require(&#x27;./anl&#x27;)(socketsIO, {});
 
-    /**
-     * @property masterRequestId
-     * @type Integer
-     * @private
-     */
-    var masterRequestId = serverData[&#x27;masterRequestId&#x27;];
-
-    /**
-     * @property socket
-     * @type {socket.io socket object}
-     * @private
-     */
-    var socket = socket;
-    return {
-      /**
-       * Respond method used as middleware to set required ids of request.
-       * @method respond
-       * @param {Object} data
-       */
-      respond: function(data) {
-        data[&#x27;requestId&#x27;] = requestId;
-        data[&#x27;masterRequestId&#x27;] = masterRequestId;
-        socket.emit(&#x27;results&#x27;, data);
-      }
-    }
-  }
-
-  return {
-    /**
-     * Browserify close scopes, so public method doesn&#x27;t have access to privates, so
-     * we need to set a property.
-     * @property socket
-     * @type {socket.io socket object}
-     */
-    socket: socket,
-
-    /**
-     * Register task based on eventName.
-     * @method registerTask
-     * @param {string} eventName
-     * @param {function(string: eventName, function(data, respondObject)} callback
-     */
-    registerTask: function(eventName, callback) {
-      this.socket.on(eventName, function(data){
-        callback(data, new RespondObject(data, socket));
-      });
-    }
-  }
+  return anl;
 }
-
     </pre>
 </div>
                     </div>

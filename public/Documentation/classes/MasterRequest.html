@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Request - diplomka</title>
+    <title>MasterRequest - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -82,12 +92,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Request Class</h1>
+<h1>MasterRequest Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/JDSM_request.js.html#l1"><code>JDSM\request.js:1</code></a>
+            Defined in: <a href="../files/JDSM_masterRequest.js.html#l1"><code>JDSM\masterRequest.js:1</code></a>
         </div>
 
             Module: <a href="../modules/JDSM.html">JDSM</a>
@@ -96,14 +106,14 @@
 
 
 <div class="box intro">
-    <p>Low level request object.</p>
+    <p>Class handling sync and async requests. It contains N requests.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Request" class="method item">
-            <h3 class="name"><code>Request</code></h3>
+        <div id="method_MasterRequest" class="method item">
+            <h3 class="name"><code>MasterRequest</code></h3>
         
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
@@ -123,7 +133,7 @@
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/JDSM_request.js.html#l1"><code>JDSM\request.js:1</code></a>
+                <a href="../files/JDSM_masterRequest.js.html#l1"><code>JDSM\masterRequest.js:1</code></a>
                 </p>
         
         
@@ -145,7 +155,7 @@
         
         
                             <div class="param-description">
-                                <p>Data to init options</p>
+                                <p>Data to initial set options</p>
         
                             </div>
         
@@ -156,63 +166,43 @@
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Required unique id</p>
+                                            <p>Required property of ID, unique identifier</p>
         
                                         </div>
         
                                     </li>
                                     <li class="param">
-                                            <code class="param-name optional">[node]</code>
-                                            <span class="type"><a href="../classes/Node.html" class="crosslink">Node</a></span>
+                                            <code class="param-name optional">[type]</code>
+                                            <span class="type">String</span>
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Required node to which request is sent</p>
+                                            <p>Type of request, possible values are: &#39;async&#39; or &#39;sync&#39;</p>
         
                                         </div>
         
                                     </li>
                                     <li class="param">
-                                            <code class="param-name optional">[masterRequest]</code>
-                                            <span class="type"><a href="../classes/MasterRequest.html" class="crosslink">MasterRequest</a></span>
+                                            <code class="param-name optional">[dependentRequests]</code>
+                                            <span class="type">Array of Request</span>
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Master request where request belongs</p>
+                                            <p>Array of low level requests for nodes</p>
         
                                         </div>
         
                                     </li>
                                     <li class="param">
-                                            <code class="param-name optional">[requestData]</code>
-                                            <span class="type">Object</span>
+                                            <code class="param-name optional">[callback]</code>
+                                            <span class="type">Function</span>
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Data which we want to send to node</p>
+                                            <p>Callback after request is done based on type</p>
         
                                         </div>
         
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name optional">[eventName]</code>
-                                                        <span class="type">String</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        Event name, based on that, Node knows what to do
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[data]</code>
-                                                        <span class="type">Object</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        Additional data
-                                                    </div>
-                                                </li>
-                                            </ul>
                                     </li>
                                 </ul>
                         </li>
@@ -244,16 +234,24 @@
                                 <a href="#method_getId">getId</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_getResponse">getResponse</a>
+                            <li class="index-item method private">
+                                <a href="#method_handleAsync">handleAsync</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_handleResponse">handleResponse</a>
 
                             </li>
+                            <li class="index-item method private">
+                                <a href="#method_handleSync">handleSync</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_run">run</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setDependentRequests">setDependentRequests</a>
 
                             </li>
                     </ul>
@@ -264,27 +262,19 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property private">
+                                <a href="#property_callback">callback</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_dependentRequests">dependentRequests</a>
+
+                            </li>
+                            <li class="index-item property private">
                                 <a href="#property_id">id</a>
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_masterRequest">masterRequest</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_node">node</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_requestData">requestData</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_response">response</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_self">self</a>
+                                <a href="#property_type">type</a>
 
                             </li>
                     </ul>
@@ -314,7 +304,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_request.js.html#l108"><code>JDSM\request.js:108</code></a>
+        <a href="../files/JDSM_masterRequest.js.html#l139"><code>JDSM\masterRequest.js:139</code></a>
         </p>
 
 
@@ -322,7 +312,7 @@
     </div>
 
     <div class="description">
-        <p>Basic getter</p>
+        <p>Getter of id</p>
 
     </div>
 
@@ -337,16 +327,20 @@
 
 
 </div>
-<div id="method_getResponse" class="method item">
-    <h3 class="name"><code>getResponse</code></h3>
+<div id="method_handleAsync" class="method item private">
+    <h3 class="name"><code>handleAsync</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>request</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
 
 
+        <span class="flag private">private</span>
 
 
 
@@ -355,7 +349,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_request.js.html#l117"><code>JDSM\request.js:117</code></a>
+        <a href="../files/JDSM_masterRequest.js.html#l72"><code>JDSM\masterRequest.js:72</code></a>
         </p>
 
 
@@ -363,18 +357,27 @@
     </div>
 
     <div class="description">
-        <p>Basic getter</p>
+        <p>During asynchronous request, callback is called after all dependent requests are resolved.</p>
 
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
 
-        <div class="returns">
-            <h4>Returns:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">request</code>
+                        <span class="type">Request object</span>
 
-            <div class="returns-description">
-                        <span class="type">Object</span>:
-            </div>
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
         </div>
+
 
 
 </div>
@@ -384,7 +387,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>_response</code>
+                        <code>request</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -399,7 +402,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_request.js.html#l73"><code>JDSM\request.js:73</code></a>
+        <a href="../files/JDSM_masterRequest.js.html#l99"><code>JDSM\masterRequest.js:99</code></a>
         </p>
 
 
@@ -407,7 +410,7 @@
     </div>
 
     <div class="description">
-        <p>Low level handling.</p>
+        <p>Handling response of child requests.</p>
 
     </div>
 
@@ -416,13 +419,67 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_response</code>
+                        <code class="param-name">request</code>
                         <span class="type">Object</span>
 
 
                     <div class="param-description">
-                        <p>Data object directly from client socket.</p>
+                         
+                    </div>
 
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_handleSync" class="method item private">
+    <h3 class="name"><code>handleSync</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>request</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/JDSM_masterRequest.js.html#l51"><code>JDSM\masterRequest.js:51</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>During synchronous request, if the response from some of the dependentRequests request is
+passed into next request, and after the last one is resolved, callback is called.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">request</code>
+                        <span class="type">Request object</span>
+
+
+                    <div class="param-description">
+                         
                     </div>
 
                 </li>
@@ -438,10 +495,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>_requestData</code>
-                </li>
-                <li class="arg">
-                        <code>prerequisites</code>
+                        <code class="optional">[optional]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -456,7 +510,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_request.js.html#l86"><code>JDSM\request.js:86</code></a>
+        <a href="../files/JDSM_masterRequest.js.html#l117"><code>JDSM\masterRequest.js:117</code></a>
         </p>
 
 
@@ -464,7 +518,7 @@
     </div>
 
     <div class="description">
-        <p>Send request to node for calculating.</p>
+        <p>Start request (send requests to nodes)</p>
 
     </div>
 
@@ -473,29 +527,67 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_requestData</code>
-                        <span class="type">Object</span>
+                        <code class="param-name optional">[optional]</code>
+                        <span class="type">Function</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <ul>
-<li>object send to node (override Object provided to constructor),<pre><code>                         required attributes are eventName and data
-</code></pre></li>
-</ul>
+                        <p>callback overrided callback from constructor</p>
 
                     </div>
 
                 </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setDependentRequests" class="method item">
+    <h3 class="name"><code>setDependentRequests</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>requests</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/JDSM_masterRequest.js.html#l148"><code>JDSM\masterRequest.js:148</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Setter of dependent requests</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">prerequisites</code>
+                        <code class="param-name">requests</code>
                         <span class="type">Object</span>
 
 
                     <div class="param-description">
-                        <ul>
-<li>object append to attribute &#39;prerequisites&#39; of requestData</li>
-</ul>
-
+                         
                     </div>
 
                 </li>
@@ -510,6 +602,58 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+                    <div id="property_callback" class="property item private">
+                        <h3 class="name"><code>callback</code></h3>
+                        <span class="type">Function</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/JDSM_masterRequest.js.html#l43"><code>JDSM\masterRequest.js:43</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Callback function called after all dependentRequests are handled, based on type.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_dependentRequests" class="property item private">
+                        <h3 class="name"><code>dependentRequests</code></h3>
+                        <span class="type">Array of Request objects</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/JDSM_masterRequest.js.html#l35"><code>JDSM\masterRequest.js:35</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Requests of master request. They are dealt properly based on type.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
                     <div id="property_id" class="property item private">
                         <h3 class="name"><code>id</code></h3>
                         <span class="type">Number</span>
@@ -522,23 +666,23 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_request.js.html#l29"><code>JDSM\request.js:29</code></a>
+                            <a href="../files/JDSM_masterRequest.js.html#l18"><code>JDSM\masterRequest.js:18</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Unique id of request</p>
+                            <p>Unique id of masterRequest</p>
                     
                         </div>
                     
                     
                     
                     </div>
-                    <div id="property_masterRequest" class="property item private">
-                        <h3 class="name"><code>masterRequest</code></h3>
-                        <span class="type">JDSM.Request</span>
+                    <div id="property_type" class="property item private">
+                        <h3 class="name"><code>type</code></h3>
+                        <span class="type">String</span>
                     
                     
                             <span class="flag private">private</span>
@@ -548,121 +692,18 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_request.js.html#l47"><code>JDSM\request.js:47</code></a>
+                            <a href="../files/JDSM_masterRequest.js.html#l26"><code>JDSM\masterRequest.js:26</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Master request object.</p>
+                            <p>Type of request, possible values: &#39;async&#39;, &#39;sync&#39;</p>
                     
                         </div>
                     
-                    
-                    
-                    </div>
-                    <div id="property_node" class="property item private">
-                        <h3 class="name"><code>node</code></h3>
-                        <span class="type">JDSM.node</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_request.js.html#l38"><code>JDSM\request.js:38</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Node -&gt; representing user</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_requestData" class="property item private">
-                        <h3 class="name"><code>requestData</code></h3>
-                        <span class="type">Object json stringifyable object so it can be send to node</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_request.js.html#l63"><code>JDSM\request.js:63</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Object consists of &#39;eventName&#39; and &#39;data&#39;</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_response" class="property item private">
-                        <h3 class="name"><code>response</code></h3>
-                        <span class="type">Object</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_request.js.html#l55"><code>JDSM\request.js:55</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Response for the request from client node.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_self" class="property item private">
-                        <h3 class="name"><code>self</code></h3>
-                        <span class="type">Request class</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_request.js.html#l21"><code>JDSM\request.js:21</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Self referencing property</p>
-                    
-                        </div>
-                    
+                            <p><strong>Default:</strong> &#x27;async&#x27;</p>
                     
                     
                     </div>

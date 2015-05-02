@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JDSM\request.js - diplomka</title>
+    <title>JDSM\client.js - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -82,136 +92,124 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: JDSM\request.js</h1>
+<h1 class="file-heading">File: JDSM\client.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * Low level request object.
- * @class Request
- *
- * @constructor
- * @param {Object} [options] Data to init options
- * @param {Integer} [options.id] Required unique id
- * @param {Node} [options.node] Required node to which request is sent
- * @param {MasterRequest} [options.masterRequest] Master request where request belongs
- * @param {Object} [options.requestData] Data which we want to send to node
- * @param {String} [options.requestData.eventName] Event name, based on that, Node knows what to do
- * @param {Object} [options.requestData.data] Additional data
+ * Client class handling front-end interaction. It is required to browserify this module before
+ * use.
+ * @class Client
  * @module JDSM
+ * @constructor
+ * @param {Url string} socketUrl - socket server address (default http://localhost:3000)
  */
-module.exports = function(options) {
-  //if options doesn&#x27;t contains required params throw err
-  if (!options[&#x27;id&#x27;] || !options[&#x27;node&#x27;])
-    throw new Error(&#x27;Request can\&#x27;t be created without id and Node&#x27;);
-
+var socketIoClient = require(&#x27;socket.io-client&#x27;),
+  randomString = require(&#x27;randomstring&#x27;);
+module.exports = function(socketUrl) {
+  /**
+   * Default socket object for communication with server.
+   * @property socket
+   * @private
+   * @type {socket.client.io io object}
+   */
+  var socket = socketIoClient((socketUrl) ? socketUrl : &#x27;http://localhost:3000&#x27;);
 
   /**
-   * Self referencing property
-   * @property self
-   * @private
-   * @type {Request class}
+   * Ping client handler.
    */
-  var self = this;
+  socket.on(&#x27;ping&#x27;, function(data){
+    socket.emit(&#x27;ping&#x27;, data);
+  });
 
   /**
-   * Unique id of request
-   * @property id
-   * @private
-   * @type {number}
-   * @required
+   * Benchmark client handler.
    */
-  var id = options[&#x27;id&#x27;];
+  socket.on(&#x27;benchmark&#x27;, function(data){
+    var received = Date.now();
+    //do benchmark tests on data
+    var dataString = data[&#x27;randomString&#x27;];
+    for (var i= 0, len = 1000; i&lt;len; i++) {
+      //generate regexp string
+      var regExp = new RegExp(randomString.generate(25));
+      regExp.test(dataString);
+    }
+    var calculationsDone = Date.now();
+    socket.emit(&#x27;benchmark&#x27;, {
+      data: data[&#x27;randomString&#x27;],
+      sendTimestamp: data[&#x27;sendTimestamp&#x27;],
+      receivedTimestamp: received,
+      calculationsDoneTimestamp: calculationsDone
+    });
+  });
 
   /**
-   * Node -&gt; representing user
-   * @property node
-   * @private
-   * @type {JDSM.node}
-   * @required
+   * Class passed to task callback. It&#x27;s purpose is to strap system data from request
+   * and put them back for respond so user can&#x27;t mess it up.
+   * @class RespondObject
+   * @for RespondObject
+   * @constructor
+   * @param {Object} serverData
+   * @param {socket.io-client Socket} socket
    */
-  var node = options[&#x27;node&#x27;];
+  var RespondObject = function(serverData, socket) {
+    /**
+     * @property requestId
+     * @type Integer
+     * @private
+     */
+    var requestId = serverData[&#x27;requestId&#x27;];
 
-  /**
-   * Master request object.
-   * @property masterRequest
-   * @private
-   * @type {JDSM.Request}
-   */
-  var masterRequest = options[&#x27;masterRequest&#x27;] || null;
+    /**
+     * @property masterRequestId
+     * @type Integer
+     * @private
+     */
+    var masterRequestId = serverData[&#x27;masterRequestId&#x27;];
 
-  /**
-   * Response for the request from client node.
-   * @property response
-   * @private
-   * @type {Object}
-   */
-  var response = null;
-
-  /**
-   * Object consists of &#x27;eventName&#x27; and &#x27;data&#x27;
-   * @property requestData
-   * @private
-   * @type {Object} json stringifyable object so it can be send to node
-   */
-  var requestData = options[&#x27;requestData&#x27;] || {};
+    /**
+     * @property socket
+     * @type {socket.io socket object}
+     * @private
+     */
+    var socket = socket;
+    return {
+      /**
+       * Respond method used as middleware to set required ids of request.
+       * @method respond
+       * @param {Object} data
+       */
+      respond: function(data) {
+        data[&#x27;requestId&#x27;] = requestId;
+        data[&#x27;masterRequestId&#x27;] = masterRequestId;
+        socket.emit(&#x27;results&#x27;, data);
+      }
+    }
+  }
 
   return {
+    /**
+     * Browserify close scopes, so public method doesn&#x27;t have access to privates, so
+     * we need to set a property.
+     * @property socket
+     * @type {socket.io socket object}
+     */
+    socket: socket,
 
     /**
-     * Low level handling.
-     * @method handleResponse
-     * @param {Object} _response Data object directly from client socket.
+     * Register task based on eventName.
+     * @method registerTask
+     * @param {string} eventName
+     * @param {function(string: eventName, function(data, respondObject)} callback
      */
-    handleResponse: function(_response) {
-      if (!masterRequest)
-        throw Error(&#x27;Can\&#x27;t handle response of request without mainRequest&#x27;);
-      response = _response;
-      node.setIsFree(true);
-      masterRequest.handleResponse(self);
-    },
-
-    /**
-     * Send request to node for calculating.
-     * @method run
-     * @param {Object} _requestData - object send to node (override Object provided to constructor),
-     *                                required attributes are eventName and data
-     * @param {Object} prerequisites - object append to attribute &#x27;prerequisites&#x27; of requestData
-     */
-    run: function(_requestData, prerequisites) {
-      if (!node)
-        throw new Error(&#x27;Not defined node in request&#x27;);
-
-      node.setIsFree(false);
-      requestData = _requestData || requestData;
-
-      if (prerequisites)
-        requestData[&#x27;data&#x27;][&#x27;prerequisites&#x27;] = prerequisites;
-
-      requestData[&#x27;requestId&#x27;] = id;
-      requestData[&#x27;masterRequestId&#x27;] = masterRequest.getId();
-      node.sendReq(requestData[&#x27;eventName&#x27;], requestData[&#x27;data&#x27;]);
-    },
-
-    /**
-     * Basic getter
-     * @method getId
-     * @returns {number}
-     */
-    getId: function() {
-      return id;
-    },
-
-    /**
-     * Basic getter
-     * @method getResponse
-     * @returns {Object}
-     */
-    getResponse: function() {
-      return response;
+    registerTask: function(eventName, callback) {
+      this.socket.on(eventName, function(data){
+        callback(data, new RespondObject(data, socket));
+      });
     }
   }
 }
+
     </pre>
 </div>
                     </div>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DNAAnalysis\clusterHandler.js - diplomka</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
+                                <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
+                                <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
+                                <li><a href="../classes/Request.html">Request</a></li>
+                                <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
+                                <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
+                                <li><a href="../modules/JDSM.html">JDSM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: DNAAnalysis\clusterHandler.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Handler for clusters. Manages creation of clusters.
+ * @class ClusterHandler
+ * @constructor
+ * @param {Object} [options] Hash with options into constructor
+ * @param {Integer} [options.idealSequenceLength] Ideal sequence length of cluster. (default = infinite)
+ *
+ * @module DNAAnalysis
+ */
+var _ = require(&#x27;underscore&#x27;),
+    Cluster = require(&#x27;./cluster&#x27;),
+    Settings = require(&#x27;./settings&#x27;);
+module.exports = function(options) {
+  if (!options)
+    options = {};
+
+  /**
+   * Ideal sequence length of cluster.
+   * @property idealSequenceLength
+   * @type {integer}
+   * @default DNAAnalysis.Settings.optimalClusterSize
+   */
+  var idealSequenceLength = options[&#x27;idealSequenceLength&#x27;] || Settings.optimalClusterSize;
+
+  /**
+   * Array of 23 arrays of clusters. One array for each chromosome.
+   * @property clusters
+   * @type {Array of Array of Cluster}
+   * @private
+   */
+  var clusters = (function(){
+    var result = [];
+    for (var i= 0,len=23;i&lt;len;i++){
+      result.push([]);
+    }
+    return result;
+  })();
+
+  /**
+   * Increment after every creation of cluster -&gt; unique id
+   * @property clusterIndexFactory
+   * @private
+   * @type {number}
+   */
+  var clusterIndexFactory = 1;
+
+  /**
+   * Complex object for tracking information which clusters have been send to calculation for particular sample.
+   * It is created and manipulated by getClusterForSample and finishSample methods.
+   * @property samplesProgress
+   * @private
+   * @type {Object}
+   */
+  var samplesProgress = {};
+
+  /**
+   * Find clusters which collide with pattern.
+   * @method findCollideClustersWithPattern
+   * @private
+   * @param {Pattern} pattern
+   * @return {Array of Cluster}
+   */
+  var findCollideClustersWithPattern = function(pattern) {
+    var patternStart = pattern.sequenceStart;
+    var patternEnd = pattern.sequenceEnd;
+    var result = [];
+    _.each(clusters[pattern.chromosome-1], function(cluster){
+      //collide on right side of cluster
+      if (patternStart &gt; cluster.getSequenceStart() &amp;&amp; patternStart &lt; cluster.getSequenceEnd())
+        result.push(cluster);
+
+      //collide on left side of cluster
+      else if (patternEnd &gt; cluster.getSequenceStart() &amp;&amp; patternEnd &lt; cluster.getSequenceEnd())
+        result.push(cluster);
+
+      //cluster is inside pattern
+      else if (patternStart &lt; cluster.getSequenceStart() &amp;&amp; patternEnd &gt; cluster.getSequenceEnd())
+        result.push(cluster);
+
+      //pattern is inside cluster
+      else if (patternStart &gt; cluster.getSequenceStart() &amp;&amp; patternEnd &lt; cluster.getSequenceEnd())
+        result.push(cluster);
+    });
+    return result;
+  }
+
+  /**
+   * Merge 2 clusters into new one.
+   * @method mergeClusters
+   * @param {cluster} cluster1
+   * @param {cluster} cluster2
+   * @returns {Cluster}
+   */
+  var mergeClusters = function(cluster1, cluster2) {
+    var result = new Cluster({
+      id: clusterIndexFactory++,
+      chromosome: cluster1.getChromosome()
+    });
+
+    _.each(cluster1.getPatterns(), function(pattern){
+      result.addPattern(pattern);
+    });
+
+    _.each(cluster2.getPatterns(), function(pattern){
+      result.addPattern(pattern);
+    });
+    return result;
+  }
+
+  return {
+    /**
+     * Add one pattern. It either add new cluster or extend existing one.
+     * @method addPattern
+     * @param {Pattern} pattern
+     */
+    addPattern: function(pattern) {
+      var collidingClusters = findCollideClustersWithPattern(pattern);
+      //no colliding cluster -&gt; pattern is standalone -&gt; create new cluster
+      if (collidingClusters.length == 0) {
+        //create cluster
+        var c = new Cluster({
+          id:clusterIndexFactory++,
+          chromosome: pattern.chromosome
+        });
+        c.addPattern(pattern);
+        clusters[pattern.chromosome-1].push(c);
+        return;
+      }
+
+      if (collidingClusters.length == 1) {
+        //if cluster is inside pattern put pattern into cluster
+        if (pattern.sequenceStart &lt; collidingClusters[0].getSequenceStart() &amp;&amp;
+            pattern.sequenceEnd &gt; collidingClusters[0].getSequenceEnd()) {
+          collidingClusters[0].addPattern(pattern);
+          return;
+        }
+        //if pattern is inside cluster put pattern into cluster
+        if (pattern.sequenceStart &gt; collidingClusters[0].getSequenceStart() &amp;&amp;
+            pattern.sequenceEnd &lt; collidingClusters[0].getSequenceEnd()){
+          collidingClusters[0].addPattern(pattern);
+          return;
+        }
+
+        //if extended cluster is closer to goal length put pattern inside, otherwise create new cluster
+        var sequenceLengthAfterAdd = collidingClusters[0].simulateAddPattern(pattern)[&#x27;sequenceLength&#x27;];
+        if (Math.abs(sequenceLengthAfterAdd - idealSequenceLength) &lt; Math.abs(collidingClusters[0].getSequenceLength() - idealSequenceLength)) {
+          //add pattern inside cluster
+          collidingClusters[0].addPattern(pattern);
+          return;
+        } else {
+          //create cluster
+          var c = new Cluster({
+            id:clusterIndexFactory++,
+            chromosome: pattern.chromosome
+          });
+          c.addPattern(pattern);
+          clusters[pattern.chromosome-1].push(c);
+          return;
+        }
+
+      }
+
+      //colliding clusters &gt; 1 -&gt; need to select best one to add pattern
+      var addToIndex = 0;
+      var diffToIdeal = Math.abs(collidingClusters[0].simulateAddPattern(pattern)[&#x27;sequenceLength&#x27;] - idealSequenceLength);
+      for (var i= 1, len=collidingClusters.length; i&lt;len;i++){
+        var _diff = Math.abs(collidingClusters[i].simulateAddPattern(pattern)[&#x27;sequenceLength&#x27;] - idealSequenceLength);
+        if (_diff &lt; diffToIdeal) {
+          addToIndex = i;
+          diffToIdeal = _diff;
+        }
+      }
+
+      collidingClusters[addToIndex].addPattern(pattern);
+    },
+
+    /**
+     * Calls addPattern on multiple patterns.
+     * @method addPatterns
+     * @param {Array of Pattern} patterns
+     */
+    addPatterns: function(patterns) {
+      var self = this;
+      _.each(patterns, function(element, index, list){
+        self.addPattern(element);
+      });
+    },
+
+    /**
+     * Merge neighbour clusters to eliminate small
+     * @method finalizeClustering
+     * @private
+     */
+    finalizeClustering: function() {
+
+      for (var chromosomeIndex = 0, len = clusters.length; chromosomeIndex &lt; len; chromosomeIndex++) {
+        //sort clusters
+        clusters[chromosomeIndex].sort(function(c1, c2){
+          return c1.getSequenceStart() - c2.getSequenceStart();
+        });
+
+        var newArray = [];
+        //check for merge
+        var clustersArray = clusters[chromosomeIndex];
+        if (clustersArray.length &gt; 1) {
+          for (var i = 1, ilen = clustersArray.length; i &lt; ilen; i++) {
+            //if neighbour clusters collide and merged are smaller than idealSequenceLength -&gt; merge them
+            if (clustersArray[i].getSequenceStart() &lt; clustersArray[i-1].getSequenceEnd() &amp;&amp;
+                clustersArray[i].getSequenceEnd() - clustersArray[i-1].getSequenceStart() &lt; idealSequenceLength) {
+              var mergedCluster = mergeClusters(clustersArray[i-1], clustersArray[i]);
+              clustersArray[i] = mergedCluster;
+              newArray.push(mergedCluster);
+            } else {
+              if (i==1)
+                newArray.push(clustersArray[0]);
+              newArray.push(clustersArray[i]);
+            }
+          }
+          clusters[chromosomeIndex] = newArray;
+        }
+
+      }
+    },
+
+    /**
+     * Returns first not already provided cluster for particular sample defined by unique sampleId.
+     * @method getClusterForSample
+     * @param {integer} chromosome
+     * @param {integer} sampleId
+     * @param {integer} sequenceStart
+     * @param {integer} sequenceEnd
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    getClustersForSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+
+      if (!samplesProgress[sampleId]) {
+        samplesProgress[sampleId] = {};
+      }
+
+      if (!samplesProgress[sampleId][chromosome]) {
+        samplesProgress[sampleId][chromosome] = [];
+      }
+
+      var result = _.filter(clusters[chromosome], function(cluster, index){
+        if (cluster.getSequenceStart() &gt;= sequenceStart &amp;&amp; cluster.getSequenceEnd() &lt;= sequenceEnd &amp;&amp;
+            samplesProgress[sampleId][chromosome].indexOf(index) == -1) {
+          samplesProgress[sampleId][chromosome].push(index);
+          return true;
+        }
+        return false;
+      });
+
+      return result;
+    },
+
+    /**
+     * Removes object with progress for particular sample in addition returns clusters which may have
+     * partially patterns inside sequence =&gt; not all cluster is inside sequence.
+     * @method finishAnalyzingSample
+     * @param {integer} sampleId
+     * @param {integer} chromosome
+     * @param {integer} sequenceStart
+     * @param {integer} sequenceEnd
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    finishAnalyzingSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+      if (!samplesProgress[sampleId]) {
+        samplesProgress[sampleId] = {};
+      }
+
+      if (!samplesProgress[sampleId][chromosome]) {
+        samplesProgress[sampleId][chromosome] = [];
+      }
+      var result = _.filter(clusters[chromosome], function(cluster, index){
+        if (cluster.getSequenceStart() &lt;= sequenceEnd &amp;&amp; cluster.getSequenceEnd() &gt;= sequenceStart &amp;&amp;
+            samplesProgress[sampleId][chromosome].indexOf(index) == -1) {
+          samplesProgress[sampleId][chromosome].push(index);
+          return true;
+        }
+        return false;
+      });
+
+      if (samplesProgress[sampleId])
+        samplesProgress[sampleId] = null;
+
+      return result;
+    },
+
+    /**
+     * Getter of clusters, it is array of 23 arrays of n clusters.
+     * @method getClusters
+     * @returns {Array of 23 arrays}
+     */
+    getClusters: function() {
+      return clusters;
+    },
+
+    /**
+     * Get all clusters independent on chromosome number.
+     * @method getAllClustersAsArray
+     * @returns {Array of DNAAnalysis.Cluster}
+     */
+    getAllClustersAsArray: function() {
+      var result = [];
+      for (var i= 0,len=clusters.length;i&lt;len;i++)
+        result = result.concat(clusters[i]);
+      return result;
+    },
+
+    /**
+     * Returns count of all clusters in handler. This method is preferable then getAllClustersAsArray.length, because
+     * doesn&#x27;t create array.
+     * @method allClustersCount
+     * @returns {integer}
+     */
+    allClustersCount: function() {
+      var result = 0;
+      _.each(clusters, function(chromosomeClusters){
+        result += chromosomeClusters.length;
+      });
+      return result;
+    },
+
+    /**
+     * Return options of clusterHandler
+     * @method getOptions
+     * @return {Object}
+     */
+    getOptions: function() {
+      return {
+        idealSequenceLength: idealSequenceLength
+      }
+    }
+  }
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

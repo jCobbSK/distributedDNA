@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Node - diplomka</title>
+    <title>Cluster - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -82,34 +92,32 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Node Class</h1>
+<h1>Cluster Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/JDSM_node.js.html#l1"><code>JDSM\node.js:1</code></a>
+            Defined in: <a href="../files/DNAAnalysis_cluster.js.html#l1"><code>DNAAnalysis\cluster.js:1</code></a>
         </div>
 
-            Module: <a href="../modules/JDSM.html">JDSM</a>
+            Module: <a href="../modules/DNAAnalysis.html">DNAAnalysis</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Basic Node class, representing one connected user to system.</p>
+    <p>Cluster object used as elemental part of compute process. Patterns are clustered based on their&#39;s
+location on chromosome and sequenceStart and sequenceEnd are modified accordingly</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Node" class="method item">
-            <h3 class="name"><code>Node</code></h3>
+        <div id="method_Cluster" class="method item">
+            <h3 class="name"><code>Cluster</code></h3>
         
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>socket</code>
-                        </li>
                         <li class="arg">
                                 <code class="optional">[options]</code>
                         </li>
@@ -126,7 +134,7 @@
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/JDSM_node.js.html#l1"><code>JDSM\node.js:1</code></a>
+                <a href="../files/DNAAnalysis_cluster.js.html#l1"><code>DNAAnalysis\cluster.js:1</code></a>
                 </p>
         
         
@@ -142,45 +150,46 @@
         
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name">socket</code>
-                                <span class="type">socket.IO socket object</span>
-        
-        
-                            <div class="param-description">
-                                 
-                            </div>
-        
-                        </li>
-                        <li class="param">
                                 <code class="param-name optional">[options]</code>
                                 <span class="type">Object</span>
                                 <span class="flag optional" title="This parameter is optional.">optional</span>
         
         
                             <div class="param-description">
-                                <p>init options object</p>
+                                <p>Object with constructor parameters</p>
         
                             </div>
         
                                 <ul class="params-list">
                                     <li class="param">
-                                            <code class="param-name optional">[onUnregisterCallback]</code>
-                                            <span class="type">Function</span>
+                                            <code class="param-name optional">[id]</code>
+                                            <span class="type">Integer</span>
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Callback triggered after node is declared disconnected</p>
+                                            <p>Unique id of cluster</p>
         
                                         </div>
         
                                     </li>
                                     <li class="param">
-                                            <code class="param-name optional">[timeout]</code>
+                                            <code class="param-name optional">[sequenceStart]</code>
                                             <span class="type">Integer</span>
                                             <span class="flag optional" title="This parameter is optional.">optional</span>
         
                                         <div class="param-description">
-                                            <p>Timeout in ms after which node doesn&#39;t respond is declared disconnected</p>
+                                            <p>Start of cluster</p>
+        
+                                        </div>
+        
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name optional">[sequenceEnd]</code>
+                                            <span class="type">Integer</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+        
+                                        <div class="param-description">
+                                            <p>End of cluster</p>
         
                                         </div>
         
@@ -212,35 +221,47 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_getId">getId</a>
+                                <a href="#method_addPattern">addPattern</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getIsFree">getIsFree</a>
+                                <a href="#method_changeChromosome">changeChromosome</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_ping">ping</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_runLatencyUpdater">runLatencyUpdater</a>
+                                <a href="#method_getChromosome">getChromosome</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_sendReq">sendReq</a>
+                                <a href="#method_getHandlingNode">getHandlingNode</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_setIsFree">setIsFree</a>
+                                <a href="#method_getPatterns">getPatterns</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_setOnUnregisterCallback">setOnUnregisterCallback</a>
+                                <a href="#method_getSequenceEnd">getSequenceEnd</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_setTimeout">setTimeout</a>
+                                <a href="#method_getSequenceStart">getSequenceStart</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resizeSequence">resizeSequence</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setHandlingNode">setHandlingNode</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_simulateAddPattern">simulateAddPattern</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toString">toString</a>
 
                             </li>
                     </ul>
@@ -251,15 +272,11 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property private">
-                                <a href="#property_averagePing">averagePing</a>
+                                <a href="#property_chromosome">chromosome</a>
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_averageUse">averageUse</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_connectedAt">connectedAt</a>
+                                <a href="#property_handlingNode">handlingNode</a>
 
                             </li>
                             <li class="index-item property private">
@@ -267,23 +284,15 @@
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_isFree">isFree</a>
+                                <a href="#property_patterns">patterns</a>
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_onUnregisterCallback">onUnregisterCallback</a>
+                                <a href="#property_sequenceEnd">sequenceEnd</a>
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_pendingPing">pendingPing</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_socket">socket</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_timeout">timeout</a>
+                                <a href="#property_sequenceStart">sequenceStart</a>
 
                             </li>
                     </ul>
@@ -295,173 +304,13 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_getId" class="method item">
-    <h3 class="name"><code>getId</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l183"><code>JDSM\node.js:183</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>getter</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getIsFree" class="method item">
-    <h3 class="name"><code>getIsFree</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l165"><code>JDSM\node.js:165</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Getter</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_ping" class="method item">
-    <h3 class="name"><code>ping</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l128"><code>JDSM\node.js:128</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Determine latency and transaction speed of node to server.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Object</span>:
-                    <p>latency (ms) and bandwidth (kB/s)</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_runLatencyUpdater" class="method item private">
-    <h3 class="name"><code>runLatencyUpdater</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l18"><code>JDSM\node.js:18</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Start cyclic interval which measure latency of node.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_sendReq" class="method item">
-    <h3 class="name"><code>sendReq</code></h3>
+<div id="method_addPattern" class="method item">
+    <h3 class="name"><code>addPattern</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>eventName</code>
-                </li>
-                <li class="arg">
-                        <code>data</code>
+                        <code>pattern</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -476,7 +325,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_node.js.html#l137"><code>JDSM\node.js:137</code></a>
+        <a href="../files/DNAAnalysis_cluster.js.html#l94"><code>DNAAnalysis\cluster.js:94</code></a>
         </p>
 
 
@@ -484,7 +333,7 @@
     </div>
 
     <div class="description">
-        <p>Actual communication with node.</p>
+        <p>Add pattern to cluster, sequenceStart and sequenceEnd will expand if neccessery.</p>
 
     </div>
 
@@ -493,18 +342,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">eventName</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type">String/JSON stringifyable object</span>
+                        <code class="param-name">pattern</code>
+                        <span class="type">models.Pattern</span>
 
 
                     <div class="param-description">
@@ -516,15 +355,22 @@
         </div>
 
 
+        <div class="throws">
+            <h4>Throws:</h4>
+
+            <div class="throws-description">
+                        <span class="type">Error</span>:
+            </div>
+        </div>
 
 </div>
-<div id="method_setIsFree" class="method item">
-    <h3 class="name"><code>setIsFree</code></h3>
+<div id="method_changeChromosome" class="method item">
+    <h3 class="name"><code>changeChromosome</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>_isFree</code>
+                        <code>newChromosome</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -539,7 +385,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/JDSM_node.js.html#l174"><code>JDSM\node.js:174</code></a>
+        <a href="../files/DNAAnalysis_cluster.js.html#l71"><code>DNAAnalysis\cluster.js:71</code></a>
         </p>
 
 
@@ -547,7 +393,7 @@
     </div>
 
     <div class="description">
-        <p>Setter</p>
+        <p>Change chromosome number of cluster.</p>
 
     </div>
 
@@ -556,113 +402,7 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_isFree</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_setOnUnregisterCallback" class="method item">
-    <h3 class="name"><code>setOnUnregisterCallback</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l156"><code>JDSM\node.js:156</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>When client disconnects, we need to call it.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_callback</code>
-                        <span class="type">Function</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_setTimeout" class="method item">
-    <h3 class="name"><code>setTimeout</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>timeInSec</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/JDSM_node.js.html#l147"><code>JDSM\node.js:147</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Set timeout after which client doesn&#39;t respond on ping request, we declare it disconnected.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">timeInSec</code>
+                        <code class="param-name">newChromosome</code>
                         <span class="type">Integer</span>
 
 
@@ -677,14 +417,444 @@
 
 
 </div>
+<div id="method_getChromosome" class="method item">
+    <h3 class="name"><code>getChromosome</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l164"><code>DNAAnalysis\cluster.js:164</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter of chromosome number</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getHandlingNode" class="method item">
+    <h3 class="name"><code>getHandlingNode</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">JDSM.Node</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l155"><code>DNAAnalysis\cluster.js:155</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get node set to this cluster.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">JDSM.Node</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPatterns" class="method item">
+    <h3 class="name"><code>getPatterns</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Array of Pattern</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l200"><code>DNAAnalysis\cluster.js:200</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get all patterns of this cluster.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of Pattern</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getSequenceEnd" class="method item">
+    <h3 class="name"><code>getSequenceEnd</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l182"><code>DNAAnalysis\cluster.js:182</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter of sequence end</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getSequenceStart" class="method item">
+    <h3 class="name"><code>getSequenceStart</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l173"><code>DNAAnalysis\cluster.js:173</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter of sequence start</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_resizeSequence" class="method item">
+    <h3 class="name"><code>resizeSequence</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>end</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l80"><code>DNAAnalysis\cluster.js:80</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Resize sequence, if either parameter is null, the property doesn&#39;t change.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">end</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setHandlingNode" class="method item">
+    <h3 class="name"><code>setHandlingNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>newNode</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l146"><code>DNAAnalysis\cluster.js:146</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set new handling node.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">newNode</code>
+                        <span class="type">JDSM.Node</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_simulateAddPattern" class="method item">
+    <h3 class="name"><code>simulateAddPattern</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pattern</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l120"><code>DNAAnalysis\cluster.js:120</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get sequence bounds if pattern is added to cluster.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pattern</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>sequenceStart, sequenceEnd, sequenceLength</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toString" class="method item">
+    <h3 class="name"><code>toString</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_cluster.js.html#l209"><code>DNAAnalysis\cluster.js:209</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get all properties, used during testing.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+            </div>
+        </div>
+
+
+</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_averagePing" class="property item private">
-                        <h3 class="name"><code>averagePing</code></h3>
-                        <span class="type">Number</span>
+                    <div id="property_chromosome" class="property item private">
+                        <h3 class="name"><code>chromosome</code></h3>
+                        <span class="type">Integer</span>
                     
                     
                             <span class="flag private">private</span>
@@ -694,23 +864,24 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l68"><code>JDSM\node.js:68</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l26"><code>DNAAnalysis\cluster.js:26</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Average latency of node computed during all requests on node so far.</p>
+                            <p>Chromosome number of cluster</p>
                     
                         </div>
                     
+                            <p><strong>Default:</strong> 1</p>
                     
                     
                     </div>
-                    <div id="property_averageUse" class="property item private">
-                        <h3 class="name"><code>averageUse</code></h3>
-                        <span class="type">Float number</span>
+                    <div id="property_handlingNode" class="property item private">
+                        <h3 class="name"><code>handlingNode</code></h3>
+                        <span class="type">JDSM.Node</span>
                     
                     
                             <span class="flag private">private</span>
@@ -720,77 +891,23 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l76"><code>JDSM\node.js:76</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l61"><code>DNAAnalysis\cluster.js:61</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Ratio of time with node with pending request (working) and all time
-                    connected.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_connectedAt" class="property item private">
-                        <h3 class="name"><code>connectedAt</code></h3>
-                        <span class="type">Date</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_node.js.html#l85"><code>JDSM\node.js:85</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Set on init, that is time when Node is created.</p>
-                    
-                        </div>
-                    
-                            <p><strong>Default:</strong> actual timestamp</p>
-                    
-                    
-                    </div>
-                    <div id="property_id" class="property item private">
-                        <h3 class="name"><code>id</code></h3>
-                        <span class="type">Number</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_node.js.html#l51"><code>JDSM\node.js:51</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Unique identifier.</p>
+                            <p>Node who handles this cluster at the moment.</p>
                     
                         </div>
                     
                     
                     
                     </div>
-                    <div id="property_isFree" class="property item private">
-                        <h3 class="name"><code>isFree</code></h3>
-                        <span class="type">Boolean</span>
+                    <div id="property_id" class="property item private">
+                        <h3 class="name"><code>id</code></h3>
+                        <span class="type">Integer</span>
                     
                     
                             <span class="flag private">private</span>
@@ -800,24 +917,24 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l59"><code>JDSM\node.js:59</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l17"><code>DNAAnalysis\cluster.js:17</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Is some pending request for this node.</p>
+                            <p>Unique id of Cluster</p>
                     
                         </div>
                     
-                            <p><strong>Default:</strong> false</p>
+                            <p><strong>Default:</strong> -1</p>
                     
                     
                     </div>
-                    <div id="property_onUnregisterCallback" class="property item private">
-                        <h3 class="name"><code>onUnregisterCallback</code></h3>
-                        <span class="type">Function</span>
+                    <div id="property_patterns" class="property item private">
+                        <h3 class="name"><code>patterns</code></h3>
+                        <span class="type">Array of models.Pattern</span>
                     
                     
                             <span class="flag private">private</span>
@@ -827,50 +944,23 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l110"><code>JDSM\node.js:110</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l53"><code>DNAAnalysis\cluster.js:53</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>If client crashes without socket emit disconnected we find out by pinging, and need to
-                    act on it.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_pendingPing" class="property item private">
-                        <h3 class="name"><code>pendingPing</code></h3>
-                        <span class="type">Boolean</span>
-                    
-                    
-                            <span class="flag private">private</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/JDSM_node.js.html#l102"><code>JDSM\node.js:102</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Are we still waiting for ping response from client.</p>
+                            <p>Patterns in cluster.</p>
                     
                         </div>
                     
                     
                     
                     </div>
-                    <div id="property_socket" class="property item private">
-                        <h3 class="name"><code>socket</code></h3>
-                        <span class="type">socket.IO socket object</span>
+                    <div id="property_sequenceEnd" class="property item private">
+                        <h3 class="name"><code>sequenceEnd</code></h3>
+                        <span class="type">Integer</span>
                     
                     
                             <span class="flag private">private</span>
@@ -880,24 +970,24 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l42"><code>JDSM\node.js:42</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l44"><code>DNAAnalysis\cluster.js:44</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Default socket object, use for communication and identification of node.
-                    Initialize in constructor.</p>
+                            <p>End index of cluster</p>
                     
                         </div>
                     
+                            <p><strong>Default:</strong> 100000</p>
                     
                     
                     </div>
-                    <div id="property_timeout" class="property item private">
-                        <h3 class="name"><code>timeout</code></h3>
-                        <span class="type">Number</span>
+                    <div id="property_sequenceStart" class="property item private">
+                        <h3 class="name"><code>sequenceStart</code></h3>
+                        <span class="type">Integer</span>
                     
                     
                             <span class="flag private">private</span>
@@ -907,17 +997,18 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/JDSM_node.js.html#l94"><code>JDSM\node.js:94</code></a>
+                            <a href="../files/DNAAnalysis_cluster.js.html#l35"><code>DNAAnalysis\cluster.js:35</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>Timeout in ms after which node doesn&#39;t respond is declared disconnected</p>
+                            <p>Start index of cluster</p>
                     
                         </div>
                     
+                            <p><strong>Default:</strong> 0</p>
                     
                     
                     </div>

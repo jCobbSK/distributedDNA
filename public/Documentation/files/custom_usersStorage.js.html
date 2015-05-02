@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JDSM\masterRequest.js - diplomka</title>
+    <title>custom\usersStorage.js - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -82,168 +92,87 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: JDSM\masterRequest.js</h1>
+<h1 class="file-heading">File: custom\usersStorage.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * Class handling sync and async requests. It contains N requests.
- * @class MasterRequest
- * @constructor
- * @param {Object} [options] Data to initial set options
- * @param {Integer} [options.id] Required property of ID, unique identifier
- * @param {String} [options.type] Type of request, possible values are: &#x27;async&#x27; or &#x27;sync&#x27;
- * @param {Array of Request} [options.dependentRequests] Array of low level requests for nodes
- * @param {function} [options.callback] Callback after request is done based on type
- * @module JDSM
+ * Storage class for connected users so it is possible to real-time update progress
+ * of analyzing particular sample.
+ *
+ * @class UsersStorage
+ * @module Custom
  */
 var _ = require(&#x27;underscore&#x27;);
-
-module.exports = function(options) {
-  if (!options)
-    options = {};
+module.exports = (function(){
 
   /**
-   * Unique id of masterRequest
-   * @property id
+   * Object property where key represents userId-s and values are sockets of particular
+   * user.
+   * @property sockets
    * @private
-   * @type {number}
+   * @type {Object}
    */
-  var id = options[&#x27;id&#x27;] || -1;
-
-  /**
-   * Type of request, possible values: &#x27;async&#x27;, &#x27;sync&#x27;
-   * @property type
-   * @private
-   * @default &#x27;async&#x27;
-   * @type {string}
-   */
-  var type = options[&#x27;type&#x27;] || &#x27;async&#x27;;
-
-  /**
-   * Requests of master request. They are dealt properly based on type.
-   * @property dependentRequests
-   * @private
-   * @type {Array of Request objects}
-   */
-  var dependentRequests = options[&#x27;dependentRequests&#x27;] || [];
-
-  /**
-   * Callback function called after all dependentRequests are handled, based on type.
-   * @property callback
-   * @private
-   * @type {function}
-   */
-  var callback = options[&#x27;callback&#x27;] || null;
-
-  /**
-   * During synchronous request, if the response from some of the dependentRequests request is
-   * passed into next request, and after the last one is resolved, callback is called.
-   * @method handleSync
-   * @private
-   * @param {Request object} request
-   */
-  var handleSync = function(request) {
-    //find first not resolved request and start it with prerequisites
-    var nextRequest = _.find(dependentRequests, function(req){
-      return !req.getResponse();
-    });
-
-    //if next request doesn&#x27;t exist -&gt; all requests are resolved -&gt; call callback
-    if (!nextRequest) {
-      callback(null, request.getResponse());
-    } else {
-      nextRequest.run(null, request.getResponse());
-    }
-  }
-
-  /**
-   * During asynchronous request, callback is called after all dependent requests are resolved.
-   * @method handleAsync
-   * @private
-   * @param {Request object} request
-   */
-  var handleAsync = function(request) {
-    var notResolved = _.find(dependentRequests, function(req){
-      return !req.getResponse();
-    });
-
-    if (notResolved) {
-      //some request is not resolved -&gt; waiting for finish it
-      return;
-    }
-
-    //all requests are resolved -&gt; calling callback, but results are only responses, not internal
-    //properties of requests so we need to transform them
-    var transformed = _.map(dependentRequests, function(request){
-      return request.getResponse();
-    });
-
-    if (callback)
-      callback(null, transformed);
-  }
+  var sockets = {};
 
   return {
     /**
-     * Handling response of child requests.
-     * @method handleResponse
-     * @param request
+     * Add user&#x27;s socket to storage.
+     * @method addSocket
+     * @param {socket.io Client} socket
+     * @param {integer} userId
      */
-    handleResponse: function(request) {
-      switch(type) {
-        case &#x27;sync&#x27;:
-          handleSync(request);
-          break;
-        case &#x27;async&#x27;:
-          handleAsync(request);
-          break;
-        default:
-          throw new Error(&#x27;Not valid type property&#x27;);
+    addSocket: function(socket, userId) {
+      sockets[userId] = socket;
+    },
+
+    /**
+     * Removes user from storage by socket.
+     * @method removeSocketBySocket
+     * @param {socket.io Client} socket
+     * @returns {boolean} if socket has been removed
+     */
+    removeSocketBySocket: function(socket) {
+      for (var key in sockets) {
+        if (sockets[key] == socket) {
+          sockets[key] = null;
+          return true;
+        }
       }
+      return false;
     },
 
     /**
-     * Start request (send requests to nodes)
-     * @method run
-     * @param {function} [optional] callback overrided callback from constructor
+     * Removes user from storage by userId.
+     * @method removeSocketByUserId
+     * @param {integer} userId
+     * @returns {boolean} if socket has been removed
      */
-    run: function(_callback) {
-      callback = _callback;
-
-      switch(type){
-        case &#x27;async&#x27;:
-          //run all dependent requests
-          _.each(dependentRequests, function(req){
-            req.run();
-          });
-          break;
-        case &#x27;sync&#x27;:
-          //run first dependent request
-          _.first(dependentRequests).run();
-          break;
+    removeSocketByUserId: function(userId) {
+      if (sockets[userId]) {
+        sockets[userId] = null;
+        return true;
       }
+      return false;
     },
 
     /**
-     * Getter of id
-     * @method getId
-     * @returns {number}
+     * Sends raw object data to socket of userId if defined. For correct handling on client side
+     * eventName is provided.l
+     * @param {integer} userId
+     * @param {string} eventName
+     * @param {object} data
+     * @returns {boolean} success send
      */
-    getId: function() {
-      return id;
-    },
-
-    /**
-     * Setter of dependent requests
-     * @method setDependentRequests
-     * @param requests
-     * @type Array of Requests
-     */
-    setDependentRequests: function(requests) {
-      dependentRequests = requests;
+    sendData: function(userId, eventName, data) {
+      if (sockets[userId]) {
+        sockets[userId].emit(eventName, data);
+        return true;
+      }
+      return false;
     }
   }
-}
+})();
     </pre>
 </div>
                     </div>

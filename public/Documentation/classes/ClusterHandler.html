@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ClusterHandler - diplomka</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
+                                <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
+                                <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
+                                <li><a href="../classes/Request.html">Request</a></li>
+                                <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
+                                <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
+                                <li><a href="../modules/JDSM.html">JDSM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>ClusterHandler Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/DNAAnalysis_clusterHandler.js.html#l1"><code>DNAAnalysis\clusterHandler.js:1</code></a>
+        </div>
+
+            Module: <a href="../modules/DNAAnalysis.html">DNAAnalysis</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>Handler for clusters. Manages creation of clusters.</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_ClusterHandler" class="method item">
+            <h3 class="name"><code>ClusterHandler</code></h3>
+        
+                <div class="args">
+                    <span class="paren">(</span><ul class="args-list inline commas">
+                        <li class="arg">
+                                <code class="optional">[options]</code>
+                        </li>
+                    </ul><span class="paren">)</span>
+                </div>
+        
+        
+        
+        
+        
+        
+        
+        
+            <div class="meta">
+                        <p>
+                        Defined in
+                <a href="../files/DNAAnalysis_clusterHandler.js.html#l1"><code>DNAAnalysis\clusterHandler.js:1</code></a>
+                </p>
+        
+        
+        
+            </div>
+        
+            <div class="description">
+                
+            </div>
+        
+                <div class="params">
+                    <h4>Parameters:</h4>
+        
+                    <ul class="params-list">
+                        <li class="param">
+                                <code class="param-name optional">[options]</code>
+                                <span class="type">Object</span>
+                                <span class="flag optional" title="This parameter is optional.">optional</span>
+        
+        
+                            <div class="param-description">
+                                <p>Hash with options into constructor</p>
+        
+                            </div>
+        
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name optional">[idealSequenceLength]</code>
+                                            <span class="type">Integer</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+        
+                                        <div class="param-description">
+                                            <p>Ideal sequence length of cluster. (default = infinite)</p>
+        
+                                        </div>
+        
+                                    </li>
+                                </ul>
+                        </li>
+                    </ul>
+                </div>
+        
+        
+        
+        </div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_addPattern">addPattern</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addPatterns">addPatterns</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_allClustersCount">allClustersCount</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_finalizeClustering">finalizeClustering</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_findCollideClustersWithPattern">findCollideClustersWithPattern</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_finishAnalyzingSample">finishAnalyzingSample</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getAllClustersAsArray">getAllClustersAsArray</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getClusterForSample">getClusterForSample</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getClusters">getClusters</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getOptions">getOptions</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_mergeClusters">mergeClusters</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property_clusterIndexFactory">clusterIndexFactory</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_clusters">clusters</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_idealSequenceLength">idealSequenceLength</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_samplesProgress">samplesProgress</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_addPattern" class="method item">
+    <h3 class="name"><code>addPattern</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pattern</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l111"><code>DNAAnalysis\clusterHandler.js:111</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Add one pattern. It either add new cluster or extend existing one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pattern</code>
+                        <span class="type">Pattern</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addPatterns" class="method item">
+    <h3 class="name"><code>addPatterns</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>patterns</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l177"><code>DNAAnalysis\clusterHandler.js:177</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calls addPattern on multiple patterns.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">patterns</code>
+                        <span class="type">Array of Pattern</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_allClustersCount" class="method item">
+    <h3 class="name"><code>allClustersCount</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l310"><code>DNAAnalysis\clusterHandler.js:310</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns count of all clusters in handler. This method is preferable then getAllClustersAsArray.length, because
+doesn&#39;t create array.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_finalizeClustering" class="method item private">
+    <h3 class="name"><code>finalizeClustering</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l189"><code>DNAAnalysis\clusterHandler.js:189</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Merge neighbour clusters to eliminate small</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_findCollideClustersWithPattern" class="method item private">
+    <h3 class="name"><code>findCollideClustersWithPattern</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pattern</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Array of Cluster</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l56"><code>DNAAnalysis\clusterHandler.js:56</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Find clusters which collide with pattern.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pattern</code>
+                        <span class="type">Pattern</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of Cluster</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_finishAnalyzingSample" class="method item">
+    <h3 class="name"><code>finishAnalyzingSample</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>sampleId</code>
+                </li>
+                <li class="arg">
+                        <code>chromosome</code>
+                </li>
+                <li class="arg">
+                        <code>sequenceStart</code>
+                </li>
+                <li class="arg">
+                        <code>sequenceEnd</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Array of DNAAnalysis.Cluster</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l256"><code>DNAAnalysis\clusterHandler.js:256</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes object with progress for particular sample in addition returns clusters which may have
+partially patterns inside sequence =&gt; not all cluster is inside sequence.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">sampleId</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">chromosome</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sequenceStart</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sequenceEnd</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of DNAAnalysis.Cluster</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getAllClustersAsArray" class="method item">
+    <h3 class="name"><code>getAllClustersAsArray</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Array of DNAAnalysis.Cluster</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l298"><code>DNAAnalysis\clusterHandler.js:298</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get all clusters independent on chromosome number.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of DNAAnalysis.Cluster</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getClusterForSample" class="method item">
+    <h3 class="name"><code>getClusterForSample</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>chromosome</code>
+                </li>
+                <li class="arg">
+                        <code>sampleId</code>
+                </li>
+                <li class="arg">
+                        <code>sequenceStart</code>
+                </li>
+                <li class="arg">
+                        <code>sequenceEnd</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Array of DNAAnalysis.Cluster</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l225"><code>DNAAnalysis\clusterHandler.js:225</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns first not already provided cluster for particular sample defined by unique sampleId.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">chromosome</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sampleId</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sequenceStart</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sequenceEnd</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of DNAAnalysis.Cluster</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getClusters" class="method item">
+    <h3 class="name"><code>getClusters</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Array of 23 arrays</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l289"><code>DNAAnalysis\clusterHandler.js:289</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter of clusters, it is array of 23 arrays of n clusters.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array of 23 arrays</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getOptions" class="method item">
+    <h3 class="name"><code>getOptions</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l324"><code>DNAAnalysis\clusterHandler.js:324</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Return options of clusterHandler</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_mergeClusters" class="method item">
+    <h3 class="name"><code>mergeClusters</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>cluster1</code>
+                </li>
+                <li class="arg">
+                        <code>cluster2</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Cluster.html" class="crosslink">Cluster</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/DNAAnalysis_clusterHandler.js.html#l87"><code>DNAAnalysis\clusterHandler.js:87</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Merge 2 clusters into new one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">cluster1</code>
+                        <span class="type"><a href="../classes/Cluster.html" class="crosslink">Cluster</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">cluster2</code>
+                        <span class="type"><a href="../classes/Cluster.html" class="crosslink">Cluster</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Cluster.html" class="crosslink">Cluster</a></span>:
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                    <div id="property_clusterIndexFactory" class="property item private">
+                        <h3 class="name"><code>clusterIndexFactory</code></h3>
+                        <span class="type">Number</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/DNAAnalysis_clusterHandler.js.html#l39"><code>DNAAnalysis\clusterHandler.js:39</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Increment after every creation of cluster -&gt; unique id</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_clusters" class="property item private">
+                        <h3 class="name"><code>clusters</code></h3>
+                        <span class="type">Array of Array of Cluster</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/DNAAnalysis_clusterHandler.js.html#l25"><code>DNAAnalysis\clusterHandler.js:25</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Array of 23 arrays of clusters. One array for each chromosome.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_idealSequenceLength" class="property item">
+                        <h3 class="name"><code>idealSequenceLength</code></h3>
+                        <span class="type">Integer</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/DNAAnalysis_clusterHandler.js.html#l17"><code>DNAAnalysis\clusterHandler.js:17</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Ideal sequence length of cluster.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> DNAAnalysis.Settings.optimalClusterSize</p>
+                    
+                    
+                    </div>
+                    <div id="property_samplesProgress" class="property item private">
+                        <h3 class="name"><code>samplesProgress</code></h3>
+                        <span class="type">Object</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/DNAAnalysis_clusterHandler.js.html#l47"><code>DNAAnalysis\clusterHandler.js:47</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Complex object for tracking information which clusters have been send to calculation for particular sample.
+                    It is created and manipulated by getClusterForSample and finishSample methods.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

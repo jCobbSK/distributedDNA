@@ -98,8 +98,8 @@ module.exports = function (grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         options: {
-          paths: ['JDSM/', 'DNAAnalysis/'],
-          outdir: 'Documentation'
+          paths: ['JDSM/', 'DNAAnalysis/', 'custom/'],
+          outdir: 'public/Documentation'
         }
       }
     }

@@ -40,13 +40,23 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
+                                <li><a href="../classes/Cluster.html">Cluster</a></li>
+                                <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
+                                <li><a href="../classes/DataTraffic.html">DataTraffic</a></li>
+                                <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
+                                <li><a href="../classes/SampleReader.html">SampleReader</a></li>
+                                <li><a href="../classes/Settings.html">Settings</a></li>
+                                <li><a href="../classes/UsersStorage.html">UsersStorage</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Authentification.html">Authentification</a></li>
+                                <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
                             </ul>
@@ -131,8 +141,6 @@ module.exports = function(socketsIO, options) {
       socket.on(&#x27;results&#x27;, function(results){
         handleResponse(results);
       });
-
-      socket.emit(&#x27;pong&#x27;, {requestId: 1, masterRequestId: 2,penis: 2, doublePenis:&#x27;Double&#x27;});
     });
 
   })();
@@ -206,8 +214,13 @@ module.exports = function(socketsIO, options) {
    * @param {Node} node
    */
   var unregisterNode = function(node) {
-    if (onUnregisterCallback)
-      onUnregisterCallback(node);
+    if (onUnregisterCallback) {
+      //to unregister callback we pass all pending request which have to be redistributed
+      var pendingRequestsForNode = _.filter(nodes, function(request){
+        request.node == node;
+      });
+      onUnregisterCallback(node, pendingRequestsForNode);
+    }
 
     //remove node
     var positionOfNode = nodes.splice(nodes.indexOf(node));
@@ -314,7 +327,9 @@ module.exports = function(socketsIO, options) {
    * @return {node}
    */
   var findBestAvailable = function() {
-    //TODO
+    return _.min(nodes, function(obj){
+      return obj.availabilityIndex();
+    });
   }
 
   return {
@@ -355,7 +370,7 @@ module.exports = function(socketsIO, options) {
      * Setters for callbacks on connection/disconnection of nodes
      * @method setCallbacks
      * @param {function(node)} registerCallback
-     * @param {function(node)} unregisterCallback
+     * @param {function(node, pendingRequests)} unregisterCallback
      */
     setCallbacks: function(registerCallback, unregisterCallback) {
       onRegisterCallback = registerCallback;
