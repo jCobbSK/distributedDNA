@@ -1,9 +1,10 @@
 'use strict';
 
-var request = require('request');
-var models = require('./models');
-var async = require('async');
-var crawler = require('./custom/patternCrawler');
+var request = require('request'),
+    models = require('./models'),
+    async = require('async'),
+    crawler = require('./custom/patternCrawler'),
+    Generator = require('./custom/generator');
 
 module.exports = function (grunt) {
   // show elapsed time at the end
@@ -217,6 +218,27 @@ module.exports = function (grunt) {
         console.error('something went wrong');
       else
         console.log('Fetching is complete!')
+      done();
+    });
+  });
+
+  /**
+   * Grunt task for creating sample for provided pattern ids and user defined by username
+   * e.q grunt generateSample:client:[32,33]
+   */
+  grunt.registerTask('generateSample', 'Create sample record with correct dna file for selected patterns', function(username, patternIds){
+    console.log('Generating samples... This may take a few minutes.');
+    //async task
+    var done = this.async();
+    var patternIds = JSON.parse(patternIds);
+    Generator.createSample(username, patternIds, function(err){
+      if (!err) {
+        console.log('Sample generated!');
+        done();
+        return;
+      }
+
+      console.error('Some ERROR!');
       done();
     });
   });

@@ -177,7 +177,6 @@ module.exports = (function() {
         ]).then(function(results){
           var sample = results[1];
           var correctPath = '/samples/'+user.id+'_'+sample.id+'.dna';
-          console.log('FIRST Q.ALL', correctPath);
           Q.nfcall(fs.rename, tempPath, './'+correctPath).then(function(){
             sample.dataPath = '.'+correctPath;
             sample.save().then(function(sample){
