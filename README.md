@@ -18,6 +18,12 @@ This project tries to build distributive system for advanced big data pattern re
 8. run: grunt
 9. open browser on localhost:3000
 
+###Various tasks###
+1. grunt createData -- create default accounts
+2. grunt purgeData:table_name -- removing all data from table
+3. grunt fetchEnsemblData:countToFetch -- crawl genome browser for pattern genes
+4. grunt generateSample:username:pattern_ids -- create sample for user defined by username with sequence positive for patterns in pattern_ids
+
 ### Tasks TODO
 1. normalize sample data
 2. normalize ensembl sequences

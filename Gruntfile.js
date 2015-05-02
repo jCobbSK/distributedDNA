@@ -210,10 +210,11 @@ module.exports = function (grunt) {
 
   /**
    * Grunt task for populate pattern table from ensembl genome browser. Function is provided from patternCrawler.js
+   * e.q. grunt fetchEnsemblData:10 - fetching 10 patterns
    */
-  grunt.registerTask('fetchEnsemblData', 'Crawl and persist pattern data from ensembl genome browser', function(){
+  grunt.registerTask('fetchEnsemblData', 'Crawl and persist pattern data from ensembl genome browser', function(countToFetch){
     var done = this.async();
-    crawler.crawl(function(err, result){
+    crawler.crawl(countToFetch, function(err, result){
       if (err)
         console.error('something went wrong');
       else

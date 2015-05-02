@@ -6,6 +6,7 @@ module.exports = {
 
   /**
    * Remove all database entries of patterns
+   * @method clearAll
    */
   clearAll: function(){
     models.Pattern.findAll().then(function(patterns){
@@ -19,6 +20,7 @@ module.exports = {
 
   /**
    * Saving pattern to database, data attributes are name, description, data, chromosome, isForwardStrand
+   * @method savePattern
    * @param data
    */
   savePattern: function(data, callback) {
@@ -39,16 +41,18 @@ module.exports = {
    * Actual application logic.
    *
    * It is optimize for crawling ensembl.org @ 2.3.2015
+   * @method crawl
+   * @param {integer} numberOfPatterns - number of patterns to fetch
    * @param {function} callback - callback called after finished callback(err, result)
    */
-  crawl: function(callback) {
+  crawl: function(numberOfPatterns, callback) {
     var connection = mysql.createConnection({
       host: 'ensembldb.ensembl.org',
       user: 'anonymous'
     });
 
     var scheme = 'homo_sapiens_core_78_38.gene';
-    var query = util.format('SELECT * FROM %s WHERE %s = %s AND %s = %s LIMIT 5;',
+    var query = util.format('SELECT * FROM %s WHERE %s = %s AND %s = %s LIMIT '+(numberOfPatterns)?numberOfPatterns:5+';',
                   scheme,
                   scheme+'.biotype',
                   "\'protein_coding\'",
