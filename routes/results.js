@@ -78,8 +78,7 @@ router.get('/:id/download', function(req, res) {
       if (sample.UserId != req.user.id) {
         res.sendStatus(401);
       } else {
-        var file = appRoot + '/samples/'+sample.dataPath;
-        res.download('../samples/'+sample.dataPath);
+        res.download(sample.dataPath);
       }
     })
 });
