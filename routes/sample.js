@@ -1,8 +1,8 @@
-var express = require('express');
-var fs = require('fs');
-var models = require('../models');
-var auth = require('../custom/authentification');
-var router = express.Router();
+var express = require('express'),
+    fs = require('fs'),
+    models = require('../models'),
+    auth = require('../custom/authentification'),
+    router = express.Router();
 
 /* GET samples of logged user. */
 router.get('/',auth.roleAuthenticate(['client']), function(req, res) {

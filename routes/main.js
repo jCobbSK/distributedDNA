@@ -1,6 +1,6 @@
-var express = require('express');
-var auth = require('../custom/authentification');
-var router = express.Router();
+var express = require('express'),
+    auth = require('../custom/authentification'),
+    router = express.Router();
 
 /* GET home page. */
 

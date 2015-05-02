@@ -1,8 +1,8 @@
-var express = require('express');
-var moment = require('moment');
-var models = require('../models');
-var auth = require('../custom/authentification');
-var router = express.Router();
+var express = require('express'),
+    moment = require('moment'),
+    models = require('../models'),
+    auth = require('../custom/authentification'),
+    router = express.Router();
 
 /* GET users listing. */
 router.get('/',auth.roleAuthenticate(['admin']),function(req, res) {

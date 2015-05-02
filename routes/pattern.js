@@ -1,6 +1,6 @@
-var express = require('express');
-var models = require('../models');
-var router = express.Router();
+var express = require('express'),
+    models = require('../models'),
+    router = express.Router();
 
 /* GET patterns listing without actual data. */
 router.get('/', function(req, res) {
