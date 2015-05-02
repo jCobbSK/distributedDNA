@@ -11,13 +11,13 @@ This project tries to build distributive system for advanced big data pattern re
 2. install postgresql database -- http://www.postgresql.org/
 3. run: npm install sequelize-cli -g
 4. run: npm install
-5. run: bower install
+5. run: bower install (if command not exists install it with: npm install bower -g and after call bower install)
 6. create database and set config/config.json
-6. run: sequelize db:migrate
-7. run: grunt createData
-8. run: grunt fetchEnsemblData:100
-9. run: grunt
-10. open browser on localhost:3000
+7. run: sequelize db:migrate
+8. run: grunt createData
+9. run: grunt fetchEnsemblData:100
+10. run: grunt
+11. open browser on localhost:3000
 
 ###Various tasks###
 1. grunt createData -- create default accounts

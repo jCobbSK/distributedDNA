@@ -52,12 +52,13 @@ module.exports = {
     });
 
     var scheme = 'homo_sapiens_core_78_38.gene';
-    var query = util.format('SELECT * FROM %s WHERE %s = %s AND %s = %s LIMIT '+(numberOfPatterns)?numberOfPatterns:5+';',
+    var query = util.format('SELECT * FROM %s WHERE %s = %s AND %s = %s LIMIT %s;',
                   scheme,
                   scheme+'.biotype',
                   "\'protein_coding\'",
                   scheme+'.status',
-                  "\'KNOWN\'");
+                  "\'KNOWN\'",
+                  (numberOfPatterns)?numberOfPatterns:'5');
     var self = this;
     var temporaryObjects = {};
     connection.query(query, function(err, rows, fields){
