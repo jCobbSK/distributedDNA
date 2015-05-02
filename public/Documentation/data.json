@@ -3016,7 +3016,7 @@
                 {
                     "name": "UNKNOWN",
                     "description": "",
-                    "type": "Models.Pattern[]"
+                    "type": "Pattern[]"
                 }
             ],
             "return": {
@@ -3323,7 +3323,7 @@
             "line": " custom\\generator.js:90"
         },
         {
-            "message": "param name missing: {Models.Pattern[]}",
+            "message": "param name missing: {Pattern[]}",
             "line": " custom\\generator.js:196"
         },
         {
