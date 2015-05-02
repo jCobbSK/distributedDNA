@@ -1,4 +1,5 @@
-var assert = require('assert');
+var assert = require('assert'),
+    Settings = require('../DNAAnalysis/settings');
 describe('DNAAnalysisModule', function(){
 
   describe('Cluster', function() {
@@ -64,7 +65,7 @@ describe('DNAAnalysisModule', function(){
       it('should set default constructor options', function(){
         var ch = clusterHandler();
         var opt = ch.getOptions();
-        assert(-1 == opt.idealSequenceLength);
+        assert(Settings.optimalClusterSize == opt.idealSequenceLength);
       })
 
       it('should correct set options', function() {
