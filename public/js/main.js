@@ -33,19 +33,21 @@ $(document).ready(function(){
       return;
 
     $.ajax({
-      url: '/users',
+      url: '/users/register',
       type: 'POST',
       data: {
         username: username,
         password: password1,
         email: email,
         isClient: isClient
+      },
+      success: function() {
+        window.location = '/';
+      },
+      error: function() {
+        alert('Some error during creation');
       }
-    }).done(function(res){
-      if (res.success) {
-        location.reload();
-      }
-    });
+    })
   });
 
   /**

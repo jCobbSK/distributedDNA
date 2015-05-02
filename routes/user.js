@@ -34,4 +34,24 @@ router.post('/', function(req, res) {
     });
 });
 
+/**
+ * User can register itself but only as a role of node.
+ */
+router.post('/register', function(req, res){
+  var params = req.body;
+  if (!params.username || !params.password || !params.email) {
+    res.sendStatus(400);
+  }
+  models.User.build({
+    username: params.username,
+    password: params.password,
+    isClient: false,
+    email: params.email
+  }).save().then(function(){
+    res.sendStatus(201);
+  }).catch(function(){
+    res.sendStatus(500);
+  })
+})
+
 module.exports = router;

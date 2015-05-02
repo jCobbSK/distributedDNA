@@ -25,6 +25,10 @@ router.post('/login',
   auth.authenticate()
 );
 
+router.get('/register', function(req, res){
+  res.render('register');
+})
+
 router.get('/logout', function(req, res) {
   var name = req.user.username;
   console.log('LOGGING OUT '+ name);
