@@ -1,8 +1,8 @@
-var express = require('express');
-var models = require('../models');
-var auth = require('../custom/authentification');
-var router = express.Router();
-var async = require('async');
+var express = require('express'),
+    models = require('../models'),
+    auth = require('../custom/authentification'),
+    router = express.Router(),
+    Q = require('q');
 
 router.get('/',auth.roleAuthenticate(['client']), function(req, res) {
   //we find newest sample and redirect to it, if not found any, render empty view
@@ -25,49 +25,35 @@ router.get('/',auth.roleAuthenticate(['client']), function(req, res) {
 
 
 router.get('/:id', auth.roleAuthenticate(['client']), function(req, res) {
-
-  async.parallel([
-    function(callback){
-      models.Sample.find(req.params.id)
-        .then(function(sample){
-          if (sample.UserId != req.user.id)
-            callback(401, null);
-          else {
-            callback(null, {sample:sample});
-          }
-        })
-        .catch(function(){
-          callback(404, null);
-        });
-    },
-    function(callback){
-      models.Sample.findAll({
-        attributes: ['id'],
-        where: {UserId: req.user.id},
-        order: [
-          ['createdAt', 'DESC']
-        ]
-      })
-        .then(function(samples){
-          callback(null, {samples:samples});
-        })
-        .catch(function(){
-          callback(404, null);
-        });
-    }
-  ],function(err, results){
-    if (err) {
-      res.sendStatus(err);
-    }
-
-    //results is array of object we have to merge them into one object
+  Q.all([
+    models.Sample.find({
+      where: {id:req.params.id},
+      include: [
+        {model:models.Result, as: 'Results', include: [
+          {model: models.Pattern}
+        ]}
+      ]
+    }),
+    models.Sample.findAll({
+      attributes: ['id'],
+      where: {UserId: req.user.id},
+      order: [
+        ['createdAt', 'DESC']
+      ]
+    })
+  ]).then(function(results){
+    var sample = results[0];
+    var samples = results[1];
     var result = {};
-    for (var i in results) {
-      for (var k in results[i])
-        result[k] = results[i][k];
-    }
+    if (sample.UserId != req.user.id)
+      res.sendStatus(401);
+    else
+      result['sample'] = sample;
+    result['samples'] = samples;
     result['actualSample'] = req.params.id;
     res.render('results', result);
+  }).catch(function(err){
+    res.sendStatus(404);
   });
 });
 
