@@ -22,7 +22,7 @@ module.exports = function(_socket, options) {
    * @private
    */
   var runLatencyUpdater = function() {
-    setInterval(function(){
+    latencyUpdaterInterval = setInterval(function(){
       if (pendingPing) {
         //we havent got response for ping as long as timeout is set -> we are assuming node is
         //disconnected
@@ -40,6 +40,14 @@ module.exports = function(_socket, options) {
       })
     }, timeout);
   };
+
+  /**
+   * Latency updater interval ID for clearing after node disconnection.
+   * @property latencyUpdaterInterval
+   * @private
+   * @type {integer}
+   */
+  var latencyUpdaterInterval = null;
 
   /**
    * Calculate bandwidth and performance of node. It send 1MB of random string, node after receive
@@ -269,6 +277,14 @@ module.exports = function(_socket, options) {
      */
     getId: function() {
       return id;
+    },
+
+    /**
+     * Call for unregistering self. Mainly cancel our inside loops.
+     * @method unregisterSelf
+     */
+    unregisterSelf: function() {
+      clearInterval(latencyUpdaterInterval);
     }
   }
 }

@@ -128,6 +128,9 @@ module.exports = function(socketsIO, options) {
     var positionOfNode = nodes.splice(nodes.indexOf(node));
     if (positionOfNode > 0)
       nodes.splice(positionOfNode, 1);
+
+    //unregister node itself
+    node.unregisterSelf();
   }
 
   /**
