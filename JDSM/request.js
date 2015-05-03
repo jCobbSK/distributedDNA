@@ -1,5 +1,6 @@
 /**
- * Low level request object.
+ * Lowest level request object. It represents one request on particular Node in system and
+ * handles response on that request.
  * @class Request
  *
  * @constructor

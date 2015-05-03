@@ -1,3 +1,10 @@
+/**
+ * Client class executed on node's front-end. This class has to be browserifyied and include
+ * into compute page. It automatically injects JDSM module's client class and therefore sockets.io-client
+ * script too.
+ * @class Client
+ * @module DNAAnalysis
+ */
 var JDSM = require('../JDSM/client')('http://localhost:3000'),
     _ = require('underscore'),
     sizeof = require('object-sizeof'),

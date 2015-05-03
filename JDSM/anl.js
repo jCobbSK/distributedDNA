@@ -1,5 +1,6 @@
 /**
- * Class Active Node List (ANL)
+ * Class Active Node List (ANL). It provides JDSM public API. It automatically handles
+ * connection and disconnection of nodes and stores all actual connected nodes.
  *
  * @class ANL
  * @module JDSM

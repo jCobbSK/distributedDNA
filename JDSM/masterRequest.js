@@ -1,5 +1,5 @@
 /**
- * Class handling sync and async requests. It contains N requests.
+ * Class handling sync and async requests. It consists of N requests executed based on type of this request.
  * @class MasterRequest
  * @constructor
  * @param {Object} [options] Data to initial set options

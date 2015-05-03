@@ -1,5 +1,7 @@
 /**
- * Main file for Javascript Distributive System Module (JDSM).
+ * Main file for Javascript Distributive System Module (JDSM). It sets up sockets.io server
+ * with provided http.Server instance. And returns Anl class instance, which provides available
+ * API methods.
  *
  * @module JDSM
  *

@@ -1,5 +1,5 @@
 /**
- * Class for manipulating with partially loaded sample sequence.
+ * Class for handling asynchronous loading of DNA sample sequence.
  * @class SampleReader
  * @module DNAAnalysis
  */

@@ -1,6 +1,6 @@
 /**
- * Client class handling front-end interaction. It is required to browserify this module before
- * use.
+ * Client class handling front-end interaction. It is required to browserify this class and/or
+ * any classes which are using this before use. It automatically injects sockets.io-client script.
  * @class Client
  * @module JDSM
  * @constructor

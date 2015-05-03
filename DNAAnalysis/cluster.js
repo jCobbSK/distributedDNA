@@ -1,6 +1,6 @@
 /**
  * Cluster object used as elemental part of compute process. Patterns are clustered based on their's
- * location on chromosome and sequenceStart and sequenceEnd are modified accordingly
+ * location on chromosome and sequenceStart and sequenceEnd are modified accordingly.
  * @class Cluster
  * @module DNAAnalysis
  *

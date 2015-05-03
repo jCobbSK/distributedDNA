@@ -1,5 +1,5 @@
 /**
- * Handler for clusters. Manages creation of clusters.
+ * Handler for clusters. Manages creation, store and manipulation of clusters.
  * @class ClusterHandler
  * @constructor
  * @param {Object} [options] Hash with options into constructor
