@@ -243,4 +243,30 @@ module.exports = function (grunt) {
       done();
     });
   });
+
+  /**
+   * Grunt task for creating test pattern with mandatory params chromosome index and data.
+   * e.q grunt createTestPattern:chromosomeNumber:data:sequenceStart(0):name:description
+   */
+  grunt.registerTask('createTestPattern', 'Creating test pattern with params', function(chromosome, data, sequenceStart, name, description){
+    var done = this.async();
+    if (!data || !chromosome)
+      throw new Error('Bad params');
+    models.Pattern.build({
+      name: name || 'Test pattern',
+      description: description || 'Test pattern description',
+      data: data,
+      chromosome: parseInt(chromosome),
+      sequenceStart: parseInt(sequenceStart) || 0,
+      sequenceEnd: (parseInt(sequenceStart) || 0) + data.length
+    }).save()
+      .then(function(){
+        console.log('Created pattern');
+        done();
+      })
+      .catch(function(err){
+        throw new Error('Error accured');
+        done();
+      })
+  });
 };
