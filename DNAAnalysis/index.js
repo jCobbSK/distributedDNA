@@ -299,11 +299,15 @@ module.exports = function(JDSM) {
    * @method analyzePartial
    * @private
    * @param {models.Sample} sample
+   * @throws Error(Can't read file)
    */
   var analyzePartialyFinished = function(sample) {
     var sr = new SampleReader();
 
-    fs.readFile('../'+sample.dataPath, function(err, data){
+    fs.readFile(sample.dataPath, 'utf-8', function(err, data){
+      if (err) {
+       throw new Error('Can\'t read file');
+      }
       var clustersForSequence = [];
       sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
         clustersForSequence = clusterHandler.finishAnalyzingSample(
@@ -355,11 +359,15 @@ module.exports = function(JDSM) {
      * Start analyzing sample.
      * @method analyzeSample
      * @param {models.Sample} sample database object
+     * @throws Error(Can't read file)
      */
     analyzeSample: function(sample) {
       var sr = new SampleReader();
 
-      fs.readFile(sample.dataPath, function(err, data){
+      fs.readFile(sample.dataPath, 'utf-8', function(err, data){
+        if (err) {
+          throw new Error('Can\'t read file');
+        }
         var clustersForSequence = [];
         sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
           //send data to relative clusters
