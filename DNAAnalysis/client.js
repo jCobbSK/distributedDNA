@@ -186,8 +186,10 @@ module.exports = (function() {
     //set timer to update time of calculation every minute
     var startedTime = moment();
     setInterval(function(){
-     $('#duration').html(moment().diff(startedTime,'minutes'));
-    }.call(this),60000);
+     var diff = moment().diff(startedTime);
+      var result = moment.utc(diff).format('HH:mm:ss');
+     $('#duration').html(result);
+    },1000);
   })();
 
 })();
