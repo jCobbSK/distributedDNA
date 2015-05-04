@@ -19,11 +19,12 @@ This project tries to build distributive system for advanced big data pattern re
 1. run: grunt
 1. open browser on localhost:3000
 1. Login with credentials:
-Login | Password | Role
-------|----------|------
-admin | admin    | admin
-client| client   | client
-node  | node     | node
+
+| Login  | Password    | Role   |
+| ------ | ----------- | ------ |
+| admin  | admin       | admin  |
+| client | client      | client |
+| node   | node        | node   |
 
 ###Various tasks###
 1. grunt createData -- create default accounts
