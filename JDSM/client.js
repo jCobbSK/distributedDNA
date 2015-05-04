@@ -106,7 +106,7 @@ module.exports = function(socketUrl) {
      */
     registerTask: function(eventName, callback) {
       this.socket.on(eventName, function(data){
-        callback(data, new RespondObject(data, socket));
+        callback(data.data, RespondObject(data, socket));
       });
     }
   }

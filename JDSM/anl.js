@@ -142,20 +142,20 @@ module.exports = function(socketsIO, options) {
    * @param {response object} data
    */
   var handleResponse = function(data) {
-    console.log(data);
     var requestId = data['requestId'];
     var masterRequestId = data['masterRequestId'];
     if (!requestId || !masterRequestId)
       throw new Error('Corrupted response from client, does not contain requestId or masterRequestId');
 
     var request = _.find(pendingRequests, function(request){
-      return request.getId() == id;
+      return request.getId() == requestId;
     });
 
     if (!request)
       throw new Error('Not found request for response');
 
     request.handleResponse(data);
+    pendingRequests.splice(pendingRequests.indexOf(request),1);
   }
 
   /**
@@ -176,14 +176,14 @@ module.exports = function(socketsIO, options) {
     });
 
     _.each(requests, function(request){
-      dependents.push(
-        new Request({
-          id: requestIdFactory++,
-          node: request['node'] || findBestAvailable(),
-          requestData: request['requestData'],
-          masterRequest: masterReq
-        })
-      );
+      var r = new Request({
+        id: requestIdFactory++,
+        node: request['node'] || findBestAvailable(),
+        requestData: request['requestData'],
+        masterRequest: masterReq
+      });
+      pendingRequests.push(r);
+      dependents.push(r);
     });
 
     masterReq.setDependentRequests(dependents);

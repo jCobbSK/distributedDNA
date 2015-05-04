@@ -120,7 +120,8 @@ module.exports = function(options) {
      * @param {function} [optional] callback overrided callback from constructor
      */
     run: function(_callback) {
-      callback = _callback;
+      if (_callback)
+        callback = _callback;
 
       switch(type){
         case 'async':

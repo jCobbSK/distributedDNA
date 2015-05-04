@@ -8,7 +8,8 @@
 var JDSM = require('../JDSM/client')('http://localhost:3000'),
     _ = require('underscore'),
     sizeof = require('object-sizeof'),
-    $ = require('jquery');
+    $ = require('jquery'),
+    moment = require('moment');
 module.exports = (function() {
   /**
    * Cached clusters on client side.
@@ -108,7 +109,7 @@ module.exports = (function() {
       patternId: pattern.id,
       result:regExp.test(subSequence)
     };
-  }
+  };
 
   /**
    * Analyze all patterns inside cluster specified by clusterId, returns array of result objects
@@ -129,7 +130,7 @@ module.exports = (function() {
     })
 
     return results;
-  }
+  };
 
   /**
    * Register all tasks for Node to handle
@@ -144,7 +145,7 @@ module.exports = (function() {
         results: analyzeCluster(data.sampleSequence, data.clusterId)
       };
       DataTraffic.addUpload(sizeof(resultObject));
-      respond(resultObject);
+      respond.respond(resultObject);
     });
 
     JDSM.registerTask('analyzeNoCache', function(data, respond){
@@ -161,7 +162,7 @@ module.exports = (function() {
         results: results
       };
       DataTraffic.addUpload(sizeof(resObject));
-      respond(resObject);
+      respond.respond(resObject);
     });
 
     JDSM.registerTask('addClusters', function(data, respond){
@@ -170,7 +171,7 @@ module.exports = (function() {
       _.each(data, function(clusterObject){
         clusters[clusterObject.clusterId] = clusterObject;
       });
-      respond('200');
+      respond.respond('200');
     });
 
     JDSM.registerTask('freeClusters', function(data, respond){
@@ -179,7 +180,7 @@ module.exports = (function() {
       _.each(data, function(clusterId){
         clusters[clusterId] = null;
       });
-      respond('200');
+      respond.respond('200');
     });
 
     //set timer to update time of calculation every minute
@@ -187,6 +188,6 @@ module.exports = (function() {
     setInterval(function(){
      $('#duration').html(moment().diff(startedTime,'minutes'));
     }.call(this),60000);
-  })()
+  })();
 
-})()
+})();

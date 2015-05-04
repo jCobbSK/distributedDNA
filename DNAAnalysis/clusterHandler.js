@@ -225,13 +225,16 @@ module.exports = function(options) {
     /**
      * Returns first not already provided cluster for particular sample defined by unique sampleId.
      * @method getClusterForSample
-     * @param {integer} chromosome
+     * @param {integer} chromosome (1-indexed!)
      * @param {integer} sampleId
      * @param {integer} sequenceStart
      * @param {integer} sequenceEnd
      * @returns {Array of DNAAnalysis.Cluster}
      */
     getClustersForSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+
+      //convert chromosome 1-indexed to 0 indexed
+      chromosome = parseInt(chromosome) - 1;
 
       if (!samplesProgress[sampleId]) {
         samplesProgress[sampleId] = {};
@@ -258,12 +261,16 @@ module.exports = function(options) {
      * partially patterns inside sequence => not all cluster is inside sequence.
      * @method finishAnalyzingSample
      * @param {integer} sampleId
-     * @param {integer} chromosome
+     * @param {integer} chromosome (1-indexed!)
      * @param {integer} sequenceStart
      * @param {integer} sequenceEnd
      * @returns {Array of DNAAnalysis.Cluster}
      */
     finishAnalyzingSample: function(sampleId, chromosome, sequenceStart, sequenceEnd) {
+
+      //convert chromosome 1-indexed to 0 indexed
+      chromosome = parseInt(chromosome) - 1;
+
       if (!samplesProgress[sampleId]) {
         samplesProgress[sampleId] = {};
       }

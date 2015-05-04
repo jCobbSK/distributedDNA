@@ -103,7 +103,7 @@ module.exports = function(options) {
 
       requestData['requestId'] = id;
       requestData['masterRequestId'] = masterRequest.getId();
-      node.sendReq(requestData['eventName'], requestData['data']);
+      node.sendReq(requestData['eventName'], requestData);
     },
 
     /**

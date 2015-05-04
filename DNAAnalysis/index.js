@@ -118,15 +118,22 @@ module.exports = function(JDSM) {
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
       //handle response -> create model.result
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
-      var sampleId = data.sampleId;
-      _.each(data.results, function(res){
-        Models.Pattern.create({
-          sampleId: sampleId,
-          patternId: res.patternId,
-          result: res.result
-        }).then(function(result){
-          console.log('created result');
-        });
+      _.each(data, function(data){
+        var sampleId = data.sampleId;
+        _.each(data.results, function(res){
+          Models.Result.build({
+            SampleId: sampleId,
+            PatternId: res.patternId,
+            result: res.result
+          }).save()
+            .then(function(result){
+              //TODO push to front-end of client
+              console.log('created result');
+            })
+            .catch(function(err){
+              throw new Error('Can\'t save pattern');
+            })
+        })
       })
     });
   }
@@ -285,7 +292,8 @@ module.exports = function(JDSM) {
   var initialCalculation = function() {
     //get all not finished samples from DBS and call analyzePartialyFinished on them
     Models.Sample.findAll({
-      where: {isDone: false}
+      where: {isDone: false},
+      include: [{model: Models.Result, as: 'Results'}]
     }).then(function(samples){
       _.each(samples, function(sample){
         analyzePartialyFinished(sample);
@@ -331,27 +339,24 @@ module.exports = function(JDSM) {
    * we return that cluster in return and is put for further proceed.
    * @method filterDoneClusters
    * @private
-   * @param {models.Sample} sample
+   * @param {models.Sample} sample with loaded Results in sample.Results
    * @param {Array of DNAAnalysis.Cluster} clusters
    * @param {function(clusters)} callback
    * @returns {Array of DNAAnalysis.Cluster}
    */
   var filterDoneClusters = function(sample, clusters, callback) {
-    //get ids of resolved patterns for sample
-    Models.Result.find({
-      where: {SampleId: sample.id},
-      attributes: ['PatternId']
-    }).then(function(results){
-      //filter clusters only with at least 1 pattern not in results
-      var res = _.filter(clusters, function(cluster){
-        return _.find(cluster.getPatterns(), function(pattern){
-          return _.find(results, function(result){
-            return result.patternId == pattern.id;
-          })
-        })
-      })
-      callback(res);
+
+    //filter clusters only with at least 1 pattern not in results
+    var res = _.filter(clusters, function(cluster){
+      var foundNotResolvedPattern = _.find(cluster.getPatterns(), function(pattern){
+        var foundPatternInResults = _.find(sample.Results, function(result){
+          return result.PatternId == pattern.id;
+        });
+        return !foundPatternInResults;
+      });
+      return foundNotResolvedPattern;
     })
+    callback(res);
   }
 
   return {
