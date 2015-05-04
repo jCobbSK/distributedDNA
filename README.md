@@ -41,6 +41,6 @@ This project tries to build distributive system for advanced big data pattern re
 1. implement DS interfaces
 
 
-### Who do I talk to? ###
+### Contact ###
 
-Please feel free to contact me on twitter @jCobbSK or email kubo.kanitra@gmail.com
+Please feel free to contact me on twitter __@jCobbSK__ or email __kubo.kanitra@gmail.com__
