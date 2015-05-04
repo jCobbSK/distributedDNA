@@ -121,18 +121,28 @@ module.exports = function(JDSM) {
       _.each(data, function(data){
         var sampleId = data.sampleId;
         _.each(data.results, function(res){
-          Models.Result.build({
-            SampleId: sampleId,
-            PatternId: res.patternId,
-            result: res.result
-          }).save()
-            .then(function(result){
-              //TODO push to front-end of client
-              console.log('created result');
-            })
-            .catch(function(err){
-              throw new Error('Can\'t save pattern');
-            })
+          //do not create duplicate results
+          Models.Result.find({
+            where: {SampleId: sampleId, PatternId: res.patternId}
+          }).then(function(result){
+            if (!result) {
+              Models.Result.build({
+                SampleId: sampleId,
+                PatternId: res.patternId,
+                result: res.result
+              }).save()
+                .then(function(result){
+                  //TODO push to front-end of client
+                  console.log('created result');
+                })
+                .catch(function(err){
+                  throw new Error('Can\'t save pattern');
+                })
+            }
+          }).catch(function(){
+            throw new Error('Can\'t fetch Result to check duplicity');
+          })
+
         })
       })
     });
