@@ -225,14 +225,15 @@ module.exports = function (grunt) {
 
   /**
    * Grunt task for creating sample for provided pattern ids and user defined by username
-   * e.q grunt generateSample:client:[32,33]
+   * e.q grunt generateSample:client:[32,33]:[34,35] - generates sample for client with positive sequence for patterns 32,33 and negative for 34,35
    */
-  grunt.registerTask('generateSample', 'Create sample record with correct dna file for selected patterns', function(username, patternIds){
+  grunt.registerTask('generateSample', 'Create sample record with correct dna file for selected patterns', function(username, positivePatternIds, negativePatternIds){
     console.log('Generating samples... This may take a few minutes.');
     //async task
     var done = this.async();
-    var patternIds = JSON.parse(patternIds);
-    Generator.createSample(username, patternIds, function(err){
+    var _positivePatternIds = JSON.parse(positivePatternIds);
+    var _negativePatternIds = JSON.parse(negativePatternIds);
+    Generator.createSample(username, _positivePatternIds, _negativePatternIds, function(err){
       if (!err) {
         console.log('Sample generated!');
         done();
@@ -242,6 +243,24 @@ module.exports = function (grunt) {
       console.error('Some ERROR!');
       done();
     });
+  });
+
+  /**
+   * Grunt task for generating N samples with random positive and negative patterns.
+   * e.q. grunt generateRandomSamples:10
+   */
+  grunt.registerTask('generateRandomSamples', 'Generates N random samples with various complexity', function(N){
+    //TODO
+    //get all patternIds for choosing
+    models.Pattern.findAll({
+      attributes: ['id']
+    })
+      .then(function(patternIds){
+
+      })
+      .catch(function(err){
+        throw new Error('Can\'t fetch all patterns');
+      })
   });
 
   /**

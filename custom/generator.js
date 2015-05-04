@@ -17,7 +17,8 @@ module.exports = (function() {
    */
   var settings = {
     patientName: 'Generator',
-    additionalInfo: 'Generated Sample for patterns: ',
+    additionalInfo: 'Generated Sample for POSITIVE patterns: ',
+    additionalInfo2: ' and NEGATIVE patterns: ',
     nucleotidSigns: ['C', 'G', 'T', 'A']
   }
 
@@ -92,15 +93,36 @@ module.exports = (function() {
    * @method generateSequence
    * @private
    * @throws Error('Pattern collision')
-   * @param {Array of Models.Pattern} patterns
+   * @param {Array of Models.Pattern} positivePatterns
+   * @param {Array of Models.Pattern} negativePatterns
    * @returns {string}
    */
-  var generateSequence = function(patterns) {
-
+  var generateSequence = function(positivePatterns, negativePatterns) {
+    //refactor function for positive/negative params
     var getRealChromosomeResultLength = function() {
       return chromosomeResult.length - controlsLen;
-    }
+    };
 
+    var isPositivePattern = function(pattern) {
+      return _.find(positivePatterns, function(pat){
+        return pat.id == pattern.id;
+      });
+    };
+
+    var shuffleSequence = function(isShuffling, sequence) {
+      if (!isShuffling)
+        return sequence;
+      var changingIndex = Math.floor(Math.random()*sequence.length);
+      console.log('Shuffling 1 ', sequence[changingIndex], changingIndex);
+      if (sequence[changingIndex] == 'C' || sequence[changingIndex] == 'G' || sequence[changingIndex] == 'T')
+        sequence = sequence.substr(0, changingIndex) + 'A' + sequence.substr(changingIndex + 1);
+      else
+        sequence = sequence.substr(0, changingIndex) + 'C' + sequence.substr(changingIndex + 1);
+      console.log('Shuffling 2 ', sequence[changingIndex], changingIndex);
+      return sequence;
+    };
+
+    var patterns = positivePatterns.concat(negativePatterns);
     var chromosomes = clusterPatternsByChromosomes(patterns);
     var result = '';
     var start = 0;
@@ -124,16 +146,19 @@ module.exports = (function() {
           if (chResSub !== patternSub)
             throw new Error('Pattern collision');
 
-          chromosomeResult += pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart);
+          chromosomeResult += shuffleSequence(
+                                !isPositivePattern(pattern),
+                                pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart)
+                              );
         }
         //if pattern starts at actual position of result, copy pattern into result
         else if (pattern.sequenceStart == start + getRealChromosomeResultLength()) {
-          chromosomeResult += pattern.data;
+          chromosomeResult += shuffleSequence( !isPositivePattern(pattern),pattern.data);
         }
         //if pattern starts after position of result generate rand sequence and copy pattern
         else if (pattern.sequenceStart > start + getRealChromosomeResultLength()) {
           chromosomeResult += getRandomSequence(pattern.sequenceStart - (start + getRealChromosomeResultLength()));
-          chromosomeResult += pattern.data;
+          chromosomeResult += shuffleSequence( !isPositivePattern(pattern),pattern.data);
         }
       });
       result += chromosomeResult;
@@ -148,23 +173,27 @@ module.exports = (function() {
      * positive for all patterns in patternIds array.
      * @method createSample
      * @param {string} username
-     * @param {Integer[]} patternIds
+     * @param {Array of Integer} positivePatternIds
+     * @param {Array of Integer} negativePatternIds
      * @param {function(Sample)} callback
      */
-    createSample: function(username, patternIds, callback) {
+    createSample: function(username, positivePatternIds, negativePatternIds, callback) {
       //get patterns model instances for patternIds
-
       Q.all([
         Models.Pattern.findAll({
-          where:{id:patternIds}
+          where:{ id: positivePatternIds }
+        }),
+        Models.Pattern.findAll({
+          where:{id: negativePatternIds}
         }),
         Models.User.find({
           where: {username: username}
         })
       ]).then(function(results){
-        var patterns = results[0];
-        var user = results[1];
-        var sequence = generateSequence(patterns);
+        var positvePatterns = results[0];
+        var negativePatterns = results[1];
+        var user = results[2];
+        var sequence = generateSequence(positvePatterns, negativePatterns);
         var tempPath = Math.floor(Math.random()*1000)+'.txt';
         Q.all([
           Q.nfcall(fs.writeFile, tempPath, sequence, 'utf-8'),
@@ -172,7 +201,7 @@ module.exports = (function() {
             UserId: user.id,
             isDone: false,
             patientName: settings.patientName,
-            additionalInfo: settings.additionalInfo + patternIds
+            additionalInfo: settings.additionalInfo + positivePatternIds + settings.additionalInfo2 + negativePatternIds
           }).save()
         ]).then(function(results){
           var sample = results[1];
