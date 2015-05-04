@@ -49,6 +49,14 @@ router.get('/:id', auth.roleAuthenticate(['client']), function(req, res) {
       res.sendStatus(401);
     else
       result['sample'] = sample;
+    result['sample']['Results'] = result['sample']['Results'].sort(function(a, b){
+      if (a.result && !b.result)
+        return -1;
+      else if (!a.result && b.result)
+        return 1;
+      else
+        return a.Pattern.id - b.Pattern.id;
+    });
     result['samples'] = samples;
     result['actualSample'] = req.params.id;
     res.render('results', result);

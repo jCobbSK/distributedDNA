@@ -43,12 +43,12 @@
             </tr>
           </thead>
           <tbody>
-            <% for (var i=0,len=sample.Results;i<len;i++){ %>
+            <% for (var i=0,len=sample.Results.length;i<len;i++){ %>
             <tr>
-              <td><%=sample.Results[i].pattern.id; %></td>
-              <td><%=sample.Results[i].pattern.name; %></td>
-              <td><%=sample.Results[i].pattern.description; %></td>
-              <td><%=sample.Results[i].result; %></td>
+              <td><%=sample.Results[i].Pattern.id %></td>
+              <td><%=sample.Results[i].Pattern.name %></td>
+              <td><%=sample.Results[i].Pattern.description %></td>
+              <td><%=sample.Results[i].result %></td>
             </tr>
             <%}%>
           </tbody>
