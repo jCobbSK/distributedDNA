@@ -10,6 +10,16 @@ nav {
   text-align: center;
 }
 
+tr {
+  &.success {
+    background-color: #c8e6c9;
+  }
+
+  &.failure {
+    background-color: #ffcdd2;
+  }
+}
+
 @-webkit-keyframes rotating {
   from{
     -webkit-transform: rotate(0deg);

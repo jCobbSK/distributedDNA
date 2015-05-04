@@ -44,7 +44,7 @@
           </thead>
           <tbody>
             <% for (var i=0,len=sample.Results.length;i<len;i++){ %>
-            <tr>
+            <tr class="<%=(sample.Results[i].result)?'success':'failure'%>">
               <td><%=sample.Results[i].Pattern.id %></td>
               <td><%=sample.Results[i].Pattern.name %></td>
               <td><%=sample.Results[i].Pattern.description %></td>
