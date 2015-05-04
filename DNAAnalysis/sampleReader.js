@@ -114,7 +114,7 @@ module.exports = function() {
      */
     getPartOfSequence: function(_startIndex, _endIndex) {
       if (this.getStartIndex() <= _startIndex && this.getEndIndex() >= _endIndex) {
-        return sequence.substring(_startIndex - this.getStartIndex(), _endIndex - this.getStartIndex());
+        return sequence.substring(_startIndex - this.getStartIndex(), _endIndex - this.getStartIndex() + 1);
       }
       return null;
     },

@@ -104,7 +104,7 @@ module.exports = (function() {
    */
   var analyze = function(sequence, startSequence, pattern) {
     var regExp = RegExp(pattern.sequence);
-    var subSequence = sequence.substring(pattern.sequenceStart - startSequence, pattern.sequenceEnd - startSequence);
+    var subSequence = sequence.substring(pattern.sequenceStart - startSequence, pattern.sequenceEnd - startSequence + 1);
     return {
       patternId: pattern.id,
       result:regExp.test(subSequence)
