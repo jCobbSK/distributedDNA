@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.1</em>
+            <em>API Docs for: 0.9.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Authentification.html">Authentification</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/Cluster.html">Cluster</a></li>
                                 <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
@@ -46,6 +47,7 @@
                                 <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PatternCrawler.html">PatternCrawler</a></li>
                                 <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
@@ -55,7 +57,6 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/Authentification.html">Authentification</a></li>
                                 <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
@@ -120,7 +121,7 @@ module.exports = function(_socket, options) {
    * @private
    */
   var runLatencyUpdater = function() {
-    setInterval(function(){
+    latencyUpdaterInterval = setInterval(function(){
       if (pendingPing) {
         //we havent got response for ping as long as timeout is set -&gt; we are assuming node is
         //disconnected
@@ -138,6 +139,14 @@ module.exports = function(_socket, options) {
       })
     }, timeout);
   };
+
+  /**
+   * Latency updater interval ID for clearing after node disconnection.
+   * @property latencyUpdaterInterval
+   * @private
+   * @type {integer}
+   */
+  var latencyUpdaterInterval = null;
 
   /**
    * Calculate bandwidth and performance of node. It send 1MB of random string, node after receive
@@ -367,6 +376,14 @@ module.exports = function(_socket, options) {
      */
     getId: function() {
       return id;
+    },
+
+    /**
+     * Call for unregistering self. Mainly cancel our inside loops.
+     * @method unregisterSelf
+     */
+    unregisterSelf: function() {
+      clearInterval(latencyUpdaterInterval);
     }
   }
 }

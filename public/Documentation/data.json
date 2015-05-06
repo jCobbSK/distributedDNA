@@ -1,9 +1,9 @@
 {
     "project": {
         "name": "diplomka",
-        "description": "",
-        "version": "0.0.1",
-        "url": ""
+        "description": "Distributed javascript system implemented for analysis of DNA sequence.",
+        "version": "0.9.0",
+        "url": "https://bitbucket.org/KandoSVK/diplomka"
     },
     "files": {
         "JDSM\\anl.js": {
@@ -21,7 +21,6 @@
             "name": "JDSM\\client.js",
             "modules": {},
             "classes": {
-                "Client": 1,
                 "RespondObject": 1
             },
             "fors": {
@@ -68,8 +67,11 @@
         },
         "DNAAnalysis\\client.js": {
             "name": "DNAAnalysis\\client.js",
-            "modules": {},
+            "modules": {
+                "DNAAnalysis": 1
+            },
             "classes": {
+                "Client": 1,
                 "DataTraffic": 1
             },
             "fors": {},
@@ -77,9 +79,7 @@
         },
         "DNAAnalysis\\cluster.js": {
             "name": "DNAAnalysis\\cluster.js",
-            "modules": {
-                "DNAAnalysis": 1
-            },
+            "modules": {},
             "classes": {
                 "Cluster": 1
             },
@@ -123,17 +123,17 @@
         "custom\\authentification.js": {
             "name": "custom\\authentification.js",
             "modules": {
+                "Custom": 1
+            },
+            "classes": {
                 "Authentification": 1
             },
-            "classes": {},
             "fors": {},
             "namespaces": {}
         },
         "custom\\generator.js": {
             "name": "custom\\generator.js",
-            "modules": {
-                "Custom": 1
-            },
+            "modules": {},
             "classes": {
                 "Generator": 1
             },
@@ -143,7 +143,9 @@
         "custom\\patternCrawler.js": {
             "name": "custom\\patternCrawler.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "PatternCrawler": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -163,13 +165,11 @@
             "submodules": {},
             "classes": {
                 "ANL": 1,
-                "Client": 1,
                 "RespondObject": 1,
                 "MasterRequest": 1,
                 "Node": 1,
                 "PingHandler": 1,
-                "Request": 1,
-                "DataTraffic": 1
+                "Request": 1
             },
             "fors": {
                 "RespondObject": 1,
@@ -177,9 +177,9 @@
             },
             "namespaces": {},
             "tag": "module",
-            "file": "DNAAnalysis\\client.js",
-            "line": 14,
-            "description": "Class Active Node List (ANL)",
+            "file": "JDSM\\request.js",
+            "line": 1,
+            "description": "Class Active Node List (ANL). It provides JDSM public API. It automatically handles\nconnection and disconnection of nodes and stores all actual connected nodes.",
             "is_constructor": 1,
             "params": [
                 {
@@ -193,6 +193,8 @@
             "name": "DNAAnalysis",
             "submodules": {},
             "classes": {
+                "Client": 1,
+                "DataTraffic": 1,
                 "Cluster": 1,
                 "ClusterHandler": 1,
                 "SampleReader": 1,
@@ -203,7 +205,7 @@
             "tag": "module",
             "file": "DNAAnalysis\\settings.js",
             "line": 1,
-            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly",
+            "description": "Client class executed on node's front-end. This class has to be browserifyied and include\ninto compute page. It automatically injects JDSM module's client class and therefore sockets.io-client\nscript too.",
             "params": [
                 {
                     "name": "JDSM",
@@ -212,22 +214,13 @@
                 }
             ]
         },
-        "Authentification": {
-            "name": "Authentification",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "custom\\authentification.js",
-            "line": 1,
-            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with additional roles"
-        },
         "Custom": {
             "name": "Custom",
             "submodules": {},
             "classes": {
+                "Authentification": 1,
                 "Generator": 1,
+                "PatternCrawler": 1,
                 "UsersStorage": 1
             },
             "fors": {},
@@ -235,7 +228,7 @@
             "tag": "module",
             "file": "custom\\usersStorage.js",
             "line": 1,
-            "description": "Static class with methods of creating fixture data."
+            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with method for generating authentification\nmiddleware for filtering based on defined roles (node, client, admin)."
         }
     },
     "classes": {
@@ -250,7 +243,7 @@
             "module": "JDSM",
             "file": "JDSM\\anl.js",
             "line": 1,
-            "description": "Class Active Node List (ANL)",
+            "description": "Class Active Node List (ANL). It provides JDSM public API. It automatically handles\nconnection and disconnection of nodes and stores all actual connected nodes.",
             "is_constructor": 1,
             "params": [
                 {
@@ -294,11 +287,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "JDSM",
+            "module": "DNAAnalysis",
             "namespace": "",
-            "file": "JDSM\\client.js",
+            "file": "DNAAnalysis\\client.js",
             "line": 1,
-            "description": "Client class handling front-end interaction. It is required to browserify this module before\nuse.",
+            "description": "Client class executed on node's front-end. This class has to be browserifyied and include\ninto compute page. It automatically injects JDSM module's client class and therefore sockets.io-client\nscript too.",
             "is_constructor": 1,
             "params": [
                 {
@@ -347,7 +340,7 @@
             "namespace": "",
             "file": "JDSM\\masterRequest.js",
             "line": 1,
-            "description": "Class handling sync and async requests. It contains N requests.",
+            "description": "Class handling sync and async requests. It consists of N requests executed based on type of this request.",
             "is_constructor": 1,
             "params": [
                 {
@@ -437,7 +430,7 @@
             "module": "JDSM",
             "namespace": "",
             "file": "JDSM\\node.js",
-            "line": 110,
+            "line": 118,
             "description": "Self-Invoked Class for handling ping measurements. Get actual average ping with getAveragePing() method."
         },
         "Request": {
@@ -452,7 +445,7 @@
             "namespace": "",
             "file": "JDSM\\request.js",
             "line": 1,
-            "description": "Low level request object.",
+            "description": "Lowest level request object. It represents one request on particular Node in system and\nhandles response on that request.",
             "is_constructor": 1,
             "params": [
                 {
@@ -511,10 +504,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "JDSM",
+            "module": "DNAAnalysis",
             "namespace": "",
             "file": "DNAAnalysis\\client.js",
-            "line": 14,
+            "line": 22,
             "description": "Self-instantiate object for handling data trafic, so it is possible to measure\nnetwork activity of node."
         },
         "Cluster": {
@@ -529,7 +522,7 @@
             "namespace": "",
             "file": "DNAAnalysis\\cluster.js",
             "line": 1,
-            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly",
+            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly.",
             "is_constructor": 1,
             "params": [
                 {
@@ -572,7 +565,7 @@
             "namespace": "",
             "file": "DNAAnalysis\\clusterHandler.js",
             "line": 1,
-            "description": "Handler for clusters. Manages creation of clusters.",
+            "description": "Handler for clusters. Manages creation, store and manipulation of clusters.",
             "is_constructor": 1,
             "params": [
                 {
@@ -603,7 +596,7 @@
             "namespace": "",
             "file": "DNAAnalysis\\sampleReader.js",
             "line": 1,
-            "description": "Class for manipulating with partially loaded sample sequence."
+            "description": "Class for handling asynchronous loading of DNA sample sequence."
         },
         "Settings": {
             "name": "Settings",
@@ -619,6 +612,20 @@
             "line": 1,
             "description": "Settings for DNAAnalysis module."
         },
+        "Authentification": {
+            "name": "Authentification",
+            "shortname": "Authentification",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Custom",
+            "namespace": "",
+            "file": "custom\\authentification.js",
+            "line": 1,
+            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with method for generating authentification\nmiddleware for filtering based on defined roles (node, client, admin)."
+        },
         "Generator": {
             "name": "Generator",
             "shortname": "Generator",
@@ -632,6 +639,20 @@
             "file": "custom\\generator.js",
             "line": 1,
             "description": "Static class with methods of creating fixture data."
+        },
+        "PatternCrawler": {
+            "name": "PatternCrawler",
+            "shortname": "PatternCrawler",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Custom",
+            "namespace": "",
+            "file": "custom\\patternCrawler.js",
+            "line": 1,
+            "description": "Class for crawling ensembl genome browser for fetching and persisting patterns.\nIt is used in grunt task fetchEnsemblData."
         },
         "UsersStorage": {
             "name": "UsersStorage",
@@ -651,14 +672,14 @@
     "classitems": [
         {
             "file": "JDSM\\anl.js",
-            "line": 25,
+            "line": 26,
             "is_constructor": 1,
             "class": "ANL",
             "module": "JDSM"
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 50,
+            "line": 51,
             "description": "List of active connected nodes",
             "itemtype": "property",
             "name": "nodes",
@@ -670,7 +691,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 59,
+            "line": 60,
             "description": "Optional register callback",
             "itemtype": "property",
             "name": "onRegisterCallback",
@@ -683,7 +704,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 68,
+            "line": 69,
             "description": "Optional unregister callback",
             "itemtype": "property",
             "name": "onUnregisterCallback",
@@ -696,7 +717,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 78,
+            "line": 79,
             "description": "All requests which nodes are working on.",
             "itemtype": "property",
             "name": "pendingRequests",
@@ -708,7 +729,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 86,
+            "line": 87,
             "description": "Every request will increment this property -> every request will have unique id",
             "itemtype": "property",
             "name": "requestIdFactory",
@@ -720,7 +741,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 94,
+            "line": 95,
             "description": "Register node after initialize (socket connect)",
             "itemtype": "method",
             "name": "registerNode",
@@ -742,7 +763,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 112,
+            "line": 113,
             "description": "Unregister node.",
             "itemtype": "method",
             "name": "unregisterNode",
@@ -760,7 +781,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 133,
+            "line": 137,
             "description": "All responses from sockets are going through this function, it finds request and call response\nmethod.",
             "itemtype": "method",
             "name": "handleResponse",
@@ -778,7 +799,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 157,
+            "line": 161,
             "description": "Initialize master request.",
             "itemtype": "method",
             "name": "createMasterRequest",
@@ -807,7 +828,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 189,
+            "line": 193,
             "description": "Find registered node, if not found null is returned",
             "itemtype": "method",
             "name": "find",
@@ -829,7 +850,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 202,
+            "line": 206,
             "description": "Find registered node by specified function called on Node objects",
             "itemtype": "method",
             "name": "findBy",
@@ -851,7 +872,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 213,
+            "line": 217,
             "description": "Find free node based on basic criteria.",
             "itemtype": "method",
             "name": "findFree",
@@ -866,7 +887,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 225,
+            "line": 229,
             "description": "Find node with the least traffic, lowest latency and other criteria.",
             "itemtype": "method",
             "name": "findBestAvailable",
@@ -881,7 +902,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 238,
+            "line": 242,
             "description": "Send asynchronous requests, callback is called after all requests responded.\nAll requests are independent, callback is called with err and results where\nresults is array of responds for all requests.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
             "itemtype": "method",
             "name": "sendAsyncRequest",
@@ -902,7 +923,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 254,
+            "line": 258,
             "description": "Send synchrounous requests, callback is called after all requests responded,\nand they are called sequentially, first is called and respond is append to the next\nrequest object into 'prerequisites' property and so forth. Callback is\ncalled with err and results where results is respond for last request.\n\nIf object in data array doesn't have property node: with valid Node object,\nit is provided automaticaly by findBestAvailable.",
             "itemtype": "method",
             "name": "sendSyncRequest",
@@ -922,7 +943,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 271,
+            "line": 275,
             "description": "Setters for callbacks on connection/disconnection of nodes",
             "itemtype": "method",
             "name": "setCallbacks",
@@ -943,7 +964,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 282,
+            "line": 286,
             "description": "Find registered node, if not found null is returned",
             "itemtype": "method",
             "name": "find",
@@ -963,7 +984,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 292,
+            "line": 296,
             "description": "Find registered node by specified function called on Node objects",
             "itemtype": "method",
             "name": "findBy",
@@ -983,7 +1004,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 302,
+            "line": 306,
             "description": "Find free node based on basic criteria.",
             "itemtype": "method",
             "name": "findFree",
@@ -996,7 +1017,7 @@
         },
         {
             "file": "JDSM\\anl.js",
-            "line": 311,
+            "line": 315,
             "description": "Find node with the least traffic, lowest latency and other criteria.",
             "itemtype": "method",
             "name": "findBestAvailable",
@@ -1232,7 +1253,7 @@
         },
         {
             "file": "JDSM\\masterRequest.js",
-            "line": 139,
+            "line": 140,
             "description": "Getter of id",
             "itemtype": "method",
             "name": "getId",
@@ -1245,7 +1266,7 @@
         },
         {
             "file": "JDSM\\masterRequest.js",
-            "line": 148,
+            "line": 149,
             "description": "Setter of dependent requests",
             "itemtype": "method",
             "name": "setDependentRequests",
@@ -1273,6 +1294,18 @@
         {
             "file": "JDSM\\node.js",
             "line": 44,
+            "description": "Latency updater interval ID for clearing after node disconnection.",
+            "itemtype": "property",
+            "name": "latencyUpdaterInterval",
+            "access": "private",
+            "tagname": "",
+            "type": "{integer}",
+            "class": "Node",
+            "module": "JDSM"
+        },
+        {
+            "file": "JDSM\\node.js",
+            "line": 52,
             "description": "Calculate bandwidth and performance of node. It send 1MB of random string, node after receive\nmark timestamp, perform benchmark calculations on it, mark timestamp and send everything back.",
             "itemtype": "method",
             "name": "bandwidthAndPerformanceUpdater",
@@ -1283,7 +1316,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 66,
+            "line": 74,
             "description": "Connection bandwidth calculated and set by bandwidthAndPerformanceUpdater",
             "itemtype": "property",
             "name": "bandwidth",
@@ -1295,7 +1328,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 74,
+            "line": 82,
             "description": "Performance index calculated and set by bandwidthAndPerformanceUpdater. Higher means longer\ncalculation time -> higher is worse.",
             "itemtype": "property",
             "name": "performance",
@@ -1307,7 +1340,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 83,
+            "line": 91,
             "description": "Default socket object, use for communication and identification of node.\nInitialize in constructor.",
             "itemtype": "property",
             "name": "socket",
@@ -1320,7 +1353,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 93,
+            "line": 101,
             "description": "Unique identifier.",
             "itemtype": "property",
             "name": "id",
@@ -1332,7 +1365,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 101,
+            "line": 109,
             "description": "Is some pending request for this node.",
             "itemtype": "property",
             "name": "isFree",
@@ -1345,7 +1378,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 119,
+            "line": 127,
             "description": "Get average latency based on all available ping requests.",
             "itemtype": "method",
             "name": "getAverageLatency",
@@ -1358,7 +1391,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 127,
+            "line": 135,
             "description": "Add latency from request.",
             "itemtype": "method",
             "name": "addLatency",
@@ -1374,7 +1407,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 139,
+            "line": 147,
             "description": "Number of requests called since connected. Used in getAverageUse method",
             "itemtype": "property",
             "name": "numberOfRequests",
@@ -1384,7 +1417,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 146,
+            "line": 154,
             "description": "Set on init, that is time when Node is created.",
             "itemtype": "property",
             "name": "connectedAt",
@@ -1397,7 +1430,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 155,
+            "line": 163,
             "description": "Timeout in ms after which node doesn't respond is declared disconnected",
             "itemtype": "property",
             "name": "timeout",
@@ -1409,7 +1442,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 163,
+            "line": 171,
             "description": "Are we still waiting for ping response from client.",
             "itemtype": "property",
             "name": "pendingPing",
@@ -1421,7 +1454,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 171,
+            "line": 179,
             "description": "If client crashes without socket emit disconnected we find out by pinging, and need to\nact on it.",
             "itemtype": "property",
             "name": "onUnregisterCallback",
@@ -1433,14 +1466,14 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 180,
+            "line": 188,
             "is_constructor": 1,
             "class": "PingHandler",
             "module": "JDSM"
         },
         {
             "file": "JDSM\\node.js",
-            "line": 190,
+            "line": 198,
             "description": "Get average latency of node.",
             "itemtype": "method",
             "name": "getPing",
@@ -1453,7 +1486,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 199,
+            "line": 207,
             "description": "Average number of requests per minute.",
             "itemtype": "method",
             "name": "getAverageUse",
@@ -1466,7 +1499,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 208,
+            "line": 216,
             "description": "Index which indicates likeliness to choose this node for request.\nIt considers latency and usage of node.",
             "itemtype": "method",
             "name": "availabilityIndex",
@@ -1479,7 +1512,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 218,
+            "line": 226,
             "description": "Actual communication with node.",
             "itemtype": "method",
             "name": "sendReq",
@@ -1500,7 +1533,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 229,
+            "line": 237,
             "description": "Set timeout after which client doesn't respond on ping request, we declare it disconnected.",
             "itemtype": "method",
             "name": "setTimeout",
@@ -1516,7 +1549,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 238,
+            "line": 246,
             "description": "When client disconnects, we need to call it.",
             "itemtype": "method",
             "name": "setOnUnregisterCallback",
@@ -1532,7 +1565,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 247,
+            "line": 255,
             "description": "Getter",
             "itemtype": "method",
             "name": "getIsFree",
@@ -1545,7 +1578,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 256,
+            "line": 264,
             "description": "Setter",
             "itemtype": "method",
             "name": "setIsFree",
@@ -1561,7 +1594,7 @@
         },
         {
             "file": "JDSM\\node.js",
-            "line": 265,
+            "line": 273,
             "description": "getter",
             "itemtype": "method",
             "name": "getId",
@@ -1573,8 +1606,17 @@
             "module": "JDSM"
         },
         {
+            "file": "JDSM\\node.js",
+            "line": 282,
+            "description": "Call for unregistering self. Mainly cancel our inside loops.",
+            "itemtype": "method",
+            "name": "unregisterSelf",
+            "class": "PingHandler",
+            "module": "JDSM"
+        },
+        {
             "file": "JDSM\\request.js",
-            "line": 21,
+            "line": 22,
             "description": "Self referencing property",
             "itemtype": "property",
             "name": "self",
@@ -1586,7 +1628,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 29,
+            "line": 30,
             "description": "Unique id of request",
             "itemtype": "property",
             "name": "id",
@@ -1599,7 +1641,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 38,
+            "line": 39,
             "description": "Node -> representing user",
             "itemtype": "property",
             "name": "node",
@@ -1612,7 +1654,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 47,
+            "line": 48,
             "description": "Master request object.",
             "itemtype": "property",
             "name": "masterRequest",
@@ -1624,7 +1666,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 55,
+            "line": 56,
             "description": "Response for the request from client node.",
             "itemtype": "property",
             "name": "response",
@@ -1636,7 +1678,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 63,
+            "line": 64,
             "description": "Object consists of 'eventName' and 'data'",
             "itemtype": "property",
             "name": "requestData",
@@ -1648,7 +1690,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 73,
+            "line": 74,
             "description": "Low level handling.",
             "itemtype": "method",
             "name": "handleResponse",
@@ -1664,7 +1706,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 86,
+            "line": 87,
             "description": "Send request to node for calculating.",
             "itemtype": "method",
             "name": "run",
@@ -1685,7 +1727,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 108,
+            "line": 109,
             "description": "Basic getter",
             "itemtype": "method",
             "name": "getId",
@@ -1698,7 +1740,7 @@
         },
         {
             "file": "JDSM\\request.js",
-            "line": 117,
+            "line": 118,
             "description": "Basic getter",
             "itemtype": "method",
             "name": "getResponse",
@@ -1711,19 +1753,19 @@
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 6,
+            "line": 14,
             "description": "Cached clusters on client side.",
             "itemtype": "property",
             "name": "clusters",
             "access": "private",
             "tagname": "",
             "type": "{Object with clusterId-s as keys}",
-            "class": "DataTraffic",
-            "module": "JDSM"
+            "class": "Client",
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 21,
+            "line": 29,
             "description": "Amount of downloaded data for processing. In Bytes.",
             "access": "private",
             "tagname": "",
@@ -1731,11 +1773,11 @@
             "name": "downloadedData",
             "type": "{integer}",
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 29,
+            "line": 37,
             "description": "Amount of uploaded data of results. In Bytes.",
             "access": "private",
             "tagname": "",
@@ -1743,11 +1785,11 @@
             "name": "uploadedData",
             "type": "{integer}",
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 37,
+            "line": 45,
             "description": "Format number of bytes into string with proper prefix kB, MB, GB",
             "itemtype": "method",
             "name": "formatBytes",
@@ -1765,22 +1807,22 @@
                 "type": "String"
             },
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 53,
+            "line": 61,
             "description": "Method called everytime data is changed. Used for updating DOM with actual data.",
             "itemtype": "method",
             "name": "changeCallback",
             "access": "private",
             "tagname": "",
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 66,
+            "line": 74,
             "description": "Add download data in B.",
             "itemtype": "method",
             "name": "addDownload",
@@ -1792,11 +1834,11 @@
                 }
             ],
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 76,
+            "line": 84,
             "description": "Add upload data in B.",
             "itemtype": "method",
             "name": "addUpload",
@@ -1807,11 +1849,11 @@
                 }
             ],
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 88,
+            "line": 96,
             "description": "Actual regExp testing of pattern with sequence.",
             "itemtype": "method",
             "name": "analyze",
@@ -1839,11 +1881,11 @@
                 "type": "ObjectpatternId:*,result:*"
             },
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 106,
+            "line": 114,
             "description": "Analyze all patterns inside cluster specified by clusterId, returns array of result objects\nfrom analyze method.",
             "itemtype": "method",
             "name": "analyzeCluster",
@@ -1866,15 +1908,15 @@
                 "type": "Array of ObjectpatternId:*,result:*"
             },
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\client.js",
-            "line": 127,
+            "line": 135,
             "description": "Register all tasks for Node to handle",
             "is_constructor": 1,
             "class": "DataTraffic",
-            "module": "JDSM"
+            "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\cluster.js",
@@ -2280,7 +2322,7 @@
             "params": [
                 {
                     "name": "chromosome",
-                    "description": "",
+                    "description": "(1-indexed!)",
                     "type": "Integer"
                 },
                 {
@@ -2308,7 +2350,7 @@
         },
         {
             "file": "DNAAnalysis\\clusterHandler.js",
-            "line": 256,
+            "line": 259,
             "description": "Removes object with progress for particular sample in addition returns clusters which may have\npartially patterns inside sequence => not all cluster is inside sequence.",
             "itemtype": "method",
             "name": "finishAnalyzingSample",
@@ -2320,7 +2362,7 @@
                 },
                 {
                     "name": "chromosome",
-                    "description": "",
+                    "description": "(1-indexed!)",
                     "type": "Integer"
                 },
                 {
@@ -2343,7 +2385,7 @@
         },
         {
             "file": "DNAAnalysis\\clusterHandler.js",
-            "line": 289,
+            "line": 296,
             "description": "Getter of clusters, it is array of 23 arrays of n clusters.",
             "itemtype": "method",
             "name": "getClusters",
@@ -2356,7 +2398,7 @@
         },
         {
             "file": "DNAAnalysis\\clusterHandler.js",
-            "line": 298,
+            "line": 305,
             "description": "Get all clusters independent on chromosome number.",
             "itemtype": "method",
             "name": "getAllClustersAsArray",
@@ -2369,7 +2411,7 @@
         },
         {
             "file": "DNAAnalysis\\clusterHandler.js",
-            "line": 310,
+            "line": 317,
             "description": "Returns count of all clusters in handler. This method is preferable then getAllClustersAsArray.length, because\ndoesn't create array.",
             "itemtype": "method",
             "name": "allClustersCount",
@@ -2382,7 +2424,7 @@
         },
         {
             "file": "DNAAnalysis\\clusterHandler.js",
-            "line": 324,
+            "line": 331,
             "description": "Return options of clusterHandler",
             "itemtype": "method",
             "name": "getOptions",
@@ -2468,7 +2510,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 134,
+            "line": 151,
             "description": "Equivalent to analyzeCluster method but with array of clusters.",
             "itemtype": "method",
             "name": "analyzeClusters",
@@ -2496,7 +2538,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 148,
+            "line": 165,
             "description": "Remove specific number of clusters from each node and return array of these clusters.",
             "itemtype": "method",
             "name": "removeClustersFromNodes",
@@ -2518,7 +2560,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 178,
+            "line": 195,
             "description": "Add clusters evenly to all nodes.",
             "itemtype": "method",
             "name": "distributeClustersToNodes",
@@ -2536,7 +2578,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 219,
+            "line": 236,
             "description": "Callback when new Node is registered.",
             "itemtype": "method",
             "name": "registerNode",
@@ -2554,7 +2596,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 255,
+            "line": 272,
             "description": "Callback when Node disconnects",
             "itemtype": "method",
             "name": "unregisterNode",
@@ -2577,7 +2619,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 279,
+            "line": 296,
             "description": "A method called in the beginning of calculation, after first node has connected and calculation\nmay begun. We seek all not finished samples and make steps to finish them.",
             "itemtype": "method",
             "name": "initialCalculation",
@@ -2588,7 +2630,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 296,
+            "line": 314,
             "description": "Similar method to analyzeSample but with difference, that some of patterns have already been\nresolved so we don't want to call them again.",
             "itemtype": "method",
             "name": "analyzePartial",
@@ -2601,12 +2643,15 @@
                     "type": "models.Sample"
                 }
             ],
+            "throws": {
+                "description": "Error(Can't read file)"
+            },
             "class": "SampleReader",
             "module": "DNAAnalysis"
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 325,
+            "line": 347,
             "description": "Filter clusters where all patterns are resolved for sample. If one or more are not resolved (hasn't got result)\nwe return that cluster in return and is put for further proceed.",
             "itemtype": "method",
             "name": "filterDoneClusters",
@@ -2615,7 +2660,7 @@
             "params": [
                 {
                     "name": "sample",
-                    "description": "",
+                    "description": "with loaded Results in sample.Results",
                     "type": "models.Sample"
                 },
                 {
@@ -2638,7 +2683,7 @@
         },
         {
             "file": "DNAAnalysis\\index.js",
-            "line": 354,
+            "line": 373,
             "description": "Start analyzing sample.",
             "itemtype": "method",
             "name": "analyzeSample",
@@ -2649,6 +2694,9 @@
                     "type": "models.Sample"
                 }
             ],
+            "throws": {
+                "description": "Error(Can't read file)"
+            },
             "class": "SampleReader",
             "module": "DNAAnalysis"
         },
@@ -2832,8 +2880,10 @@
         },
         {
             "file": "custom\\authentification.js",
-            "line": 11,
+            "line": 13,
             "description": "Initialize all authorization + authentification middlewares and dependencies",
+            "itemtype": "method",
+            "name": "init",
             "params": [
                 {
                     "name": "app",
@@ -2841,25 +2891,41 @@
                     "type": "Expressjs app instance"
                 }
             ],
-            "class": "Generator",
-            "module": "Authentification"
+            "class": "Authentification",
+            "module": "Custom"
         },
         {
             "file": "custom\\authentification.js",
-            "line": 62,
-            "description": "Our role based authentification function",
+            "line": 57,
+            "description": "Sets authenticate strategy and success and failure redirects.",
+            "itemtype": "method",
+            "name": "authenticate",
+            "return": {
+                "description": "",
+                "type": "passport.authenticate instance"
+            },
+            "class": "Authentification",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\authentification.js",
+            "line": 69,
+            "description": "Our role based authentification function. It returns middleware for filtering\naccess by our defined roles (node, client, admin).",
+            "itemtype": "method",
+            "name": "roleAuthenticate",
             "params": [
                 {
                     "name": "roles",
-                    "description": ""
+                    "description": "",
+                    "type": "Array of strings"
                 }
             ],
             "return": {
                 "description": "",
                 "type": "Middleware function"
             },
-            "class": "Generator",
-            "module": "Authentification"
+            "class": "Authentification",
+            "module": "Custom"
         },
         {
             "file": "custom\\generator.js",
@@ -2873,7 +2939,17 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 24,
+            "line": 25,
+            "description": "0-indexed array of length of each chromosome.",
+            "itemtype": "property",
+            "name": "chromosomeLengths",
+            "type": "{Array}",
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 39,
             "description": "Creates control string for sequence with chromosome (0-indexed!!!) and\nsequence start position.",
             "itemtype": "method",
             "name": "getControlString",
@@ -2900,7 +2976,7 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 37,
+            "line": 52,
             "description": "Returns random nucleotid sign. (C || G || T || A)",
             "itemtype": "method",
             "name": "getRandomNucleotid",
@@ -2915,8 +2991,8 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 47,
-            "description": "Create random DNA sequence of specified length.",
+            "line": 62,
+            "description": "Create random DNA sequence of specified length. Optional argument repeatSize for better performance\nthat we generate random sequence of size repeatSize and copy it length / repeatSize times.",
             "itemtype": "method",
             "name": "getRandomSequence",
             "access": "private",
@@ -2925,6 +3001,11 @@
                 {
                     "name": "length",
                     "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "repeatSize",
+                    "description": "(optional)",
                     "type": "Integer"
                 }
             ],
@@ -2937,7 +3018,7 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 62,
+            "line": 88,
             "description": "Cluster patterns into array of arrays, where every index represents\nchromosome (0-indexed). Patterns in chromosome are sorted.",
             "itemtype": "method",
             "name": "clusterPatternsByChromosomes",
@@ -2957,7 +3038,7 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 90,
+            "line": 116,
             "description": "Generate minimal sequence for corret patterns.",
             "itemtype": "method",
             "name": "generateSequence",
@@ -2968,21 +3049,32 @@
             },
             "params": [
                 {
-                    "name": "patterns",
+                    "name": "positivePatterns",
                     "description": "",
                     "type": "Array of Models.Pattern"
+                },
+                {
+                    "name": "negativePatterns",
+                    "description": "",
+                    "type": "Array of Models.Pattern"
+                },
+                {
+                    "name": "path",
+                    "description": "- output file",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "- callback after generated sequence successfully flushed on disk",
+                    "type": "Function"
                 }
             ],
-            "return": {
-                "description": "",
-                "type": "String"
-            },
             "class": "Generator",
             "module": "Custom"
         },
         {
             "file": "custom\\generator.js",
-            "line": 146,
+            "line": 236,
             "description": "Creates sample record for user defined by username and\npositive for all patterns in patternIds array.",
             "itemtype": "method",
             "name": "createSample",
@@ -2993,9 +3085,14 @@
                     "type": "String"
                 },
                 {
-                    "name": "patternIds",
+                    "name": "positivePatternIds",
                     "description": "",
-                    "type": "Integer[]"
+                    "type": "Array of Integer"
+                },
+                {
+                    "name": "negativePatternIds",
+                    "description": "",
+                    "type": "Array of Integer"
                 },
                 {
                     "name": "callback",
@@ -3008,7 +3105,58 @@
         },
         {
             "file": "custom\\generator.js",
-            "line": 196,
+            "line": 300,
+            "description": "Generate sampleCount samples with desiredPatternCount positive and negative patterns each.\ne.q. generateRandomSamples('client', 10, 10, done) -- creates 10 samples for user with username 'client' where sample\nis positive for 10 random patterns and negative for 10 other random patterns.",
+            "itemtype": "method",
+            "name": "generateRandomSamples",
+            "params": [
+                {
+                    "name": "username",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sampleCount",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "desiredPatternCount",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 360,
+            "description": "Generates random DNA sequence for all chromosomes (approx 4GB file)",
+            "itemtype": "method",
+            "name": "generateDNAfile",
+            "params": [
+                {
+                    "name": "{string]",
+                    "description": "path - path for output file"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Generator",
+            "module": "Custom"
+        },
+        {
+            "file": "custom\\generator.js",
+            "line": 402,
             "description": "Call private method generateSequence.",
             "itemtype": "method",
             "name": "generateSequence",
@@ -3028,31 +3176,32 @@
         },
         {
             "file": "custom\\patternCrawler.js",
-            "line": 7,
+            "line": 13,
             "description": "Remove all database entries of patterns",
             "itemtype": "method",
             "name": "clearAll",
-            "class": "UsersStorage",
+            "class": "PatternCrawler",
             "module": "Custom"
         },
         {
             "file": "custom\\patternCrawler.js",
-            "line": 21,
+            "line": 27,
             "description": "Saving pattern to database, data attributes are name, description, data, chromosome, isForwardStrand",
             "itemtype": "method",
             "name": "savePattern",
             "params": [
                 {
                     "name": "data",
-                    "description": ""
+                    "description": "",
+                    "type": "Object"
                 }
             ],
-            "class": "UsersStorage",
+            "class": "PatternCrawler",
             "module": "Custom"
         },
         {
             "file": "custom\\patternCrawler.js",
-            "line": 40,
+            "line": 46,
             "description": "Actual application logic.\n\nIt is optimize for crawling ensembl.org @ 2.3.2015",
             "itemtype": "method",
             "name": "crawl",
@@ -3068,7 +3217,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "UsersStorage",
+            "class": "PatternCrawler",
             "module": "Custom"
         },
         {
@@ -3176,43 +3325,43 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\anl.js:157"
+            "line": " JDSM\\anl.js:161"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\masterRequest.js:139"
+            "line": " JDSM\\masterRequest.js:140"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\node.js:119"
+            "line": " JDSM\\node.js:127"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\node.js:247"
+            "line": " JDSM\\node.js:255"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\node.js:265"
+            "line": " JDSM\\node.js:273"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\request.js:108"
+            "line": " JDSM\\request.js:109"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " JDSM\\request.js:117"
+            "line": " JDSM\\request.js:118"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\client.js:37"
+            "line": " DNAAnalysis\\client.js:45"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\client.js:88"
+            "line": " DNAAnalysis\\client.js:96"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\client.js:106"
+            "line": " DNAAnalysis\\client.js:114"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3252,19 +3401,19 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\clusterHandler.js:256"
+            "line": " DNAAnalysis\\clusterHandler.js:259"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\clusterHandler.js:289"
+            "line": " DNAAnalysis\\clusterHandler.js:296"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\clusterHandler.js:298"
+            "line": " DNAAnalysis\\clusterHandler.js:305"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\clusterHandler.js:310"
+            "line": " DNAAnalysis\\clusterHandler.js:317"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3272,11 +3421,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\index.js:148"
+            "line": " DNAAnalysis\\index.js:165"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " DNAAnalysis\\index.js:325"
+            "line": " DNAAnalysis\\index.js:347"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3300,19 +3449,19 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\authentification.js:62"
+            "line": " custom\\authentification.js:57"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\generator.js:24"
+            "line": " custom\\authentification.js:69"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\generator.js:37"
+            "line": " custom\\generator.js:39"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\generator.js:47"
+            "line": " custom\\generator.js:52"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3320,11 +3469,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\generator.js:90"
+            "line": " custom\\generator.js:88"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " custom\\generator.js:196"
+            "line": " custom\\generator.js:402"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -3340,7 +3489,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " JDSM\\anl.js:25"
+            "line": " JDSM\\anl.js:26"
         },
         {
             "message": "Missing item type\nPing client handler.",
@@ -3352,11 +3501,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " JDSM\\node.js:180"
+            "line": " JDSM\\node.js:188"
         },
         {
             "message": "Missing item type\nRegister all tasks for Node to handle",
-            "line": " DNAAnalysis\\client.js:127"
+            "line": " DNAAnalysis\\client.js:135"
         },
         {
             "message": "Missing item type\nGet sequence length.",
@@ -3365,14 +3514,6 @@
         {
             "message": "Missing item type",
             "line": " DNAAnalysis\\index.js:38"
-        },
-        {
-            "message": "Missing item type\nInitialize all authorization + authentification middlewares and dependencies",
-            "line": " custom\\authentification.js:11"
-        },
-        {
-            "message": "Missing item type\nOur role based authentification function",
-            "line": " custom\\authentification.js:62"
         },
         {
             "message": "Missing item type\nSends raw object data to socket of userId if defined. For correct handling on client side\neventName is provided.l",

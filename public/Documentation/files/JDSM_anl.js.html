@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.1</em>
+            <em>API Docs for: 0.9.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Authentification.html">Authentification</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/Cluster.html">Cluster</a></li>
                                 <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
@@ -46,6 +47,7 @@
                                 <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PatternCrawler.html">PatternCrawler</a></li>
                                 <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
@@ -55,7 +57,6 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/Authentification.html">Authentification</a></li>
                                 <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
@@ -97,7 +98,8 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * Class Active Node List (ANL)
+ * Class Active Node List (ANL). It provides JDSM public API. It automatically handles
+ * connection and disconnection of nodes and stores all actual connected nodes.
  *
  * @class ANL
  * @module JDSM
@@ -226,6 +228,9 @@ module.exports = function(socketsIO, options) {
     var positionOfNode = nodes.splice(nodes.indexOf(node));
     if (positionOfNode &gt; 0)
       nodes.splice(positionOfNode, 1);
+
+    //unregister node itself
+    node.unregisterSelf();
   }
 
   /**
@@ -236,20 +241,20 @@ module.exports = function(socketsIO, options) {
    * @param {response object} data
    */
   var handleResponse = function(data) {
-    console.log(data);
     var requestId = data[&#x27;requestId&#x27;];
     var masterRequestId = data[&#x27;masterRequestId&#x27;];
     if (!requestId || !masterRequestId)
       throw new Error(&#x27;Corrupted response from client, does not contain requestId or masterRequestId&#x27;);
 
     var request = _.find(pendingRequests, function(request){
-      return request.getId() == id;
+      return request.getId() == requestId;
     });
 
     if (!request)
       throw new Error(&#x27;Not found request for response&#x27;);
 
     request.handleResponse(data);
+    pendingRequests.splice(pendingRequests.indexOf(request),1);
   }
 
   /**
@@ -270,14 +275,14 @@ module.exports = function(socketsIO, options) {
     });
 
     _.each(requests, function(request){
-      dependents.push(
-        new Request({
-          id: requestIdFactory++,
-          node: request[&#x27;node&#x27;] || findBestAvailable(),
-          requestData: request[&#x27;requestData&#x27;],
-          masterRequest: masterReq
-        })
-      );
+      var r = new Request({
+        id: requestIdFactory++,
+        node: request[&#x27;node&#x27;] || findBestAvailable(),
+        requestData: request[&#x27;requestData&#x27;],
+        masterRequest: masterReq
+      });
+      pendingRequests.push(r);
+      dependents.push(r);
     });
 
     masterReq.setDependentRequests(dependents);

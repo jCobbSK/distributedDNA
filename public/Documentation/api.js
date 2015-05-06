@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "ANL",
+        "Authentification",
         "Client",
         "Cluster",
         "ClusterHandler",
@@ -9,6 +10,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Generator",
         "MasterRequest",
         "Node",
+        "PatternCrawler",
         "PingHandler",
         "Request",
         "RespondObject",
@@ -17,31 +19,25 @@ YUI.add("yuidoc-meta", function(Y) {
         "UsersStorage"
     ],
     "modules": [
-        "Authentification",
         "Custom",
         "DNAAnalysis",
         "JDSM"
     ],
     "allModules": [
         {
-            "displayName": "Authentification",
-            "name": "Authentification",
-            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with additional roles"
-        },
-        {
             "displayName": "Custom",
             "name": "Custom",
-            "description": "Static class with methods of creating fixture data."
+            "description": "Custom middleware module for setting up authorization module and\nusername+password auth with method for generating authentification\nmiddleware for filtering based on defined roles (node, client, admin)."
         },
         {
             "displayName": "DNAAnalysis",
             "name": "DNAAnalysis",
-            "description": "Cluster object used as elemental part of compute process. Patterns are clustered based on their's\nlocation on chromosome and sequenceStart and sequenceEnd are modified accordingly"
+            "description": "Client class executed on node's front-end. This class has to be browserifyied and include\ninto compute page. It automatically injects JDSM module's client class and therefore sockets.io-client\nscript too."
         },
         {
             "displayName": "JDSM",
             "name": "JDSM",
-            "description": "Class Active Node List (ANL)"
+            "description": "Class Active Node List (ANL). It provides JDSM public API. It automatically handles\nconnection and disconnection of nodes and stores all actual connected nodes."
         }
     ]
 } };

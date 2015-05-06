@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.1</em>
+            <em>API Docs for: 0.9.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Authentification.html">Authentification</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/Cluster.html">Cluster</a></li>
                                 <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
@@ -46,6 +47,7 @@
                                 <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PatternCrawler.html">PatternCrawler</a></li>
                                 <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
@@ -55,7 +57,6 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/Authentification.html">Authentification</a></li>
                                 <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
@@ -135,6 +136,14 @@
                                 <a href="#method_createSample">createSample</a>
 
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_generateDNAfile">generateDNAfile</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateRandomSamples">generateRandomSamples</a>
+
+                            </li>
                             <li class="index-item method private">
                                 <a href="#method_generateSequence">generateSequence</a>
 
@@ -162,6 +171,10 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_chromosomeLengths">chromosomeLengths</a>
+
+                            </li>
                             <li class="index-item property">
                                 <a href="#property_settings">settings</a>
 
@@ -199,7 +212,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l62"><code>custom\generator.js:62</code></a>
+        <a href="../files/custom_generator.js.html#l88"><code>custom\generator.js:88</code></a>
         </p>
 
 
@@ -248,7 +261,10 @@ chromosome (0-indexed). Patterns in chromosome are sorted.</p>
                         <code>username</code>
                 </li>
                 <li class="arg">
-                        <code>patternIds</code>
+                        <code>positivePatternIds</code>
+                </li>
+                <li class="arg">
+                        <code>negativePatternIds</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -266,7 +282,7 @@ chromosome (0-indexed). Patterns in chromosome are sorted.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l146"><code>custom\generator.js:146</code></a>
+        <a href="../files/custom_generator.js.html#l236"><code>custom\generator.js:236</code></a>
         </p>
 
 
@@ -294,8 +310,18 @@ positive for all patterns in patternIds array.</p>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">patternIds</code>
-                        <span class="type">Integer</span>
+                        <code class="param-name">positivePatternIds</code>
+                        <span class="type">Array of Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">negativePatternIds</code>
+                        <span class="type">Array of Integer</span>
 
 
                     <div class="param-description">
@@ -319,20 +345,187 @@ positive for all patterns in patternIds array.</p>
 
 
 </div>
+<div id="method_generateDNAfile" class="method item">
+    <h3 class="name"><code>generateDNAfile</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>{string]</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/custom_generator.js.html#l360"><code>custom\generator.js:360</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generates random DNA sequence for all chromosomes (approx 4GB file)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">{string]</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>path - path for output file</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_generateRandomSamples" class="method item">
+    <h3 class="name"><code>generateRandomSamples</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>username</code>
+                </li>
+                <li class="arg">
+                        <code>sampleCount</code>
+                </li>
+                <li class="arg">
+                        <code>desiredPatternCount</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/custom_generator.js.html#l300"><code>custom\generator.js:300</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generate sampleCount samples with desiredPatternCount positive and negative patterns each.
+e.q. generateRandomSamples(&#39;client&#39;, 10, 10, done) -- creates 10 samples for user with username &#39;client&#39; where sample
+is positive for 10 random patterns and negative for 10 other random patterns.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">username</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sampleCount</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">desiredPatternCount</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_generateSequence" class="method item private">
     <h3 class="name"><code>generateSequence</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>patterns</code>
+                        <code>positivePatterns</code>
+                </li>
+                <li class="arg">
+                        <code>negativePatterns</code>
+                </li>
+                <li class="arg">
+                        <code>path</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
 
 
         <span class="flag private">private</span>
@@ -344,7 +537,7 @@ positive for all patterns in patternIds array.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l90"><code>custom\generator.js:90</code></a>
+        <a href="../files/custom_generator.js.html#l116"><code>custom\generator.js:116</code></a>
         </p>
 
 
@@ -361,7 +554,7 @@ positive for all patterns in patternIds array.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">patterns</code>
+                        <code class="param-name">positivePatterns</code>
                         <span class="type">Array of Models.Pattern</span>
 
 
@@ -370,16 +563,45 @@ positive for all patterns in patternIds array.</p>
                     </div>
 
                 </li>
+                <li class="param">
+                        <code class="param-name">negativePatterns</code>
+                        <span class="type">Array of Models.Pattern</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">path</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>output file</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>callback after generated sequence successfully flushed on disk</li>
+</ul>
+
+                    </div>
+
+                </li>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-            </div>
-        </div>
 
         <div class="throws">
             <h4>Throws:</h4>
@@ -415,7 +637,7 @@ positive for all patterns in patternIds array.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l196"><code>custom\generator.js:196</code></a>
+        <a href="../files/custom_generator.js.html#l402"><code>custom\generator.js:402</code></a>
         </p>
 
 
@@ -482,7 +704,7 @@ positive for all patterns in patternIds array.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l24"><code>custom\generator.js:24</code></a>
+        <a href="../files/custom_generator.js.html#l39"><code>custom\generator.js:39</code></a>
         </p>
 
 
@@ -551,7 +773,7 @@ sequence start position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l37"><code>custom\generator.js:37</code></a>
+        <a href="../files/custom_generator.js.html#l52"><code>custom\generator.js:52</code></a>
         </p>
 
 
@@ -582,6 +804,9 @@ sequence start position.</p>
                 <li class="arg">
                         <code>length</code>
                 </li>
+                <li class="arg">
+                        <code>repeatSize</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -599,7 +824,7 @@ sequence start position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/custom_generator.js.html#l47"><code>custom\generator.js:47</code></a>
+        <a href="../files/custom_generator.js.html#l62"><code>custom\generator.js:62</code></a>
         </p>
 
 
@@ -607,7 +832,8 @@ sequence start position.</p>
     </div>
 
     <div class="description">
-        <p>Create random DNA sequence of specified length.</p>
+        <p>Create random DNA sequence of specified length. Optional argument repeatSize for better performance
+that we generate random sequence of size repeatSize and copy it length / repeatSize times.</p>
 
     </div>
 
@@ -622,6 +848,17 @@ sequence start position.</p>
 
                     <div class="param-description">
                          
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">repeatSize</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
                     </div>
 
                 </li>
@@ -643,6 +880,31 @@ sequence start position.</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+                    <div id="property_chromosomeLengths" class="property item">
+                        <h3 class="name"><code>chromosomeLengths</code></h3>
+                        <span class="type">Array</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/custom_generator.js.html#l25"><code>custom\generator.js:25</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>0-indexed array of length of each chromosome.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
                     <div id="property_settings" class="property item">
                         <h3 class="name"><code>settings</code></h3>
                         <span class="type">Object</span>

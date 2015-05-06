@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="diplomka" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.1</em>
+            <em>API Docs for: 0.9.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/ANL.html">ANL</a></li>
+                                <li><a href="../classes/Authentification.html">Authentification</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/Cluster.html">Cluster</a></li>
                                 <li><a href="../classes/ClusterHandler.html">ClusterHandler</a></li>
@@ -46,6 +47,7 @@
                                 <li><a href="../classes/Generator.html">Generator</a></li>
                                 <li><a href="../classes/MasterRequest.html">MasterRequest</a></li>
                                 <li><a href="../classes/Node.html">Node</a></li>
+                                <li><a href="../classes/PatternCrawler.html">PatternCrawler</a></li>
                                 <li><a href="../classes/PingHandler.html">PingHandler</a></li>
                                 <li><a href="../classes/Request.html">Request</a></li>
                                 <li><a href="../classes/RespondObject.html">RespondObject</a></li>
@@ -55,7 +57,6 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/Authentification.html">Authentification</a></li>
                                 <li><a href="../modules/Custom.html">Custom</a></li>
                                 <li><a href="../modules/DNAAnalysis.html">DNAAnalysis</a></li>
                                 <li><a href="../modules/JDSM.html">JDSM</a></li>
@@ -216,15 +217,32 @@ module.exports = function(JDSM) {
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
       //handle response -&gt; create model.result
       console.log(&#x27;RESULT from CLIENT!!!!!!!!!!!!&#x27;, data);
-      var sampleId = data.sampleId;
-      _.each(data.results, function(res){
-        Models.Pattern.create({
-          sampleId: sampleId,
-          patternId: res.patternId,
-          result: res.result
-        }).then(function(result){
-          console.log(&#x27;created result&#x27;);
-        });
+      _.each(data, function(data){
+        var sampleId = data.sampleId;
+        _.each(data.results, function(res){
+          //do not create duplicate results
+          Models.Result.find({
+            where: {SampleId: sampleId, PatternId: res.patternId}
+          }).then(function(result){
+            if (!result) {
+              Models.Result.build({
+                SampleId: sampleId,
+                PatternId: res.patternId,
+                result: res.result
+              }).save()
+                .then(function(result){
+                  //TODO push to front-end of client
+                  console.log(&#x27;created result&#x27;);
+                })
+                .catch(function(err){
+                  throw new Error(&#x27;Can\&#x27;t save pattern&#x27;);
+                })
+            }
+          }).catch(function(){
+            throw new Error(&#x27;Can\&#x27;t fetch Result to check duplicity&#x27;);
+          })
+
+        })
       })
     });
   }
@@ -382,8 +400,9 @@ module.exports = function(JDSM) {
    */
   var initialCalculation = function() {
     //get all not finished samples from DBS and call analyzePartialyFinished on them
-    Models.Sample.find({
-      where: {isDone: false}
+    Models.Sample.findAll({
+      where: {isDone: false},
+      include: [{model: Models.Result, as: &#x27;Results&#x27;}]
     }).then(function(samples){
       _.each(samples, function(sample){
         analyzePartialyFinished(sample);
@@ -397,11 +416,15 @@ module.exports = function(JDSM) {
    * @method analyzePartial
    * @private
    * @param {models.Sample} sample
+   * @throws Error(Can&#x27;t read file)
    */
   var analyzePartialyFinished = function(sample) {
     var sr = new SampleReader();
 
-    fs.readFile(&#x27;../&#x27;+sample.dataPath, function(err, data){
+    fs.readFile(sample.dataPath, &#x27;utf-8&#x27;, function(err, data){
+      if (err) {
+       throw new Error(&#x27;Can\&#x27;t read file&#x27;);
+      }
       var clustersForSequence = [];
       sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
         clustersForSequence = clusterHandler.finishAnalyzingSample(
@@ -425,27 +448,24 @@ module.exports = function(JDSM) {
    * we return that cluster in return and is put for further proceed.
    * @method filterDoneClusters
    * @private
-   * @param {models.Sample} sample
+   * @param {models.Sample} sample with loaded Results in sample.Results
    * @param {Array of DNAAnalysis.Cluster} clusters
    * @param {function(clusters)} callback
    * @returns {Array of DNAAnalysis.Cluster}
    */
   var filterDoneClusters = function(sample, clusters, callback) {
-    //get ids of resolved patterns for sample
-    Models.Result.find({
-      where: {SampleId: sample.id},
-      attributes: [&#x27;PatternId&#x27;]
-    }).then(function(results){
-      //filter clusters only with at least 1 pattern not in results
-      var res = _.filter(clusters, function(cluster){
-        return _.find(cluster.getPatterns(), function(pattern){
-          return _.find(results, function(result){
-            return result.patternId == pattern.id;
-          })
-        })
-      })
-      callback(res);
+
+    //filter clusters only with at least 1 pattern not in results
+    var res = _.filter(clusters, function(cluster){
+      var foundNotResolvedPattern = _.find(cluster.getPatterns(), function(pattern){
+        var foundPatternInResults = _.find(sample.Results, function(result){
+          return result.PatternId == pattern.id;
+        });
+        return !foundPatternInResults;
+      });
+      return foundNotResolvedPattern;
     })
+    callback(res);
   }
 
   return {
@@ -453,11 +473,15 @@ module.exports = function(JDSM) {
      * Start analyzing sample.
      * @method analyzeSample
      * @param {models.Sample} sample database object
+     * @throws Error(Can&#x27;t read file)
      */
     analyzeSample: function(sample) {
       var sr = new SampleReader();
 
-      fs.readFile(sample.dataPath, function(err, data){
+      fs.readFile(sample.dataPath, &#x27;utf-8&#x27;, function(err, data){
+        if (err) {
+          throw new Error(&#x27;Can\&#x27;t read file&#x27;);
+        }
         var clustersForSequence = [];
         sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
           //send data to relative clusters

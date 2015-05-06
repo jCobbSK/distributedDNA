@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DNAAnalysis - diplomka</title>
+    <title>Authentification - diplomka</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -93,64 +93,226 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>DNAAnalysis Module</h1>
-<div class="box clearfix meta">
+<h1>Authentification Class</h1>
+<div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/DNAAnalysis_settings.js.html#l1"><code>DNAAnalysis\settings.js:1</code></a>
+            Defined in: <a href="../files/custom_authentification.js.html#l1"><code>custom\authentification.js:1</code></a>
         </div>
+
+            Module: <a href="../modules/Custom.html">Custom</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Client class executed on node&#39;s front-end. This class has to be browserifyied and include
-into compute page. It automatically injects JDSM module&#39;s client class and therefore sockets.io-client
-script too.</p>
+    <p>Custom middleware module for setting up authorization module and
+username+password auth with method for generating authentification
+middleware for filtering based on defined roles (node, client, admin).</p>
 
 </div>
 
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/Client.html">
-                        Client
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Cluster.html">
-                        Cluster
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/ClusterHandler.html">
-                        ClusterHandler
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/DataTraffic.html">
-                        DataTraffic
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/SampleReader.html">
-                        SampleReader
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Settings.html">
-                        Settings
-                    </a>
-                </li>
-            </ul>
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_authenticate">authenticate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_init">init</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_roleAuthenticate">roleAuthenticate</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_authenticate" class="method item">
+    <h3 class="name"><code>authenticate</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">passport.authenticate instance</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/custom_authentification.js.html#l57"><code>custom\authentification.js:57</code></a>
+        </p>
+
+
+
     </div>
 
-    <div class="yui3-u-1-2">
+    <div class="description">
+        <p>Sets authenticate strategy and success and failure redirects.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">passport.authenticate instance</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_init" class="method item">
+    <h3 class="name"><code>init</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>app</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/custom_authentification.js.html#l13"><code>custom\authentification.js:13</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Initialize all authorization + authentification middlewares and dependencies</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">app</code>
+                        <span class="type">Expressjs app instance</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_roleAuthenticate" class="method item">
+    <h3 class="name"><code>roleAuthenticate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>roles</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Middleware function</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/custom_authentification.js.html#l69"><code>custom\authentification.js:69</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Our role based authentification function. It returns middleware for filtering
+access by our defined roles (node, client, admin).</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">roles</code>
+                        <span class="type">Array of strings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Middleware function</span>:
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+
+
     </div>
 </div>
                     </div>
