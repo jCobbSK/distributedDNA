@@ -8,6 +8,7 @@ app.set('port', process.env.PORT || 3000);
 var server = require('http').Server(app);
 
 var JDSM = require('../JDSM')(server);
+global.JDSM = JDSM;
 global.applicationLogic = require('../DNAAnalysis')(JDSM);
 
 var server = server.listen(app.get('port'), function() {

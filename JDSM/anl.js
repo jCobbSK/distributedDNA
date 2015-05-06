@@ -319,6 +319,15 @@ module.exports = function(socketsIO, options) {
      */
     findBestAvailable: function() {
       return findBestAvailable();
+    },
+
+    /**
+     * Returns boolean if module is running, that means has at least one node connected.
+     * @method isRunning
+     * @returns {boolean}
+     */
+    isRunning: function() {
+      return nodes.length > 0;
     }
   }
 }

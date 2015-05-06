@@ -1,7 +1,8 @@
 var express = require('express'),
     auth = require('../custom/authentification'),
     router = express.Router(),
-    Generator = require('../custom/generator');
+    Generator = require('../custom/generator'),
+    colors = require('colors');
 
 /* GET home page. */
 
@@ -23,8 +24,9 @@ router.get('/', function(req, res) {
 });
 
 router.get('/generateSample',auth.roleAuthenticate(['client']), function(req, res) {
-  console.log('Generating sample', req.user.username);
-  Generator.generateRandomSamples(req.user.username, 1, 10, function(){
+  Generator.generateRandomSamples(req.user.username, 1, 10, function(err, samples){
+    if (samples && samples[0])
+      global.applicationLogic.analyzeSample(samples[0]);
     res.redirect('/results');
   });
 });

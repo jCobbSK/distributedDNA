@@ -317,6 +317,7 @@ module.exports = (function() {
 
           var patternCount = patternIds.length;
           var alreadyCreated = 0;
+          var createdSamples = [];
           patternIds = _.map(patternIds, function(pattern){
             return pattern.id;
           });
@@ -346,9 +347,11 @@ module.exports = (function() {
               return a - b;
             });
 
-            self.createSample(username, positive, negative, function(err){
+            self.createSample(username, positive, negative, function(err, sample){
+              if (sample)
+                createdSamples.push(sample);
               if (++alreadyCreated == sampleCount) {
-                callback();
+                callback(null,createdSamples);
               }
 
             });

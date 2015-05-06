@@ -364,6 +364,12 @@ module.exports = function(JDSM) {
     var deferred = Q.defer();
     var promises = [];
 
+    //if JDSM isn't running we can't analyze
+    if (!global.JDSM.isRunning()) {
+      deferred.resolve();
+      return deferred.promise;
+    }
+
     fs.readFile(sample.dataPath, 'utf-8', function(err, data) {
       if (err) {
         throw new Error('Can\'t read file');
@@ -443,6 +449,12 @@ module.exports = function(JDSM) {
       var promises = [];
       var deferred = Q.defer();
 
+      //if JDSM isn't running we can't analyze
+      if (!global.JDSM.isRunning()) {
+        deferred.resolve();
+        return deferred.promise;
+      }
+
       fs.readFile(sample.dataPath, 'utf-8', function(err, data){
         if (err) {
           throw new Error('Can\'t read file');
@@ -476,7 +488,7 @@ module.exports = function(JDSM) {
           });
       });
 
-      return deferred;
+      return deferred.promise;
     }
   }
 }
