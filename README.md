@@ -27,18 +27,18 @@ This project tries to build distributive system for advanced big data pattern re
 | node   | node        | node   |
 
 ###Various tasks###
+Various grunt tasks are created for testing and helping manipulation with data.
 1. grunt createData -- create default accounts
 1. grunt purgeData:table_name -- removing all data from table
 1. grunt fetchEnsemblData:countToFetch -- crawl genome browser for pattern genes
 1. grunt generateSample:username:pattern_ids -- create sample for user defined by username with sequence positive for patterns in pattern_ids
 1. grunt createTestPattern:chromosome:data:sequenceStart:name:description -- create pattern with provided required params chromosome and data, other params are optional
+1. grunt generateRandomSamples:N:M -- Generates N random samples with random M positive and negative patterns each
+1. grunt generateDNA:path -- Generate complete sequence of human DNA, output file defined by path is cca 2.9GB
 
-### Tasks TODO
-1. normalize sample data
-1. normalize ensembl sequences
-1. setup socket connections
-1. design distributive system interfaces
-1. implement DS interfaces
+### Knowing drawbacks not yet fixed
+1. After connection of first node, all pending computations are passed to that node and are not redistributed as more nodes are connecting.
+
 
 
 ### Contact ###

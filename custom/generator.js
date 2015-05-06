@@ -6,8 +6,8 @@
 var Models = require('../models'),
     Q = require('q'),
     _ = require('underscore'),
-    Sequelize = require('sequelize'),
-    fs = require('fs');
+    fs = require('fs'),
+    colors = require('colors');
 module.exports = (function() {
 
   /**
@@ -21,6 +21,20 @@ module.exports = (function() {
     additionalInfo2: ' and NEGATIVE patterns: ',
     nucleotidSigns: ['C', 'G', 'T', 'A']
   }
+
+  /**
+   * 0-indexed array of length of each chromosome.
+   * @property chromosomeLengths
+   * @type {Array}
+   */
+  var chromosomeLengths = [248956422, 242193529, 198295559,
+                           190214555, 181538259, 170805979,
+                           159345973, 145138636, 138394717,
+                           133797422, 135086622, 133275309,
+                           114364328, 107043718, 101991189,
+                           90338345, 83257441, 80373285,
+                           58617616, 64444167, 46709983,
+                           50818468,156040895];
 
   /**
    * Creates control string for sequence with chromosome (0-indexed!!!) and
@@ -46,18 +60,29 @@ module.exports = (function() {
   }
 
   /**
-   * Create random DNA sequence of specified length.
+   * Create random DNA sequence of specified length. Optional argument repeatSize for better performance
+   * that we generate random sequence of size repeatSize and copy it length / repeatSize times.
    * @method getRandomSequence
    * @private
    * @param {integer} length
+   * @param {integer} repeatSize (optional)
    * @returns {string}
    */
-  var getRandomSequence = function(length) {
+  var getRandomSequence = function(length, repeatSize) {
+    if (!repeatSize)
+      repeatSize = length;
     var res = '';
-    for (var i = 0; i < length; i++) {
+    for (var i = 0; i < repeatSize; i++) {
       res += getRandomNucleotid();
     }
-    return res;
+    var result = '';
+    for (var i = 0, len = length / repeatSize; i < len; i++) {
+      result += res;
+    }
+    if (length % repeatSize != 0) {
+      result += res.substr(0, length % repeatSize);
+    }
+    return result;
   }
 
   /**
@@ -95,14 +120,11 @@ module.exports = (function() {
    * @throws Error('Pattern collision')
    * @param {Array of Models.Pattern} positivePatterns
    * @param {Array of Models.Pattern} negativePatterns
-   * @returns {string}
+   * @param {string} path - output file
+   * @param {function} callback - callback after generated sequence successfully flushed on disk
    */
-  var generateSequence = function(positivePatterns, negativePatterns) {
+  var generateSequence = function(positivePatterns, negativePatterns, path, callback) {
     //refactor function for positive/negative params
-    var getRealChromosomeResultLength = function() {
-      return chromosomeResult.length - controlsLen;
-    };
-
     var isPositivePattern = function(pattern) {
       return _.find(positivePatterns, function(pat){
         return pat.id == pattern.id;
@@ -113,43 +135,82 @@ module.exports = (function() {
       if (!isShuffling)
         return sequence;
       var changingIndex = Math.floor(Math.random()*sequence.length);
-      console.log('Shuffling 1 ', sequence[changingIndex], changingIndex);
       if (sequence[changingIndex] == 'C' || sequence[changingIndex] == 'G' || sequence[changingIndex] == 'T')
         sequence = sequence.substr(0, changingIndex) + 'A' + sequence.substr(changingIndex + 1);
       else
         sequence = sequence.substr(0, changingIndex) + 'C' + sequence.substr(changingIndex + 1);
-      console.log('Shuffling 2 ', sequence[changingIndex], changingIndex);
       return sequence;
     };
 
+    var stream = fs.createWriteStream(path, {encoding: 'utf-8'});
+
     var patterns = positivePatterns.concat(negativePatterns);
     var chromosomes = clusterPatternsByChromosomes(patterns);
-    var result = '';
-    var start = 0;
-    var chromosomeResult = '';
-    var controlsLen = 0;
+    var actualChromosome = -1;
+    while(++actualChromosome < chromosomes.length && chromosomes[actualChromosome].length == 0);
 
-    _.each(chromosomes, function(patternArray, index) {
-      start = 0;
+    stream.on('drain', function(){
+      while(++actualChromosome < chromosomes.length && chromosomes[actualChromosome].length == 0);
+      writeChromosome();
+    });
+
+    stream.on('finish', function(){
+      if (throwingError) {
+        console.log('finishing error', path);
+        fs.unlinkSync(path);
+        callback(throwingError);
+      } else {
+        callback(null, true);
+      }
+    });
+
+    stream.on('moveOn', function(){
+      while(++actualChromosome < chromosomes.length && chromosomes[actualChromosome].length == 0);
+      writeChromosome();
+    });
+
+    var chromosomeResult = '';
+    var throwingError = false;
+
+    var writeChromosome = function() {
+
+      var getRealChromosomeResultLength = function() {
+        return chromosomeResult.length - controlsLen;
+      };
+
+      if (actualChromosome >= chromosomes.length) {
+        stream.end(' ');
+        return;
+      }
+      var patternArray = chromosomes[actualChromosome];
+      var start = 0;
       chromosomeResult = '';
-      controlsLen = 0;
+      var controlsLen = 0;
+
       if (patternArray.length > 0) {
-        chromosomeResult += getControlString(index, patternArray[0].sequenceStart);
+        chromosomeResult += getControlString(actualChromosome, patternArray[0].sequenceStart);
         controlsLen = chromosomeResult.length;
         start = patternArray[0].sequenceStart;
       }
       _.each(patternArray, function(pattern) {
+        if (throwingError)
+          return;
         //if part of pattern is in result - check if it is matched add rest of pattern into result otherwise throw error
         if (pattern.sequenceStart < start + getRealChromosomeResultLength()) {
           var chResSub = chromosomeResult.substr(pattern.sequenceStart - start + controlsLen);
           var patternSub = pattern.data.substr(0, start + getRealChromosomeResultLength() - pattern.sequenceStart);
-          if (chResSub !== patternSub)
-            throw new Error('Pattern collision');
+          if (chResSub !== patternSub) {
+            //patterns are colliding, delete file
+            throwingError = new Error('Colliding patterns');
+            console.log('Throwing error', path);
+            stream.end(' ');
+            return;
+          }
 
           chromosomeResult += shuffleSequence(
-                                !isPositivePattern(pattern),
-                                pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart)
-                              );
+            !isPositivePattern(pattern),
+            pattern.data.substr(start + getRealChromosomeResultLength() - pattern.sequenceStart)
+          );
         }
         //if pattern starts at actual position of result, copy pattern into result
         else if (pattern.sequenceStart == start + getRealChromosomeResultLength()) {
@@ -157,14 +218,18 @@ module.exports = (function() {
         }
         //if pattern starts after position of result generate rand sequence and copy pattern
         else if (pattern.sequenceStart > start + getRealChromosomeResultLength()) {
-          chromosomeResult += getRandomSequence(pattern.sequenceStart - (start + getRealChromosomeResultLength()));
+          chromosomeResult += getRandomSequence(pattern.sequenceStart - (start + getRealChromosomeResultLength()),1000);
           chromosomeResult += shuffleSequence( !isPositivePattern(pattern),pattern.data);
         }
       });
-      result += chromosomeResult;
-    });
 
-    return result;
+      if(!throwingError && !stream.write(chromosomeResult))
+        stream.emit('moveOn');
+
+
+    }
+
+    writeChromosome();
   }
 
   return {
@@ -193,33 +258,145 @@ module.exports = (function() {
         var positvePatterns = results[0];
         var negativePatterns = results[1];
         var user = results[2];
-        var sequence = generateSequence(positvePatterns, negativePatterns);
-        var tempPath = Math.floor(Math.random()*1000)+'.txt';
-        Q.all([
-          Q.nfcall(fs.writeFile, tempPath, sequence, 'utf-8'),
-          Models.Sample.build({
-            UserId: user.id,
-            isDone: false,
-            patientName: settings.patientName,
-            additionalInfo: settings.additionalInfo + positivePatternIds + settings.additionalInfo2 + negativePatternIds
-          }).save()
-        ]).then(function(results){
-          var sample = results[1];
-          var correctPath = '/samples/'+user.id+'_'+sample.id+'.dna';
-          Q.nfcall(fs.rename, tempPath, './'+correctPath).then(function(){
-            sample.dataPath = '.'+correctPath;
-            sample.save().then(function(sample){
-              callback(null, sample);
+        var tempPath = Math.floor(Math.random()*10000000)+'.txt';
+        generateSequence(positvePatterns, negativePatterns, tempPath, function(err){
+          if (err) {
+            console.log('ERROR: ', tempPath);
+            fs.unlink(tempPath, function(){
+              callback(err);
+            });
+            return;
+          }
+          Q.all([
+            Models.Sample.build({
+              UserId: user.id,
+              isDone: false,
+              patientName: settings.patientName,
+              additionalInfo: settings.additionalInfo + positivePatternIds + settings.additionalInfo2 + negativePatternIds
+            }).save()
+          ]).then(function(results){
+            var sample = results[0];
+            var correctPath = '/samples/'+user.id+'_'+sample.id+'.dna';
+            Q.nfcall(fs.rename, tempPath, './'+correctPath)
+              .then(function(){
+                sample.dataPath = '.'+correctPath;
+                sample.save().then(function(sample){
+                  callback(null, sample);
+                });
+              }).catch(function(err){
+                callback(err);
             });
           }).catch(function(err){
             callback(err);
           })
-        }).catch(function(err){
-          callback(err);
-        })
+        });
+
+
       }).catch(function(err){
         callback(err);
       })
+    },
+
+    /**
+     * Generate sampleCount samples with desiredPatternCount positive and negative patterns each.
+     * e.q. generateRandomSamples('client', 10, 10, done) -- creates 10 samples for user with username 'client' where sample
+     * is positive for 10 random patterns and negative for 10 other random patterns.
+     *
+     * @method generateRandomSamples
+     * @param {string} username
+     * @param {integer} sampleCount
+     * @param {integer} desiredPatternCount
+     * @param {function} callback
+     */
+    generateRandomSamples: function(username, sampleCount, desiredPatternCount, callback) {
+      var self = this;
+      Models.Pattern.findAll({
+        attributes: ['id']
+      })
+        .then(function(patternIds){
+
+          var patternCount = patternIds.length;
+          var alreadyCreated = 0;
+          patternIds = _.map(patternIds, function(pattern){
+            return pattern.id;
+          });
+
+          if (2*desiredPatternCount > patternCount) {
+            callback( new Error('More desired patterns than actual patterns') );
+            return;
+          }
+
+          for (var i= 0; i<sampleCount;i++) {
+            //pick M random patterns for positive and M for negative -> pick 2*M patterns and split array into half
+            var alreadyPicked = 0;
+            var patternCount = patternIds.length;
+            var randomPatterns = _.filter(patternIds, function() {
+              if (alreadyPicked == 2*desiredPatternCount)
+                return false;
+              var control = Math.random() < (2*desiredPatternCount / patternCount);
+              if (control)
+                alreadyPicked++;
+              return control;
+            });
+
+            var positive = randomPatterns.slice(0, Math.ceil(alreadyPicked / 2));
+            var negative = randomPatterns.slice(Math.ceil(alreadyPicked / 2) + 1);
+
+            self.createSample(username, positive, negative, function(err){
+              if (++alreadyCreated == sampleCount) {
+                callback();
+              }
+
+            });
+          }
+
+        })
+        .catch(function(err){
+          throw err;
+          throw new Error('Can\'t fetch all patterns');
+        })
+    },
+
+    /**
+     * Generates random DNA sequence for all chromosomes (approx 4GB file)
+     * @method generateDNAfile
+     * @param {string] path - path for output file
+     * @param {function} callback
+     */
+    generateDNAfile: function(path,callback) {
+      var stream = fs.createWriteStream(path, {encoding: 'utf-8'});
+      var actualChromosome = 1;
+      var actualPosition = 0;
+      var flushChunkSize = 10000000;
+
+      var write = function() {
+        if (actualChromosome == 24) {
+          stream.end('');
+          return;
+        }
+
+        var sequence = (actualPosition == 0) ? '['+actualChromosome+':0]' : '';
+        var chunkSize = (chromosomeLengths[actualChromosome - 1] - actualPosition - flushChunkSize < 0) ? chromosomeLengths[actualChromosome - 1] - actualPosition : flushChunkSize;
+        actualPosition += chunkSize;
+        sequence += getRandomSequence(chunkSize, 1000);
+
+        stream.write(sequence);
+        if (actualPosition == chromosomeLengths[actualChromosome - 1]) {
+          console.log('Chromosome '+actualChromosome+' GENERATED!');
+          actualChromosome++;
+          actualPosition = 0;
+        }
+      }
+
+      stream.on('drain', function(){
+        write();
+      });
+
+      stream.on('finish', function(){
+        callback();
+      });
+
+      write();
     },
 
     /**

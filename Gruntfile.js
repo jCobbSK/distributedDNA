@@ -4,7 +4,8 @@ var request = require('request'),
     models = require('./models'),
     async = require('async'),
     crawler = require('./custom/patternCrawler'),
-    Generator = require('./custom/generator');
+    Generator = require('./custom/generator'),
+    _ = require('underscore');
 
 module.exports = function (grunt) {
   // show elapsed time at the end
@@ -246,21 +247,17 @@ module.exports = function (grunt) {
   });
 
   /**
-   * Grunt task for generating N samples with random positive and negative patterns.
-   * e.q. grunt generateRandomSamples:10
+   * Grunt task for generating N samples with M random positive and negative patterns. M number is roughly because picking
+   * with random number so it might slightly varying.
+   * e.q. grunt generateRandomSamples:client:10:5 -- generates 10 samples with random 5 positive and negative patterns each for account with username client
    */
-  grunt.registerTask('generateRandomSamples', 'Generates N random samples with various complexity', function(N){
-    //TODO
+  grunt.registerTask('generateRandomSamples', 'Generates N random samples with random M positive and negative patterns each', function(username, N, M){
     //get all patternIds for choosing
-    models.Pattern.findAll({
-      attributes: ['id']
+    var done = this.async();
+    Generator.generateRandomSamples(username, N, M, function(){
+      console.log('Generated!');
+      done();
     })
-      .then(function(patternIds){
-
-      })
-      .catch(function(err){
-        throw new Error('Can\'t fetch all patterns');
-      })
   });
 
   /**
@@ -288,4 +285,11 @@ module.exports = function (grunt) {
         done();
       })
   });
+
+  grunt.registerTask('generateDNA', 'Generate DNA sequence (might be up to 4GB long file', function(path){
+    var done = this.async();
+    Generator.generateDNAfile(path,function(){
+      done();
+    });
+  })
 };
