@@ -12,12 +12,16 @@ router.get('/',auth.roleAuthenticate(['client']), function(req, res) {
     order: [['createdAt', 'DESC']],
     limit: 1
   }).then(function(sample){
+    if (!sample || sample.length == 0) {
+      res.render('noResults');
+      return;
+    }
+
     if (sample[0].id)
       res.redirect('/results/'+sample[0].id);
-    else {
-      res.render('noResults');
-    }
+
   }).catch(function(err){
+    console.log(err);
     res.sendStatus(404);
   });
 });
@@ -49,6 +53,7 @@ router.get('/:id', auth.roleAuthenticate(['client']), function(req, res) {
       res.sendStatus(401);
     else
       result['sample'] = sample;
+
     result['sample']['Results'] = result['sample']['Results'].sort(function(a, b){
       if (a.result && !b.result)
         return -1;
