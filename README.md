@@ -28,6 +28,7 @@ This project tries to build distributive system for advanced big data pattern re
 
 ###Various tasks###
 Various grunt tasks are created for testing and helping manipulation with data.
+
 1. grunt createData -- create default accounts
 1. grunt purgeData:table_name -- removing all data from table
 1. grunt fetchEnsemblData:countToFetch -- crawl genome browser for pattern genes
