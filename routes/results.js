@@ -39,9 +39,10 @@ router.get('/:id', auth.roleAuthenticate(['client']), function(req, res) {
       ]
     }),
     models.Sample.findAll({
-      attributes: ['id'],
+      attributes: ['id','isDone'],
       where: {UserId: req.user.id},
       order: [
+        ['isDone', 'ASC'],
         ['createdAt', 'DESC']
       ]
     })

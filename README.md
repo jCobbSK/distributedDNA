@@ -39,10 +39,6 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. grunt generateRandomSamples:N:M -- Generates N random samples with random M positive and negative patterns each
 1. grunt generateDNA:path -- Generate complete sequence of human DNA, output file defined by path is cca 2.9GB
 
-### Knowing drawbacks not yet fixed
-1. After connection of first node, all pending computations are passed to that node and are not redistributed as more nodes are connecting.
-
-
 
 ### Contact ###
 

@@ -16,7 +16,9 @@ var fs = require('fs'),
     Pattern = require('../models/pattern'),
     Settings = require('./settings'),
     Models = require('../models'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    Q = require('q'),
+    color = require('colors');
 module.exports = function(JDSM) {
 
   /**
@@ -70,11 +72,13 @@ module.exports = function(JDSM) {
    * @param {DNAAnalysis.SampleReader] sampleReader
    * @param {DNAAnalysis.Cluster} cluster
    * @param {integer} sampleId
+   * @returns {Q.Promise}
    */
   var analyzeCluster = function(sampleReader, cluster, sampleId) {
     //create request to node
     //pick correct request based on isCachingClustersInNodes
     var requestsArr;
+    var deffered = Q.defer();
     if (isCachingClustersInNodes()) {
       requestsArr = [
         {
@@ -118,6 +122,14 @@ module.exports = function(JDSM) {
     JDSM.sendAsyncRequest(requestsArr, function(err, data){
       //handle response -> create model.result
       console.log('RESULT from CLIENT!!!!!!!!!!!!', data);
+
+      if (err) {
+        deffered.reject(new Error(err));
+        return;
+      } else {
+        deffered.resolve(data);
+      }
+
       _.each(data, function(data){
         var sampleId = data.sampleId;
         _.each(data.results, function(res){
@@ -142,10 +154,12 @@ module.exports = function(JDSM) {
           }).catch(function(){
             throw new Error('Can\'t fetch Result to check duplicity');
           })
-
         })
-      })
+      });
+
     });
+
+    return deffered.promise;
   }
 
   /**
@@ -155,11 +169,25 @@ module.exports = function(JDSM) {
    * @param {DNAAnalysis.SampleReader} sampleReader
    * @param {Array of DNAAnalysis.Cluster} clusters
    * @param {integer} sampleId
+   * @returns {Q.Promise}
    */
   var analyzeClusters = function(sampleReader, clusters, sampleId) {
+
+    var promises = [];
+    var deferred = Q.defer();
+
     _.each(clusters, function(cluster){
-      analyzeCluster(sampleReader, cluster, sampleId);
+      promises.push(analyzeCluster(sampleReader, cluster, sampleId));
     });
+
+    Q.all(promises)
+      .then(function(){
+        deferred.resolve();
+      })
+      .catch(function(){
+        deferred.reject();
+      });
+    return deferred.promise;
   }
 
   /**
@@ -305,9 +333,20 @@ module.exports = function(JDSM) {
       where: {isDone: false},
       include: [{model: Models.Result, as: 'Results'}]
     }).then(function(samples){
-      _.each(samples, function(sample){
-        analyzePartialyFinished(sample);
-      })
+      if (samples.length > 0) {
+        var i = 0;
+        var analyze = function() {
+          analyzePartialyFinished(samples[i]).then(function(){
+            if (++i < samples.length)
+              analyze();
+          });
+        };
+        analyze();
+      }
+
+//      _.each(samples, function(sample){
+//        analyzePartialyFinished(sample);
+//      })
     })
   }
 
@@ -318,30 +357,53 @@ module.exports = function(JDSM) {
    * @private
    * @param {models.Sample} sample
    * @throws Error(Can't read file)
+   * @returns {Q.Promise}
    */
   var analyzePartialyFinished = function(sample) {
     var sr = new SampleReader();
+    var deferred = Q.defer();
+    var promises = [];
 
-    fs.readFile(sample.dataPath, 'utf-8', function(err, data){
+    fs.readFile(sample.dataPath, 'utf-8', function(err, data) {
       if (err) {
-       throw new Error('Can\'t read file');
+        throw new Error('Can\'t read file');
       }
       var clustersForSequence = [];
-      sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
+      sr.addChunk(data, function (sequence, chromosomeNumber, startIndex) {
         clustersForSequence = clusterHandler.finishAnalyzingSample(
-          sample.id,chromosomeNumber, startIndex,
+          sample.id, chromosomeNumber, startIndex,
             startIndex + sequence.length);
-        filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
-          analyzeClusters(sr,clustersForSequence, sample.id);
-        });
-      })
+        promises.push(analyzeClusters(
+          sr,
+          filterDoneClusters(sample, clustersForSequence),
+          sample.id
+        ));
+      });
 
       //check if sr.sequence is for some cluster
-      clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
-      filterDoneClusters(sample, clustersForSequence, function(clustersForSequence){
-        analyzeClusters(sr,clustersForSequence, sample.id);
-      });
-    })
+      clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(), sr.getStartIndex(), sr.getEndIndex());
+      promises.push(analyzeClusters(
+        sr,
+        filterDoneClusters(sample, clustersForSequence),
+        sample.id
+      ));
+
+      console.log('ANALYZE PARTIAL'.red,sample.dataPath, promises.length);
+      Q.all(promises)
+        .then(function(){
+          console.log('SETTING IS DONE'.green);
+          sample.isDone = true;
+          sample.save().then(function(){
+            deferred.resolve();
+          }).catch(function(err){
+            deferred.reject(err);
+          })
+        })
+        .catch(function(err){
+          deferred.reject(err);
+        })
+    });
+    return deferred.promise;
   }
 
   /**
@@ -351,10 +413,9 @@ module.exports = function(JDSM) {
    * @private
    * @param {models.Sample} sample with loaded Results in sample.Results
    * @param {Array of DNAAnalysis.Cluster} clusters
-   * @param {function(clusters)} callback
    * @returns {Array of DNAAnalysis.Cluster}
    */
-  var filterDoneClusters = function(sample, clusters, callback) {
+  var filterDoneClusters = function(sample, clusters) {
 
     //filter clusters only with at least 1 pattern not in results
     var res = _.filter(clusters, function(cluster){
@@ -366,7 +427,7 @@ module.exports = function(JDSM) {
       });
       return foundNotResolvedPattern;
     })
-    callback(res);
+    return res;
   }
 
   return {
@@ -375,9 +436,12 @@ module.exports = function(JDSM) {
      * @method analyzeSample
      * @param {models.Sample} sample database object
      * @throws Error(Can't read file)
+     * @returns {Q.Promise}
      */
     analyzeSample: function(sample) {
       var sr = new SampleReader();
+      var promises = [];
+      var deferred = Q.defer();
 
       fs.readFile(sample.dataPath, 'utf-8', function(err, data){
         if (err) {
@@ -389,13 +453,30 @@ module.exports = function(JDSM) {
           clustersForSequence = clusterHandler.finishAnalyzingSample(
                                     sample.id,chromosomeNumber, startIndex,
                                     startIndex + sequence.length);
-          analyzeClusters(sr,clustersForSequence, sample.id);
-        })
+          promises.push(analyzeClusters(sr,clustersForSequence, sample.id));
+        });
 
         //check if sr.sequence is for some cluster
         clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
-        analyzeClusters(sr,clustersForSequence, sample.id);
+        promises.push(analyzeClusters(sr,clustersForSequence, sample.id));
+
+        Q.all(promises)
+          .then(function(){
+            sample.isDone = true;
+            sample.save()
+              .then(function(){
+                deferred.resolve();
+              })
+              .catch(function(err){
+                deferred.reject(err);
+              })
+          })
+          .catch(function(err){
+            deferred.reject(err);
+          });
       });
+
+      return deferred;
     }
   }
 }
