@@ -10,6 +10,8 @@ This project tries to build distributive system for advanced big data pattern re
 1. install nodejs -- www.nodejs.org
 1. install postgresql database -- http://www.postgresql.org/
 1. run: npm install sequelize-cli -g
+1. clone repository: git clone git@bitbucket.org:KandoSVK/diplomka.git
+1. go inside project folder: cd Diplomka
 1. run: npm install
 1. run: bower install (if command not exists install it with: npm install bower -g and after call bower install)
 1. create database and set config/config.json
