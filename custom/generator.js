@@ -232,6 +232,37 @@ module.exports = (function() {
     writeChromosome();
   }
 
+  /**
+   * Method for writing positive and negative patterns into file. This method just copy all provided
+   * patterns as it goes, doesn't merge them, nor sort them. Such method is generateSequence.
+   * @private
+   * @method copyPatternsIntoSequence
+   * @param {string} path - output file path
+   * @param {Array of Model.Pattern} positivePatterns
+   * @param {Array of Model.Pattern} negativePatterns
+   * @param {function} callback
+   */
+  var copyPatternsIntoSequence = function(path, positivePatterns, negativePatterns, callback) {
+    var getSequenceForPattern = function(pattern, shuffling) {
+      var data = (!shuffling) ? pattern.data : getRandomSequence(pattern.data.length, 1000);
+      return '['+pattern.chromosome+':'+pattern.sequenceStart+']'+data;
+    }
+    var stream = fs.createWriteStream(path, {encoding: 'utf-8'});
+
+    stream.on('finish', function(){
+      callback(null);
+    });
+
+    _.each(positivePatterns, function(p){
+      stream.write(getSequenceForPattern(p, false));
+    });
+    _.each(negativePatterns, function(p){
+      stream.write(getSequenceForPattern(p, true));
+    });
+
+    stream.end(' ');
+  }
+
   return {
     /**
      * Creates sample record for user defined by username and
@@ -255,11 +286,11 @@ module.exports = (function() {
           where: {username: username}
         })
       ]).then(function(results){
-        var positvePatterns = results[0];
+        var positivePatterns = results[0];
         var negativePatterns = results[1];
         var user = results[2];
         var tempPath = Math.floor(Math.random()*10000000)+'.txt';
-        generateSequence(positvePatterns, negativePatterns, tempPath, function(err){
+        copyPatternsIntoSequence(tempPath, positivePatterns, negativePatterns, function(err){
           if (err) {
             console.log('ERROR: ', tempPath);
             fs.unlink(tempPath, function(){
