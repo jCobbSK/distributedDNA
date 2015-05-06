@@ -94,7 +94,8 @@ module.exports = (function() {
   })();
 
   /**
-   * Actual regExp testing of pattern with sequence.
+   * Actual regExp testing of pattern with sequence. Javascript maximum RegExp varying between browsers
+   * but patterns might exceed this limit so we need to split long regular expression into smaller.
    * @method analyze
    * @private
    * @param {string} sequence
@@ -103,11 +104,11 @@ module.exports = (function() {
    * @returns {Object{patternId:*,result:*}}
    */
   var analyze = function(sequence, startSequence, pattern) {
-    var regExp = RegExp(pattern.sequence);
+    var regExp = pattern.sequence;
     var subSequence = sequence.substring(pattern.sequenceStart - startSequence, pattern.sequenceEnd - startSequence + 1);
     return {
       patternId: pattern.id,
-      result:regExp.test(subSequence)
+      result: regExp === subSequence
     };
   };
 
