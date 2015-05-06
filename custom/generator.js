@@ -339,8 +339,12 @@ module.exports = (function() {
               return control;
             });
 
-            var positive = randomPatterns.slice(0, Math.ceil(alreadyPicked / 2));
-            var negative = randomPatterns.slice(Math.ceil(alreadyPicked / 2) + 1);
+            var positive = randomPatterns.slice(0, Math.ceil(alreadyPicked / 2)).sort(function(a,b){
+              return a - b;
+            });
+            var negative = randomPatterns.slice(Math.ceil(alreadyPicked / 2) + 1).sort(function(a,b){
+              return a - b;
+            });
 
             self.createSample(username, positive, negative, function(err){
               if (++alreadyCreated == sampleCount) {

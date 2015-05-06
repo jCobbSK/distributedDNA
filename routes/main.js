@@ -1,6 +1,7 @@
 var express = require('express'),
     auth = require('../custom/authentification'),
-    router = express.Router();
+    router = express.Router(),
+    Generator = require('../custom/generator');
 
 /* GET home page. */
 
@@ -19,6 +20,13 @@ router.get('/', function(req, res) {
     res.redirect('/results');
   else
     res.redirect('/computeStart');
+});
+
+router.get('/generateSample',auth.roleAuthenticate(['client']), function(req, res) {
+  console.log('Generating sample', req.user.username);
+  Generator.generateRandomSamples(req.user.username, 1, 10, function(){
+    res.redirect('/results');
+  });
 });
 
 router.post('/login',
