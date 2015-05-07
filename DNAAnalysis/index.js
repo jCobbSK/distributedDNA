@@ -201,20 +201,23 @@ module.exports = function(JDSM) {
 
     var result = [];
     _.each(nodes, function(node){
-      var removedClusters = node.clusters.splice(0,numberOfRemovedClusters);
+      //remove clusters from back
+      var removedClusters = node.clusters.splice((-1)*numberOfRemovedClusters);
       //create request to clear removedClusters to node
-      JDSM.sendAsyncRequest([{
-        node: node,
-        requestData: {
-          eventName: 'freeClusters',
-          data: _.map(removedClusters, function(cluster){
-            return cluster.id;
-          })
-        }
-      }], function(){
-        console.log('REMOVED clusters from node');
-      });
-      result.push(removedClusters);
+      if (isCachingClustersInNodes()) {
+        JDSM.sendAsyncRequest([{
+          node: node,
+          requestData: {
+            eventName: 'freeClusters',
+            data: _.map(removedClusters, function(cluster){
+              return cluster.id;
+            })
+          }
+        }], function(){
+          console.log('REMOVED clusters from node');
+        });
+      }
+      result = result.concat(removedClusters);
     });
 
     return result;
@@ -232,32 +235,35 @@ module.exports = function(JDSM) {
       var addingClusters = clusters.splice(0, sendingClustersCount);
       _.each(addingClusters, function(cluster){
         _node.clusters.push(cluster);
-      })
+        cluster.setHandlingNode(_node.node);
+      });
       //create request to send addingClusters to node
-      JDSM.sendAsyncRequest([{
-        node: _node.node,
-        requestData:{
-          eventName: 'addClusters',
-          data: _.map(addingClusters, function(cluster){
-            return {
-              clusterId: cluster.id,
-              clusterSequenceStart: cluster.getSequenceStart(),
-              clusterSequenceEnd: cluster.getSequenceEnd(),
-              patterns: _.map(cluster.patterns, function(pattern){
-                return {
-                  id: pattern.id,
-                  sequence: pattern.data,
-                  sequenceStart: pattern.sequenceStart,
-                  sequenceEnd: pattern.sequenceEnd,
-                  chromosome: pattern.chromosome
-                }
-              })
-            }
-          })
-        }
-      }], function(){
-        console.log('ADDED clusters to node');
-      })
+      if (isCachingClustersInNodes()) {
+        JDSM.sendAsyncRequest([{
+          node: _node.node,
+          requestData:{
+            eventName: 'addClusters',
+            data: _.map(addingClusters, function(cluster){
+              return {
+                clusterId: cluster.id,
+                clusterSequenceStart: cluster.getSequenceStart(),
+                clusterSequenceEnd: cluster.getSequenceEnd(),
+                patterns: _.map(cluster.patterns, function(pattern){
+                  return {
+                    id: pattern.id,
+                    sequence: pattern.data,
+                    sequenceStart: pattern.sequenceStart,
+                    sequenceEnd: pattern.sequenceEnd,
+                    chromosome: pattern.chromosome
+                  }
+                })
+              }
+            })
+          }
+        }], function(){
+          console.log('ADDED clusters to node');
+        })
+      }
     })
   }
 

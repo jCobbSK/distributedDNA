@@ -126,9 +126,7 @@ module.exports = function(socketsIO, options) {
     }
 
     //remove node
-    var positionOfNode = nodes.splice(nodes.indexOf(node));
-    if (positionOfNode > 0)
-      nodes.splice(positionOfNode, 1);
+    var removingNode = nodes.splice(nodes.indexOf(node), 1);
 
     //unregister node itself
     node.unregisterSelf();
