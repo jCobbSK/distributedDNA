@@ -18,7 +18,7 @@ This project tries to build distributive system for advanced big data pattern re
 1. run: sequelize db:migrate
 1. run: grunt createData
 1. run: grunt fetchEnsemblData:100
-1. run: grunt
+1. run: sudo grunt
 1. open browser on localhost:3000
 1. Login with credentials:
 
