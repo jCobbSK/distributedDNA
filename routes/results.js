@@ -67,7 +67,7 @@ router.get('/:id', auth.roleAuthenticate(['client']), function(req, res) {
     result['actualSample'] = req.params.id;
     res.render('results', result);
   }).catch(function(err){
-    res.sendStatus(404);
+    res.redirect('/results');
   });
 });
 
