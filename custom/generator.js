@@ -247,7 +247,7 @@ module.exports = (function() {
       var data = (!shuffling) ? pattern.data : getRandomSequence(pattern.data.length, 1000);
       return '['+pattern.chromosome+':'+pattern.sequenceStart+']'+data;
     }
-    var stream = fs.createWriteStream(path, {encoding: 'utf-8'});
+    var stream = fs.createWriteStream(path, {encoding: 'utf-8', mode: 0666});
 
     stream.on('finish', function(){
       callback(null);
@@ -311,10 +311,16 @@ module.exports = (function() {
             Q.nfcall(fs.rename, tempPath, './'+correctPath)
               .then(function(){
                 sample.dataPath = '.'+correctPath;
-                sample.save().then(function(sample){
-                  callback(null, sample);
-                });
+                sample.save().
+                  then(function(sample){
+                    callback(null, sample);
+                  })
+                  .catch(function(err){
+                    console.log('FU!', err);
+                    callback(err);
+                  })
               }).catch(function(err){
+                console.log('FUCK YOU!!!!!!!!!', err);
                 callback(err);
             });
           }).catch(function(err){
