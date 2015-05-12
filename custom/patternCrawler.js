@@ -47,11 +47,11 @@ module.exports = {
   },
 
   /**
-   * Actual application logic.
+   * Crawling ensembl genome browser and copying gene patterns into localhost database.
    *
    * It is optimize for crawling ensembl.org @ 2.3.2015
    * @method crawl
-   * @param {integer} numberOfPatterns - number of patterns to fetch
+   * @param {integer} numberOfPatterns - number of patterns to fetch, if null ALL patterns are fetched
    * @param {function} callback - callback called after finished callback(err, result)
    */
   crawl: function(numberOfPatterns, callback) {
@@ -67,7 +67,7 @@ module.exports = {
                   "\'protein_coding\'",
                   scheme+'.status',
                   "\'KNOWN\'",
-                  (numberOfPatterns)?numberOfPatterns:'5');
+                  (numberOfPatterns)?numberOfPatterns:'ALL');
     var self = this;
     var temporaryObjects = {};
     connection.query(query, function(err, rows, fields){
