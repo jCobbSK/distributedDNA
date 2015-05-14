@@ -49,6 +49,7 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. responsive design for half macbook screen
 1. update client's front-end during analyze
 1. normalize pattern during fetching for notForwardStrand
+1. fix mocha tests so it will succeed
 
 ### Contact ###
 
