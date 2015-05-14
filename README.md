@@ -7,7 +7,7 @@ This Repository contains everything related to my Master Thesis.
 This project tries to build distributive system for advanced big data pattern recognision applied on DNA sequence analysis. It is based on NodeJS and ExpressJS framework.
 
 ### How do I get set up? ###
-1. install nodejs -- www.nodejs.org
+1. install nodejs -- http://www.nodejs.org
 1. install postgresql database -- http://www.postgresql.org/
 1. run: npm install sequelize-cli -g
 1. clone repository: git clone git@bitbucket.org:KandoSVK/diplomka.git
@@ -50,6 +50,7 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. update client's front-end during analyze
 1. normalize pattern during fetching for notForwardStrand
 1. fix mocha tests so it will succeed
+1. set stack of requests on node
 
 ### Contact ###
 
