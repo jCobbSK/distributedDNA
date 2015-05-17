@@ -27,23 +27,34 @@ router.post('/',auth.roleAuthenticate(['client']), function(req, res) {
     .then(function(sample){
       var newPath = './samples/'+userId+'_'+sample.id+'.dna';
 
-      //TODO INSTEAD BLINDLY RENAME we should process the data so it is stored with correct syntax and
-      //encoding etc. etc.
-      fs.rename(temporaryFile, newPath, function(err){
-        if (err)
-          console.log(err);
-        else {
+      //read file
+      fs.readFile(temporaryFile, {encoding: 'utf-8'}, function(err, data){
+        if (err) {
+          res.sendStatus(401);
+          return;
+        }
+        //perform transformation of data string
+        data = data.toUpperCase();
+        data = data.trim();
+
+        //save transformed file into normalized path with normalized encoding
+        fs.writeFile(newPath, data, {encoding: 'ASCII'}, function(err){
+          if (err) {
+            res.sendStatus(401);
+            return;
+          }
+
           sample.dataPath = newPath;
           sample.save().then(function(sample){
-            //start analyzing sample
             global.applicationLogic.analyzeSample(sample);
             res.redirect('/results');
           });
-        }
+        });
       });
     })
     .catch(function(err){
-
+      res.sendStatus(401);
+      return;
     });
 });
 

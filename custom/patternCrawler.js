@@ -119,7 +119,7 @@ module.exports = {
             console.log('REQ ERROR: '+ e.message);
             callback(true, null);
           });
-        }, counter*(1000/14), rows[i]);
+        }, Math.ceil(counter*(1000/14)), rows[i]);
 
       }
 

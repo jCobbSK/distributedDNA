@@ -42,10 +42,10 @@ Various grunt tasks are created for testing and helping manipulation with data.
 ### TODO ###
 
 1. change reading & writing files from UTF-8 into ASCII
+1. on uploading sample convert it to upper case
 1. notify Node when FE is actually computing
 1. read sample by chunks (createReadStream instead readFile)
 1. compile data to regular expression on fetching pattern
-1. on uploading sample convert it to upper case
 1. responsive design for half macbook screen
 1. update client's front-end during analyze
 1. normalize pattern during fetching for notForwardStrand
