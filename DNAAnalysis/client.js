@@ -43,6 +43,14 @@ module.exports = (function() {
     var uploadedData = 0;
 
     /**
+     * Check if node is actually computing data.
+     * @private
+     * @property isWorking
+     * @type {boolean}
+     */
+    var isWorking = false;
+
+    /**
      * Format number of bytes into string with proper prefix kB, MB, GB
      * @method formatBytes
      * @private
@@ -69,6 +77,17 @@ module.exports = (function() {
       $('#uploaded-data').html(formatBytes(uploadedData));
     }
 
+    /**
+     * Method called everytime isWorking state is changed. Used for updating DOM.
+     * @method workingChangeCallback
+     * @private
+     */
+    var workingChangeCallback = function() {
+      $ ('#status-text').html(
+        isWorking ? 'Computing' : 'Idle'
+      );
+    }
+
     return {
 
       /**
@@ -89,6 +108,18 @@ module.exports = (function() {
       addUpload: function(lengthInB) {
         uploadedData += lengthInB;
         changeCallback();
+      },
+
+      /**
+       * Change isWorking status, if newVal is provided it is automatically set, otherwise
+       * the current value is switched.
+       * @method switchIsWorking
+       * @param {bool} newVal
+       */
+      switchIsWorking: function(newVal) {
+        var val = newVal || !isWorking;
+        isWorking = val;
+        workingChangeCallback();
       }
     }
   })();
@@ -140,19 +171,28 @@ module.exports = (function() {
   (function init(){
     JDSM.registerTask('analyze', function(data, respond){
       console.log('analyze',data);
+
+      DataTraffic.switchIsWorking(true);
       DataTraffic.addDownload(sizeof(data));
+
       var resultObject = {
         sampleId: data.sampleId,
         results: analyzeCluster(data.sampleSequence, data.clusterId)
       };
-      DataTraffic.addUpload(sizeof(resultObject));
+
       respond.respond(resultObject);
+
+      DataTraffic.addUpload(sizeof(resultObject));
+      DataTraffic.switchIsWorking(false);
     });
 
     JDSM.registerTask('analyzeNoCache', function(data, respond){
       console.log('analyzeNoCache',data);
+
+      DataTraffic.switchIsWorking(true);
       DataTraffic.addDownload(sizeof(data));
-      var sequence = data.sampleSequence;
+
+      var sequence = data.sampleSequence || '';
       var results = [];
       _.each(data.patterns, function(patternObject){
         results.push(analyze(sequence, data.sampleSequenceStart, patternObject));
@@ -162,8 +202,11 @@ module.exports = (function() {
         sampleId: data.sampleId,
         results: results
       };
-      DataTraffic.addUpload(sizeof(resObject));
+
       respond.respond(resObject);
+
+      DataTraffic.addUpload(sizeof(resObject));
+      DataTraffic.switchIsWorking(false);
     });
 
     JDSM.registerTask('addClusters', function(data, respond){

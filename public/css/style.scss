@@ -32,3 +32,10 @@ tr {
 .rotating {
   -webkit-animation: rotating 2s linear infinite;
 }
+
+.status-text {
+  position:absolute;
+  width: 90px;
+  text-align: center;
+  margin-top: 40px;
+}
