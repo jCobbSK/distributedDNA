@@ -461,7 +461,7 @@ module.exports = function(JDSM) {
         return deferred.promise;
       }
 
-      fs.readFile(sample.dataPath, 'utf-8', function(err, data){
+      fs.readFile(sample.dataPath, {encoding: 'ASCII'}, function(err, data){
         if (err) {
           throw new Error('Can\'t read file');
         }
