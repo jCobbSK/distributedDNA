@@ -46,7 +46,7 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. ~~notify Node when FE is actually computing~~
 1. read sample by chunks (createReadStream instead readFile)
 1. compile data to regular expression on fetching pattern
-1. fix mocha tests so it will succeed
+1. ~~fix mocha tests~~
 1. update client's front-end during analyze
 1. responsive design for half macbook screen
 1. normalize pattern during fetching for notForwardStrand
