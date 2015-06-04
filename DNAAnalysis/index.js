@@ -461,23 +461,23 @@ module.exports = function(JDSM) {
         return deferred.promise;
       }
 
-      fs.readFile(sample.dataPath, {encoding: 'ASCII'}, function(err, data){
-        if (err) {
-          throw new Error('Can\'t read file');
-        }
+      var readStream = fs.createReadStream(sample.dataPath, {encoding: 'ascii'});
+      readStream.on('data', function(chunk){
         var clustersForSequence = [];
-        sr.addChunk(data, function(sequence, chromosomeNumber, startIndex){
+        sr.addChunk(chunk, function(sequence, chromosomeNumber, startIndex){
           //send data to relative clusters
           clustersForSequence = clusterHandler.finishAnalyzingSample(
-                                    sample.id,chromosomeNumber, startIndex,
-                                    startIndex + sequence.length);
+            sample.id,chromosomeNumber, startIndex,
+              startIndex + sequence.length);
           promises.push(analyzeClusters(sr,clustersForSequence, sample.id));
         });
 
         //check if sr.sequence is for some cluster
         clustersForSequence = clusterHandler.getClustersForSample(sample.id, sr.getChromosomeNumber(),sr.getStartIndex(),sr.getEndIndex());
         promises.push(analyzeClusters(sr,clustersForSequence, sample.id));
+      });
 
+      readStream.on('end', function(){
         Q.all(promises)
           .then(function(){
             sample.isDone = true;

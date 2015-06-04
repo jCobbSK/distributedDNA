@@ -407,7 +407,7 @@ module.exports = (function() {
      * @param {function} callback
      */
     generateDNAfile: function(path,callback) {
-      var stream = fs.createWriteStream(path, {encoding: 'utf-8'});
+      var stream = fs.createWriteStream(path, {encoding: 'ascii'});
       var actualChromosome = 1;
       var actualPosition = 0;
       var flushChunkSize = 10000000;
