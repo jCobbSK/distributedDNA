@@ -1,8 +1,23 @@
 var Generator = require('../custom/generator'),
-    assert = require('assert');
+    assert = require('assert'),
+    fs = require('fs');
 
 describe('Generator of samples', function(){
   describe('#generateSequence', function(){
+
+    var testPath = 'test.txt';
+
+    /**
+     * Compare content of file with result string.
+     * @method testFile3
+     * @param {string} result
+     * @returns {boolean}
+     */
+    var testFile = function(result) {
+      var fileContent = fs.readFileSync(testPath, {encoding: 'utf-8'});
+      return fileContent == result;
+    }
+
     var pat1 = {
       data: 'CCGGAATT',
       sequenceStart: 0,
@@ -39,49 +54,54 @@ describe('Generator of samples', function(){
       chromosome: 1
     }
 
-    it('should return sequence for 2 chromosomes', function() {
-      var res = Generator.generateSequence([pat1, pat4]);
-      assert(res == '[1:0]CCGGAATT[2:1]CTCTCT');
+
+
+    it('should return sequence for 2 chromosomes', function(done) {
+      Generator.generateSequence([pat1, pat4], [], testPath, function(err){
+        if (!err && testFile('[1:0]CCGGAATT[2:1]CTCTCT'))
+          done();
+        else
+          throw new Error();
+      });
     })
 
     it('should concat patterns', function() {
-      var res = Generator.generateSequence([pat1, pat2]);
-      assert(res == '[1:0]CCGGAATTCGAT');
-    })
-
-    it('should throw error of colliding patterns', function() {
-      assert.throws(
-        function() {
-          Generator.generateSequence([pat2, pat3]);
-        },
-        Error,
-        'Pattern collision'
-      )
-    })
-
-    it('shouldn\'t throw error of colliding patterns', function() {
-      var res = Generator.generateSequence([pat2, pat5]);
-      assert(res == '[1:8]CGATCB');
-    })
-
-    it('should filled empty spaces with random data', function() {
-      var res = Generator.generateSequence([pat1, pat6]);
-      assert(res.substr(-3) == 'AAA');
-      assert(res.substr(0,13) == '[1:0]CCGGAATT');
-      assert(res.length == 108);
-    })
-
-  })
-
-  describe('#createSample', function(){
-    this.timeout(600000);
-    it('should create correct sample', function(done){
-      this.timeout = 600000;
-      Generator.createSample('client', [31,32], function(err){
-        if (err)
+      Generator.generateSequence([pat1, pat2], [], testPath, function(err){
+        if (!err && testFile('[1:0]CCGGAATTCGAT'))
+          done();
+        else {
           throw new Error();
-        done();
+        }
       });
+    })
+
+    it('should throw error of colliding patterns', function(done) {
+      Generator.generateSequence([pat2, pat3], [], testPath, function(err){
+         if (err)
+          done();
+         else
+          throw err;
+      });
+    })
+
+    it('shouldn\'t throw error of colliding patterns', function(done) {
+      Generator.generateSequence([pat2, pat5], [], testPath, function(err){
+        if (!err && testFile('[1:8]CGATCB'))
+          done();
+        else
+          throw new Error();
+      });
+    })
+
+    /**
+     * After all test scenarios, remove helper file.
+     */
+    after(function(done){
+      fs.exists(testPath, function(exists){
+        if (exists)
+          fs.unlinkSync(testPath);
+        done();
+      })
     })
   })
 })

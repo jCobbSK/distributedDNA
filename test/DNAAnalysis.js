@@ -271,17 +271,17 @@ describe('DNAAnalysisModule', function(){
       })
 
       it('should return cluster', function(){
-        var r = clusterHandlerInstance.getClustersForSample(1, 0, 1, 100);
+        var r = clusterHandlerInstance.getClustersForSample(1, 1, 1, 100);
         assert(r.length == 1);
       })
 
       it('should return 1 partial cluster', function() {
-        var r = clusterHandlerInstance.finishAnalyzingSample(1,0,1,100);
+        var r = clusterHandlerInstance.finishAnalyzingSample(1,1,1,100);
         assert(r.length == 1);
       })
 
       it('should return 2 clusters', function() {
-        var r = clusterHandlerInstance.finishAnalyzingSample(1,0,1,100);
+        var r = clusterHandlerInstance.finishAnalyzingSample(1,1,1,100);
         assert(r.length == 2);
       })
     })
@@ -319,7 +319,7 @@ describe('DNAAnalysisModule', function(){
       sr.trimBeginToIndex(4);
       assert(sr.getStartIndex() == 4);
       assert(sr.getEndIndex() == myCustomString.length);
-      assert(sr.getPartOfSequence(5,10) == myCustomString.substring(5,10));
+      assert(sr.getPartOfSequence(5,10) == myCustomString.substring(5,10 + 1 )); //add 1 because String.substring <n,m)
     })
 
     it('should correctly parse sample format with multiple portions', function(){

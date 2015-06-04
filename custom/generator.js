@@ -156,7 +156,6 @@ module.exports = (function() {
 
     stream.on('finish', function(){
       if (throwingError) {
-        console.log('finishing error', path);
         fs.unlinkSync(path);
         callback(throwingError);
       } else {
@@ -179,7 +178,7 @@ module.exports = (function() {
       };
 
       if (actualChromosome >= chromosomes.length) {
-        stream.end(' ');
+        stream.end('');
         return;
       }
       var patternArray = chromosomes[actualChromosome];
@@ -202,8 +201,7 @@ module.exports = (function() {
           if (chResSub !== patternSub) {
             //patterns are colliding, delete file
             throwingError = new Error('Colliding patterns');
-            console.log('Throwing error', path);
-            stream.end(' ');
+            stream.end('');
             return;
           }
 
@@ -223,9 +221,10 @@ module.exports = (function() {
         }
       });
 
-      if(!throwingError && !stream.write(chromosomeResult))
+      if(!throwingError) {
+        stream.write(chromosomeResult);
         stream.emit('moveOn');
-
+      }
 
     }
 
@@ -445,12 +444,14 @@ module.exports = (function() {
 
     /**
      * Call private method generateSequence.
-     * @method generateSequence
-     * @param {Array of Models.Pattern} patterns
-     * @returns {string}
+     * @throws Error('Pattern collision')
+     * @param {Array of Models.Pattern} positivePatterns
+     * @param {Array of Models.Pattern} negativePatterns
+     * @param {string} path - output file
+     * @param {function} callback - callback after generated sequence successfully flushed on disk
      */
-    generateSequence: function(patterns) {
-      return generateSequence(patterns);
+    generateSequence: function(positivePatterns, negativePatterns, path, callback) {
+      generateSequence(positivePatterns, negativePatterns, path, callback);
     }
   }
 })();
