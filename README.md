@@ -44,7 +44,7 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. ~~change reading & writing files from UTF-8 into ASCII~~
 1. ~~on uploading sample convert it to upper case~~
 1. ~~notify Node when FE is actually computing~~
-1. read sample by chunks (createReadStream instead readFile)
+1. ~~read sample by chunks (createReadStream instead readFile)~~
 1. compile data to regular expression on fetching pattern
 1. ~~fix mocha tests~~
 1. update client's front-end during analyze
