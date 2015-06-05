@@ -5,7 +5,7 @@
     <a class="btn-floating btn-medium waves-effect waves-light red" style="position: absolute; left: calc(50% - 20px);" href="/settask"><i class="mdi-content-add"></i></a>
     <ul class="collection" style="margin-top: 40px;">
       <%for (var i=0,len=samples.length;i<len;i++){%>
-          <a href="<%=samples[i].id%>" class="collection-item <%= samples[i].id == actualSample ? 'active': ''%>">
+          <a href="<%=samples[i].id%>" class="collection-item sidebar-item <%= samples[i].id == actualSample ? 'active': ''%>">
             #<%= samples[i].id %>
             <%if (samples[i].isDone){%>
               <i class="mdi-navigation-check" style="float: right;"></i>
@@ -25,7 +25,7 @@
       <div class="col s6">
         <h4>Patient: <%=sample.patientName%></h4>
         <h4>Additional info:</h4>
-        <p><%=sample.additionalInfo%></p>
+        <p class="breaking-words"><%=sample.additionalInfo%></p>
       </div>
     </div>
 

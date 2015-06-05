@@ -1,4 +1,10 @@
 $(document).ready(function(){
+
+  /**
+   * Responsive menu setup.
+   */
+  $('.button-collapse').sideNav();
+
   /**
    * Admin page scripts
    */

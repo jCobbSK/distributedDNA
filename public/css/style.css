@@ -12,6 +12,12 @@ tr.success {
 tr.failure {
   background-color: #ffcdd2; }
 
+.breaking-words {
+  word-break: break-word; }
+
+.sidebar-item {
+  padding: 5px 5px !important; }
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg); }
