@@ -31,6 +31,10 @@ router.get('/generateSample',auth.roleAuthenticate(['client']), function(req, re
   });
 });
 
+router.get('/getresults', auth.roleAuthenticate(['client']), function(req, res) {
+  res.json(global.UsersStorage.needRefresh(req.user.id));
+})
+
 router.post('/login',
   auth.authenticate()
 );

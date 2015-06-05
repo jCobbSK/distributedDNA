@@ -9,69 +9,46 @@ var _ = require('underscore');
 module.exports = (function(){
 
   /**
-   * Object property where key represents userId-s and values are sockets of particular
-   * user.
-   * @property sockets
+   * Object property where key represents userId-s and value represents if user should update page.
+   * @property users
    * @private
-   * @type {Object}
+   * @type {Object of Arrays}
    */
-  var sockets = {};
+  var users = {};
 
   return {
     /**
-     * Add user's socket to storage.
-     * @method addSocket
-     * @param {socket.io Client} socket
+     * Register user for new results. If already exists, pending results are removed.
+     * @method connectUser
      * @param {integer} userId
+     * @param {integer} sampleId
+     * @returns {void}
      */
-    addSocket: function(socket, userId) {
-      sockets[userId] = socket;
+    connectUser: function(userId) {
+      users[userId] = false;
     },
 
     /**
-     * Removes user from storage by socket.
-     * @method removeSocketBySocket
-     * @param {socket.io Client} socket
-     * @returns {boolean} if socket has been removed
+     * Check if some result has been added to user and therefore he need to refresh page.
+     * @method needRefresh
+     * @param {integer} userId
+     * @returns {Result[]}
      */
-    removeSocketBySocket: function(socket) {
-      for (var key in sockets) {
-        if (sockets[key] == socket) {
-          sockets[key] = null;
-          return true;
-        }
-      }
-      return false;
+    needRefresh: function(userId) {
+      var res = users[userId];
+      users[userId] = false;
+      return res;
     },
 
     /**
-     * Removes user from storage by userId.
-     * @method removeSocketByUserId
+     * Set that user should reload his browser.
+     * @method addResult
      * @param {integer} userId
-     * @returns {boolean} if socket has been removed
+     * @param {Result} result
+     * @returns {void}
      */
-    removeSocketByUserId: function(userId) {
-      if (sockets[userId]) {
-        sockets[userId] = null;
-        return true;
-      }
-      return false;
-    },
-
-    /**
-     * Sends raw object data to socket of userId if defined. For correct handling on client side
-     * eventName is provided.l
-     * @param {integer} userId
-     * @param {string} eventName
-     * @param {object} data
-     * @returns {boolean} success send
-     */
-    sendData: function(userId, eventName, data) {
-      if (sockets[userId]) {
-        sockets[userId].emit(eventName, data);
-        return true;
-      }
-      return false;
+    addResult: function(userId) {
+      users[userId] = true;
     }
   }
 })();

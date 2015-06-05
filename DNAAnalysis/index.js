@@ -144,8 +144,11 @@ module.exports = function(JDSM) {
                 result: res.result
               }).save()
                 .then(function(result){
-                  //TODO push to front-end of client
-                  console.log('created result');
+                  //for autoupdate we have to resolve needed data
+                  result.getSample()
+                    .then(function(sample){
+                      global.UsersStorage.addResult(sample.UserId);
+                    })
                 })
                 .catch(function(err){
                   throw new Error('Can\'t save pattern');

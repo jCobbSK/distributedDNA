@@ -11,6 +11,9 @@ var JDSM = require('../JDSM')(server);
 global.JDSM = JDSM;
 global.applicationLogic = require('../DNAAnalysis')(JDSM);
 
+//basic storage for automatic updates of connected clients
+global.UsersStorage = require('../custom/usersStorage');
+
 var server = server.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
