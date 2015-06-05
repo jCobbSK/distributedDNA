@@ -27,13 +27,13 @@
       <li>
         <a href="/Documentation">Documentation</a>
       </li>
+      <% if(locals.user){ %>
       <li><a href="/logout">
-          <% if(locals.user){ %>
-          <%=user.username%>
-          <%}else{%>
-          <%="guest"%>
-          <%}%>
-        </a></li>
+          Logout <%=user.username%>
+          </a>
+      </li>
+      <%}%>
+
     </ul>
     <ul id="mobile-demo" class="side-nav">
       <li>
@@ -42,13 +42,12 @@
       <li>
         <a href="/Documentation">Documentation</a>
       </li>
+      <% if(locals.user){ %>
       <li><a href="/logout">
-          <% if(locals.user){ %>
-          <%=user.username%>
-          <%}else{%>
-          <%="guest"%>
-          <%}%>
-        </a></li>
+          Logout <%=user.username%>
+        </a>
+      </li>
+      <%}%>
     </ul>
   </div>
 </nav>
