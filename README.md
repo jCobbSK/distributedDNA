@@ -1,10 +1,18 @@
-# README #
+### Intro ###
 
-This Repository contains everything related to my Master Thesis.
+How many CPUs do you have? You may have PC, laptop, tablet, smartphone all has significant computational power and almost every device is connected to network and still probably most of the time it is idle, not doing anything. Why shouldn't we use that power and therefore reduce ecologic and economic fallout of increasing computational power for specific purposes like big-data analysis?
 
-### What is this repository for? ###
+Almost all devices, even x-box, ps3 can open website and therefore run JavaScript which is rapidly evolving language of 21st century. Why shouldn't we provide computational power of that device simply by opening website?
 
-This project tries to build distributive system for advanced big data pattern recognision applied on DNA sequence analysis. It is based on NodeJS and ExpressJS framework.
+This project tries that, the purpose is to create distributive system with running browsers as peers. Simple enough?
+
+### What is this project for? ###
+
+This project builds distributive system for advanced big data pattern recognition applied on DNA sequence analysis. It is build so javascript distributive module is separate from application logic, so if you are interested in distributive communication between peers and server go ahead and lookup JDSM folder, if you want to see logic behind fetching, parsing and analyzing DNA sequence go to DNAAnalysis folder.
+
+### Technology stack ###
+
+Application is based on __NodeJS__ with __ExpressJS__ framework. __PostgreSQL__ is used for database layer together with __sequlizejs__ ORM library. __Socket.io__ is used for communication between peers and main server.
 
 ### How do I get set up? ###
 1. install nodejs -- http://www.nodejs.org
@@ -38,19 +46,6 @@ Various grunt tasks are created for testing and helping manipulation with data.
 1. grunt createTestPattern:chromosome:data:sequenceStart:name:description -- create pattern with provided required params chromosome and data, other params are optional
 1. grunt generateRandomSamples:N:M -- Generates N random samples with random M positive and negative patterns each
 1. grunt generateDNA:path -- Generate complete sequence of human DNA, output file defined by path is cca 2.9GB
-
-### TODO ###
-
-1. ~~change reading & writing files from UTF-8 into ASCII~~
-1. ~~on uploading sample convert it to upper case~~
-1. ~~notify Node when FE is actually computing~~
-1. ~~read sample by chunks (createReadStream instead readFile)~~
-1. ~~fix mocha tests~~
-1. ~~update client's front-end during analyze~~
-1. ~~responsive design for half macbook screen~~
-1. normalize pattern during fetching for notForwardStrand
-1. set stack of requests on node
-1. compile data to regular expression on fetching pattern
 
 ### Contact ###
 
